@@ -379,7 +379,7 @@ namespace Trainer
             ModActive = false;
             if (!ModActive && GameSettings.Instance != null && HUD.Instance != null)
             {
-                HUD.Instance.AddPopupMessage("Trainer v2 has been deactivated", "Cogs", "", 0, 0, 0, 0, 1);
+                HUD.Instance.AddPopupMessage("Trainer v2 has been deactivated!", "Cogs", "", 0, 0, 0, 0, 1);
             }
         }
 

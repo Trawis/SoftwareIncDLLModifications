@@ -11,14 +11,37 @@ namespace HostingInc
 {
     public class HostingBehaviour : ModBehaviour
     {
+        public bool ModActive = false;
         void Start()
-        { }
+        { 
+            if (ModActive)
+            {
+
+            }
+        }
         void Update()
-        { }
+        {
+            if (ModActive && GameSettings.Instance != null && HUD.Instance != null)
+            {
+
+            }
+        }
         public override void OnActivate()
-        { }
+        {
+            ModActive = true;
+            if (ModActive && GameSettings.Instance != null && HUD.Instance != null)
+            {
+                HUD.Instance.AddPopupMessage("Hosting Inc has been activated!", "Cogs", "", 0, 0, 0, 0, 1);
+            }
+        }
         public override void OnDeactivate()
-        { }
+        {
+            ModActive = false;
+            if (!ModActive && GameSettings.Instance != null && HUD.Instance != null)
+            {
+                HUD.Instance.AddPopupMessage("Hosting Inc has been deactivated!", "Cogs", "", 0, 0, 0, 0, 1);
+            }
+        }
     }
     public static class Extensions
     {

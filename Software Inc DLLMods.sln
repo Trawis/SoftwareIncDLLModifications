@@ -6,9 +6,6 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trainer", "Trainer v2\Trainer.csproj", "{16878A0D-CD88-4206-AC25-3B057DA8F18D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{35B64297-E14D-43B0-9F53-B00728703C8F}"
-	ProjectSection(SolutionItems) = preProject
-		Help.txt = Help.txt
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HostingInc", "HostingInc\HostingInc.csproj", "{1F019B10-7369-4267-AE99-8103373E3C02}"
 EndProject
