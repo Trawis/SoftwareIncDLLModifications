@@ -1,20 +1,14 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trainer", "Software Inc DLLMods\Trainer.csproj", "{16878A0D-CD88-4206-AC25-3B057DA8F18D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trainer", "Trainer v2\Trainer.csproj", "{16878A0D-CD88-4206-AC25-3B057DA8F18D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{35B64297-E14D-43B0-9F53-B00728703C8F}"
 	ProjectSection(SolutionItems) = preProject
 		Help.txt = Help.txt
 	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Multiplayer", "Multiplayer\Multiplayer.csproj", "{0A6D16BB-A911-496F-AF2D-8DC2E09F0471}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MultiplayerServer", "MultiplayerServer\MultiplayerServer.csproj", "{7C171634-B21A-4297-A172-AF4B1C0FCFC0}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MultiplayerTypes", "MultiplayerTypes\MultiplayerTypes.csproj", "{2A702331-5113-4ACC-9C92-25E9A3814BFA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -26,18 +20,6 @@ Global
 		{16878A0D-CD88-4206-AC25-3B057DA8F18D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{16878A0D-CD88-4206-AC25-3B057DA8F18D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{16878A0D-CD88-4206-AC25-3B057DA8F18D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0A6D16BB-A911-496F-AF2D-8DC2E09F0471}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0A6D16BB-A911-496F-AF2D-8DC2E09F0471}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0A6D16BB-A911-496F-AF2D-8DC2E09F0471}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0A6D16BB-A911-496F-AF2D-8DC2E09F0471}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7C171634-B21A-4297-A172-AF4B1C0FCFC0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7C171634-B21A-4297-A172-AF4B1C0FCFC0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7C171634-B21A-4297-A172-AF4B1C0FCFC0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7C171634-B21A-4297-A172-AF4B1C0FCFC0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2A702331-5113-4ACC-9C92-25E9A3814BFA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2A702331-5113-4ACC-9C92-25E9A3814BFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2A702331-5113-4ACC-9C92-25E9A3814BFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2A702331-5113-4ACC-9C92-25E9A3814BFA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
