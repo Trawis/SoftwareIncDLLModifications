@@ -11,25 +11,103 @@ namespace Trainer
 {
     public class TrainerBehaviour : ModBehaviour
     {
-        public bool ModActive = false;
-        public bool LockAge = false;
-        public bool LockStress = false;
-        public bool LockHunger = false;
+        public static bool ModActive = false;
+        public static bool LockAge = false;
+        public static bool LockStress = false;
+        public static bool LockHunger = false;
+        public static bool LockNeeds = false;
+        public static bool LockEffSat = false;
+        public static bool FreeEmployees = false;
+        public static bool FreeStaff = false;
+        public static bool TempLock = false;
+        public static bool NoWaterElect = false;
+        public static bool NoiseRed = false;
+        public static bool FullEnv = false;
+        public static bool CleanRooms = false;
+        public static bool Fullbright = false;
+        public static bool NoVacation = false;
+
+        public static string CompanyText = "";
+        public static string price_ProductName = "";
+        public static float price_ProductPrice = 10f;
+
         public Text button = WindowManager.SpawnLabel();
+        public bool start = false;
         void Start()
         {
             //All ModBehaviours has a function to load settings from the mod's settings file
             //Note that everything is saved in strings
             //This function uses the default string converter for the generic type argument
-            if (ModActive && GameSettings.Instance != null && HUD.Instance != null)
+            //if (ModActive && GameSettings.Instance != null && HUD.Instance != null) { }
+            //this.ModActive = this.LoadSetting<bool>("ModActive", false);
+            if (ModActive)
             {
+                StartCoroutine(Spremi());
+                LockAge = this.LoadSetting<bool>("LockAge", false);
+                LockStress = this.LoadSetting<bool>("LockStress", false);
+                LockNeeds = this.LoadSetting<bool>("LockNeeds", false);
+                FreeEmployees = this.LoadSetting<bool>("FreeEmployees", false);
+                LockEffSat = this.LoadSetting<bool>("LockEffSat", false);
+                FreeStaff = this.LoadSetting<bool>("FreeStaff", false);
+                TempLock = this.LoadSetting<bool>("TempLock", false);
+                NoWaterElect = this.LoadSetting<bool>("NoWaterElect", false);
+                NoiseRed = this.LoadSetting<bool>("NoiseRed", false);
+                FullEnv = this.LoadSetting<bool>("FullEnv", false);
+                CleanRooms = this.LoadSetting<bool>("CleanRooms", false);
+                Fullbright = this.LoadSetting<bool>("Fullbright", false);
+                NoVacation = this.LoadSetting<bool>("NoVacation", false);
+                LoanWindow.factor = 250000;
+                GameSettings.MaxFloor = 25; 
             }
         }
-
         void Update()
         {
             if (ModActive && GameSettings.Instance != null && HUD.Instance != null)
             {
+                if(this.start == false)
+                {
+                    Main.Tipka();
+                    this.start = true;
+                }
+                //GameSettings.GameSpeed = 10f;
+                if (FreeStaff)
+                {
+                    GameSettings.Instance.StaffSalaryDue = 0f;
+                }
+                foreach (var stvar in GameSettings.Instance.sRoomManager.AllFurniture)
+                {
+                    if (NoiseRed)
+                    {
+                        stvar.ActorNoise = 0f;
+                        stvar.EnvironmentNoise = 0f;
+                        stvar.FinalNoise = 0f;
+                        stvar.Noisiness = 0;
+                    }
+                    if (NoWaterElect)
+                    {
+                        stvar.Water = 0;
+                        stvar.Wattage = 0;
+                    } 
+                }
+                foreach (var soba in GameSettings.Instance.sRoomManager.Rooms)
+                {
+                    if (CleanRooms)
+                    {
+                        soba.ClearDirt();
+                    }
+                    if (TempLock)
+                    {
+                        soba.Temperature = 21f;
+                    }
+                    if (FullEnv)
+                    {
+                        soba.FurnEnvironment = 3;
+                    }
+                    if (Fullbright)
+                    {
+                        soba.IndirectLighting = 4;
+                    }
+                }
                 foreach (var item in GameSettings.Instance.sActorManager.Actors)
                 {
                     if (LockAge)
@@ -39,17 +117,227 @@ namespace Trainer
                     }
                     if (LockStress)
                     {
-                        item.StressFactor = 0;
+                        item.employee.Stress = 1;
+                    }
+                    if (LockEffSat)
+                    {
+                        item.Effectiveness = 10;
+                        item.ChangeSatisfaction(10, 10, Employee.Thought.LoveWork, Employee.Thought.LikeTeamWork, 0);
+                    }
+                    if (LockNeeds)
+                    {
+                        item.employee.Bladder = 1;
+                        item.employee.Hunger = 1;
+                        item.employee.Energy = 1;
+                        item.employee.Social = 1;
+                    }
+                    if (FreeEmployees)
+                    {
+                        item.employee.Salary = 0;
+                        item.NegotiateSalary = false;
+                    }
+                    if (NoiseRed)
+                    {
+                        item.Noisiness = 0;
+                    }
+                    if (NoVacation)
+                    {
+                        item.VacationMonth = SDateTime.NextMonth(60);
                     }
                 }
             }
         }
+        IEnumerator<WaitForSeconds> Spremi()
+        {
+            while (true)
+            {
+                yield return new WaitForSeconds(15.0f);
+                SaveSetting("LockStress", LockStress.ToString());
+                SaveSetting("NoVacation", NoVacation.ToString());
+                SaveSetting("Fullbright", Fullbright.ToString());
+                SaveSetting("CleanRooms", CleanRooms.ToString());
+                SaveSetting("FullEnv", FullEnv.ToString());
+                SaveSetting("NoiseRed", NoiseRed.ToString());
+                SaveSetting("FreeStaff", FreeStaff.ToString());
+                SaveSetting("TempLock", TempLock.ToString());
+                SaveSetting("NoWaterElect", NoWaterElect.ToString());
+                SaveSetting("LockNeeds", LockNeeds.ToString());
+                SaveSetting("LockEffSat", LockEffSat.ToString());
+                SaveSetting("FreeEmployees", FreeEmployees.ToString());
+                SaveSetting("LockAge", LockAge.ToString());
+            }
+        }
+        internal void ClearLoans()
+        {
+            GameSettings.Instance.Loans.Clear();
+            HUD.Instance.AddPopupMessage("Trainer: All loans are cleared!", "Cogs", "", 0, 0, 0, 0, 1);
+            //SoftwareProduct prod = new SoftwareProduct();
+            //prod.Server = "ServerName";
+            //prod.ServerReq = 0.9f;
+        }
+        public static void NoVacationBool()
+        {
+            if (NoVacation) NoVacation = false;
+            else NoVacation = true;
+        }
+        public static void FullbrightBool()
+        {
+            if (Fullbright) Fullbright = false;
+            else Fullbright = true;
+        }
+        public static void CleanRoomsBool()
+        {
+            if (CleanRooms) CleanRooms = false;
+            else CleanRooms = true;
+        }
+        public static void FullEnvBool()
+        {
+            if (FullEnv) FullEnv = false;
+            else FullEnv = true;
+        }
+        public static void NoiseRedBool()
+        {
+            if (NoiseRed) NoiseRed = false;
+            else NoiseRed = true;
+        }
+        public static void FreeStaffBool()
+        {
+            if (FreeStaff) FreeStaff = false;
+            else FreeStaff = true;
+        }
+        public static void TempLockBool()
+        {
+            if (TempLock) TempLock = false;
+            else TempLock = true;
+        }
+        public static void NoWaterElectBool()
+        {
+            if (NoWaterElect) NoWaterElect = false;
+            else NoWaterElect = true;
+        }
+        public static void LockStressOfEmployees()
+        {
+            if (LockStress) LockStress = false;
+            else LockStress = true;
+        }
+        public static void DisableNeeds()
+        {
+            if (LockNeeds) LockNeeds = false;
+            else LockNeeds = true;
+        }
+        public static void LockEmpSal()
+        {
+            if (FreeEmployees) FreeEmployees = false;
+            else FreeEmployees = true;
+        }
+        public static void FullEffSat()
+        {
+            if (LockEffSat) LockEffSat = false;
+            else LockEffSat = true;
+        }
+        public static void LockAgeOfEmployees()
+        {
+            if (LockAge) LockAge = false;
+            else LockAge = true;
+        }
 
-        public void IncreaseMoney()
+        public static void SetProductPrice()
+        {
+          foreach (SoftwareProduct product in GameSettings.Instance.MyCompany.Products)
+          {
+            if (product.Name == price_ProductName)
+            {
+                product.Price = price_ProductPrice;
+                HUD.Instance.AddPopupMessage("Trainer: Price for " + product.Name + " has been setted up!", "Cogs", "", 0, 0, 0, 0, 1);
+                break;
+            }
+          }
+        }
+
+        public static void SetProductStock()
+        {
+            foreach (SoftwareProduct product in GameSettings.Instance.MyCompany.Products)
+            {
+                if (product.Name == price_ProductName) //&& product.Userbase < 500)
+                {
+                    //var st = Convert.ToInt32(product.PhysicalCopies) * (Convert.ToInt32(product.Price) / 2);
+                    product.PhysicalCopies = (uint)price_ProductPrice;
+                    HUD.Instance.AddPopupMessage("Trainer: Stock for " + product.Name + " has been setted up!", "Cogs", "", 0, 0, 0, 0, 1);
+                    //GameSettings.Instance.MyCompany.MakeTransaction(st, Company.TransactionCategory.Sales);
+                    break;
+                }
+            }
+        }
+
+        public static void AddActiveUsers()
+        {
+            foreach (SoftwareProduct product in GameSettings.Instance.MyCompany.Products)
+            {
+                if (product.Name == price_ProductName)
+                {
+                    product.Userbase = Convert.ToInt32(price_ProductPrice);
+                    HUD.Instance.AddPopupMessage("Trainer: Added " + Convert.ToInt32(price_ProductPrice) + " active users to product " + product.Name, "Cogs", "", 0, 0, 0, 0, 1);
+                    break;
+                }
+            }
+        }
+        
+        public static void RemoveSoft()
+        {
+            SimulatedCompany kompanija = new SimulatedCompany();
+            foreach (SoftwareProduct product in GameSettings.Instance.MyCompany.Products)
+            {
+                //kompanija.CanMakeTransaction(10000000000f);
+                //if (product.Inventor != GameSettings.Instance.MyCompany.Name)
+                using (IEnumerator<SoftwareProduct> enumerator = (IEnumerator<SoftwareProduct>)GameSettings.Instance.MyCompany.Products.GetEnumerator())
+                {
+                    while (enumerator.MoveNext())
+                        enumerator.Current.Trade(kompanija);
+                }
+                //kompanija.Products.Add(product);
+                //product.DevCompany = kompanija;
+                
+            }
+        }
+        public static void TakeoverCompany()
         {
             if (ModActive && GameSettings.Instance != null && HUD.Instance != null)
             {
-                GameSettings.Instance.MyCompany.MakeTransaction(999999999999, Company.TransactionCategory.Deals);
+                foreach (KeyValuePair<uint, SimulatedCompany> company in GameSettings.Instance.simulation.Companies)
+                {
+                    SimulatedCompany simulatedCompany = company.Value;
+                    if (simulatedCompany.Name == CompanyText)
+                    {
+                        simulatedCompany.BuyOut(GameSettings.Instance.MyCompany, true);
+                        HUD.Instance.AddPopupMessage("Trainer: Company " + simulatedCompany.Name + " has been takovered by you!", "Cogs", "", 0, 0, 0, 0, 1);
+                        break;
+                    }
+                }
+            }
+        }
+        public static void SubDCompany()
+        {
+            if (ModActive && GameSettings.Instance != null && HUD.Instance != null)
+            {
+                foreach (KeyValuePair<uint, SimulatedCompany> company in GameSettings.Instance.simulation.Companies)
+                {
+                    SimulatedCompany simulatedCompany = company.Value;
+                    if (simulatedCompany.Name == CompanyText)
+                    {
+                        simulatedCompany.MakeSubsidiary(GameSettings.Instance.MyCompany);
+                        simulatedCompany.IsSubsidiary();
+                        HUD.Instance.AddPopupMessage("Trainer: Company " + simulatedCompany.Name + " is now your subsidiary!", "Cogs", "", 0, 0, 0, 0, 1);
+                        break;
+                    }
+                }
+            }
+        }
+        public static void IncreaseMoney()
+        {
+            if (ModActive && GameSettings.Instance != null && HUD.Instance != null)
+            {
+                GameSettings.Instance.MyCompany.MakeTransaction(Main.NovacBox.ConvertToInt(Main.NovacBox), Company.TransactionCategory.Deals);
+                HUD.Instance.AddPopupMessage("Trainer: Money has been added in category Deals!", "Cogs", "", 0, 0, 0, 0, 1);
             }
         }
 
@@ -59,11 +347,10 @@ namespace Trainer
             {
                 foreach (var item in GameSettings.Instance.sActorManager.Actors)
                 {
-                    item.employee.AddThought("I'm as good as new!", 1);
                     item.employee.AgeMonth = 20 * 12;
                     item.UpdateAgeLook();
                 }
-
+                HUD.Instance.AddPopupMessage("Trainer: Age of employees has been reset!", "Cogs", "", 0, 0, 0, 0, 1);
             }
         }
 
@@ -72,18 +359,19 @@ namespace Trainer
             ModActive = true;
             if (ModActive && GameSettings.Instance != null && HUD.Instance != null)
             {
-                HUD.Instance.AddPopupMessage("Trainer V1 has been activated!", "Cogs", "", 0, 1);
+                HUD.Instance.AddPopupMessage("Trainer v2 has been activated!", "Cogs", "", 0, 0, 0, 0, 1);
             }
         }
 
-        internal void AddRep()
+        internal static void AddRep()
         {
             if (!((UnityEngine.Object)GameSettings.Instance != (UnityEngine.Object)null))
                 return;
             GameSettings.Instance.MyCompany.BusinessReputation = 1f;
             SoftwareType random1 = Utilities.GetRandom<SoftwareType>(Enumerable.Where<SoftwareType>((IEnumerable<SoftwareType>)GameSettings.Instance.SoftwareTypes.Values, (Func<SoftwareType, bool>)(x => !x.OneClient)));
             string random2 = Utilities.GetRandom<string>((IEnumerable<string>)random1.Categories.Keys);
-            GameSettings.Instance.MyCompany.AddFans(100000000, random1.Name, random2);
+            GameSettings.Instance.MyCompany.AddFans(Main.RepBox.ConvertToInt(Main.RepBox), random1.Name, random2);
+            HUD.Instance.AddPopupMessage("Trainer: Reputation has been added for SoftwareType: "+random1.Name + ", Category: "+random2, "Cogs", "", 0, 0, 0, 0, 1);
         }
 
         public override void OnDeactivate()
@@ -91,24 +379,7 @@ namespace Trainer
             ModActive = false;
             if (!ModActive && GameSettings.Instance != null && HUD.Instance != null)
             {
-                HUD.Instance.AddPopupMessage("Trainer V1 has been deactivated!", "Cogs", "", 0, 1);
-            }
-        }
-
-        internal void LockAgeOfEmployees(bool a)
-        {
-            LockAge = a;
-        }
-
-        internal void EmployeesToFemale()
-        {
-            if (ModActive && GameSettings.Instance != null && HUD.Instance != null)
-            {
-                foreach (var item in GameSettings.Instance.sActorManager.Actors)
-                {
-                    item.employee.AddThought("I like this!", 1);
-                    item.UpdateAgeLook();
-                }
+                HUD.Instance.AddPopupMessage("Trainer v2 has been deactivated", "Cogs", "", 0, 0, 0, 0, 1);
             }
         }
 
@@ -120,6 +391,7 @@ namespace Trainer
                     return;
                 foreach (var x in GameSettings.Instance.sActorManager.Actors)
                 {
+                    //x.HREd = true;
                     for (int index = 0; index < 5; ++index)
                     {
                         x.employee.ChangeSkill((Employee.EmployeeRole)index, 1f, false);
@@ -131,67 +403,7 @@ namespace Trainer
                         }
                     }
                 }
-            }
-        }
-
-        internal void UpgradeAllServer()
-        {
-            if (ModActive && GameSettings.Instance != null && HUD.Instance != null)
-            {
-                Furniture[] furnList = GameSettings.Instance.sRoomManager.AllFurniture.Where(x => x.GetComponent(typeof(Server)) != null).ToArray();
-                HUD.Instance.serverWindow.ServerListUpdateEnabled = false;
-                bool flag = false;
-                SelectorController.Instance.Selected.Clear();
-                foreach (Furniture furn in furnList)
-                {
-                    if (furn.FurnitureUpgrade != null)
-                    {
-                        float price = furn.FurnitureUpgrade[0].gameObject.GetComponent<Furniture>().Cost;
-
-                        if ((Cheats.UnlockFurn || TimeOfDay.Instance.Year + SDateTime.BaseYear >= furn.FurnitureUpgrade[0].GetComponent<Furniture>().UnlockYear) && (GameSettings.Instance.MyCompany.CanMakeTransaction(-price)))
-                        {
-
-                            Furniture furniture = UpgradeFurniture(furn);
-                            furniture.gameObject.SetActive(true);
-                            SelectorController.Instance.Selected.Add((Selectable)furniture);
-                            GameSettings.Instance.MyCompany.MakeTransaction(-price, Company.TransactionCategory.Construction);
-                            CostDisplay.Instance.Show(price, furniture.transform.position);
-                            CostDisplay.Instance.FloatAway();
-                            flag = true;
-                        }
-                    }
-                }
-
-                HUD.Instance.serverWindow.ServerListUpdateEnabled = true;
-                if (!flag)
-                    return;
-                HUD.Instance.PlayFurniturePlace();
-                HUD.Instance.PlayKaching();
-                SelectorController.Instance.DoPostSelectChecks();
-                HUD.Instance.serverWindow.UpdateServerList();
-                HUD.Instance.AddPopupMessage(furnList.Length + " computers have been upgraded!", "Cogs", "", 0, 1);
-            }
-        }
-
-        internal void LockStressOfEmployees(bool a)
-        {
-            LockStress = a;
-        }
-
-        internal void SkipDay()
-        {
-            if (!((UnityEngine.Object)GameSettings.Instance != (UnityEngine.Object)null) || GameSettings.ForcePause)
-                return;
-            int num1 = TimeOfDay.Instance.Hour;
-            bool flag = false;
-            int num2 = 1;
-            for (int index = 0; index < num2; ++index)
-            {
-                do
-                {
-                    flag |= TimeOfDay.Instance.AddHour(!flag);
-                }
-                while (!GameSettings.ForcePause && TimeOfDay.Instance.Hour != num1 && !flag);
+                HUD.Instance.AddPopupMessage("Trainer: All employees are now max skilled!", "Cogs", "", 0, 0, 0, 0, 1);
             }
         }
 
@@ -203,6 +415,7 @@ namespace Trainer
                     return;
                 GameSettings.Instance.BuildableArea = new Rect(9f, 1f, 246f, 254f);
                 GameSettings.Instance.ExpandLand(0, 0);
+                HUD.Instance.AddPopupMessage("Trainer: All buildable area is now unlocked!", "Cogs", "", 0, 0, 0, 0, 1);
             }
         }
 
@@ -214,116 +427,11 @@ namespace Trainer
                 if (!((UnityEngine.Object)HUD.Instance != (UnityEngine.Object)null))
                     return;
                 HUD.Instance.UpdateFurnitureButtons();
+                HUD.Instance.AddPopupMessage("Trainer: All furniture has been unlocked!", "Cogs", "", 0, 0, 0, 0, 1);
             }
         }
 
-
-
-        internal void UpgradeAllComputer()
-        {
-            if (ModActive && GameSettings.Instance != null && HUD.Instance != null)
-            {
-                Furniture[] furnList = GameSettings.Instance.sRoomManager.AllFurniture.Where(x => x.GetComputer() != null).ToArray();
-                HUD.Instance.serverWindow.ServerListUpdateEnabled = false;
-                bool flag = false;
-                SelectorController.Instance.Selected.Clear();
-                foreach (Furniture furn in furnList)
-                {
-                    if (furn.GetComputer().FurnitureUpgrade != null)
-                    {
-                        float price = furn.GetComputer().FurnitureUpgrade[0].gameObject.GetComponent<Furniture>().Cost;
-
-                        if ((Cheats.UnlockFurn || TimeOfDay.Instance.Year + SDateTime.BaseYear >= furn.GetComputer().FurnitureUpgrade[0].GetComponent<Furniture>().UnlockYear) && (GameSettings.Instance.MyCompany.CanMakeTransaction(-price)))
-                        {
-
-                            Furniture furniture = UpgradeFurniture(furn.GetComputer());
-                            furniture.gameObject.SetActive(true);
-                            SelectorController.Instance.Selected.Add((Selectable)furniture);
-                            GameSettings.Instance.MyCompany.MakeTransaction(-price, Company.TransactionCategory.Construction);
-                            CostDisplay.Instance.Show(price, furniture.transform.position);
-                            CostDisplay.Instance.FloatAway();
-                            flag = true;
-                        }
-                    }
-                }
-
-                HUD.Instance.serverWindow.ServerListUpdateEnabled = true;
-                if (!flag)
-                    return;
-                HUD.Instance.PlayFurniturePlace();
-                HUD.Instance.PlayKaching();
-                SelectorController.Instance.DoPostSelectChecks();
-                HUD.Instance.serverWindow.UpdateServerList();
-                HUD.Instance.AddPopupMessage(furnList.Length + " computers have been upgraded!", "Cogs", "", 0, 1);
-            }
-        }
-
-
-        private Furniture UpgradeFurniture(Furniture furn)
-        {
-            Vector3 vector3 = furn.OriginalPosition;
-            Quaternion rotation = furn.transform.rotation;
-            float num = furn.RotationOffset;
-            Room room = furn.Parent;
-            SnapPoint snapPoint1 = furn.SnappedTo;
-            Dictionary<int, Furniture> dictionary = Enumerable.ToDictionary<SnapPoint, int, Furniture>(Enumerable.Where<SnapPoint>((IEnumerable<SnapPoint>)furn.SnapPoints, (Func<SnapPoint, bool>)(sp => (UnityEngine.Object)sp.UsedBy != (UnityEngine.Object)null)), (Func<SnapPoint, int>)(sp => sp.Id), (Func<SnapPoint, Furniture>)(sp => sp.UsedBy));
-            for (int index = 0; index < furn.SnapPoints.Length; ++index)
-                furn.SnapPoints[index].UsedBy = (Furniture)null;
-            TableScript component1 = furn.GetComponent<TableScript>();
-            Server component2 = furn.GetComponent<Server>();
-            Actor ownedBy = furn.OwnedBy;
-            UnityEngine.Object.Destroy((UnityEngine.Object)furn.gameObject);
-            //if (SelectorController.Instance.DeleteParent(furn))
-            //    UnityEngine.Object.Destroy((UnityEngine.Object)furn.SnappedTo.Parent.gameObject);
-            Furniture component3 = UnityEngine.Object.Instantiate<GameObject>(furn.FurnitureUpgrade[0]).GetComponent<Furniture>();
-            component3.RotationOffset = num;
-            try
-            {
-                if ((UnityEngine.Object)snapPoint1 != (UnityEngine.Object)null)
-                {
-                    if (component3.IsSnapping)
-                    {
-                        component3.SnappedTo = snapPoint1;
-                        snapPoint1.UsedBy = component3;
-                    }
-                    else
-                        vector3 = new Vector3(vector3.x, (float)(furn.Parent.Floor * 2), vector3.z);
-                }
-                component3.OriginalPosition = vector3;
-                component3.transform.position = vector3;
-                component3.transform.rotation = rotation;
-                component3.Parent = room;
-                Server component4 = component3.GetComponent<Server>();
-                if ((UnityEngine.Object)component2 != (UnityEngine.Object)null && (UnityEngine.Object)component4 != (UnityEngine.Object)null)
-                {
-                    component4.WireTo(component2.Rep, true);
-                    component4.PreWired = true;
-                }
-                component3.OwnedBy = ownedBy;
-                if ((UnityEngine.Object)ownedBy != (UnityEngine.Object)null)
-                    ownedBy.Owns.Add(component3);
-                if (furn.InteractionPoints.Length == component3.InteractionPoints.Length)
-                {
-                    for (int index = 0; index < furn.InteractionPoints.Length; ++index)
-                    {
-                        if ((UnityEngine.Object)furn.InteractionPoints[index].UsedBy != (UnityEngine.Object)null && furn.InteractionPoints[index].Name.Equals(component3.InteractionPoints[index].Name))
-                        {
-                            Actor usedBy = furn.InteractionPoints[index].UsedBy;
-                            usedBy.UsingPoint = component3.InteractionPoints[index];
-                            component3.InteractionPoints[index].UsedBy = usedBy;
-                        }
-                    }
-                }
-                component3.UpdateFreeNavs(false);
-            }
-            catch (Exception e)
-            {
-                HUD.Instance.AddPopupMessage(e.Message + "\n" + e.StackTrace, "Cogs", "", 0, 1);
-            }
-            return component3;
-        }
     }
-
     public static class Extensions
     {
         /// <summary>
