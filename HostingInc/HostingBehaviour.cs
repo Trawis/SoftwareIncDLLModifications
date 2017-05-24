@@ -12,18 +12,44 @@ namespace HostingInc
     public class HostingBehaviour : ModBehaviour
     {
         public bool ModActive = false;
+        public bool start = false;
         void Start()
         { 
             if (ModActive)
             {
-
+                StartCoroutine(DealGen());
             }
         }
         void Update()
         {
             if (ModActive && GameSettings.Instance != null && HUD.Instance != null)
             {
+                if (start == false)
+                {
+                    Main.Tipka();
+                    start = true;
+                }
+            }
+        }
+        public static void Deals()
+        {
+            Company my = GameSettings.Instance.MyCompany;
 
+            SoftwareProduct prod = new SoftwareProduct();
+            prod.Server = "Server 0";
+            prod.HandleLoad(0.5f);
+            prod.ServerReq = 0.5f;
+            prod.ExternalHostingActive = false;
+
+            ServerDeal deal = new ServerDeal(prod);
+            deal.Request = true;
+        }
+        IEnumerator<WaitForSeconds> DealGen()
+        {
+            while (true)
+            {
+                yield return new WaitForSeconds(60.0f);
+                
             }
         }
         public override void OnActivate()
