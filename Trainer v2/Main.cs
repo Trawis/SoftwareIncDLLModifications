@@ -31,7 +31,47 @@ namespace Trainer
             var btn = WindowManager.SpawnButton();
             btn.GetComponentInChildren<UnityEngine.UI.Text>().text = "Trainer";
             btn.onClick.AddListener(() => Prozor());
-            WindowManager.AddElementToElement(btn.gameObject, WindowManager.FindElementPath("MainPanel/Holder", null).gameObject, new Rect(1005, 0, 70, 32), new Rect(0, 0, 0, 0));
+            //float resX = 1005f * (Screen.width / DesignWidth);
+
+            var width = Screen.width;
+            var x = 0;
+            switch (width)
+            {
+                case 1920:
+                    x = 1282;
+                    break;
+                case 1680:
+                    x = 1162;
+                    break;
+                case 1600:
+                    x = 1122;
+                    break;
+                case 1440:
+                    x = 1042;
+                    break;
+                case 1400:
+                    x = 1022;
+                    break;
+                case 1366:
+                    x = 1005;
+                    break;
+                case 1360:
+                    x = 1002;
+                    break;
+                case 1280:
+                    x = 963;
+                    break;
+                case 1152:
+                    x = 900;
+                    break;
+                case 1024:
+                    x = 835;
+                    break;
+                default:
+                    x = 1050;
+                    break;
+            }
+            WindowManager.AddElementToElement(btn.gameObject, WindowManager.FindElementPath("MainPanel/Holder", null).gameObject, new Rect(x, 0, 70, 32), new Rect(0, 0, 0, 0));
         }
         public static void Prozor()
         {
@@ -285,226 +325,12 @@ namespace Trainer
         {
             //We need a reference to a behavior to read and write from the mod settings file
             //var behavior = behaviours.OfType<TrainerBehaviour>().First();
-            //TrainerBehaviour behavior = Enumerable.OfType<TrainerBehaviour>(behaviours).First<TrainerBehaviour>();
-            //List<GameObject> objs = new List<GameObject>();
-            
-            //Start by spawning a label
+            //TrainerBehaviour behavior = Enumerable.OfType<TrainerBehaviour>(behaviours).First<TrainerBehaviour>();;
+
             var label = WindowManager.SpawnLabel();
             label.text = "Created by LtPain, edit by Trawis\n\nOptions have been moved to the Main Screen of the game.\nPlease load a game and press 'Trainer' button.";
             WindowManager.AddElementToElement(label.gameObject, parent.gameObject, new Rect(0, 0, 400, 128),
                 new Rect(0, 0, 0, 0));
-            /*
-            //Textbox for Money
-            var textboxMoney = WindowManager.SpawnInputbox();
-            textboxMoney.GetComponentInChildren<UnityEngine.UI.InputField>().text = "100000";
-            objs.Add(textboxMoney.gameObject);
-
-            //Button for some Money
-            var buttonMoney = WindowManager.SpawnButton();
-            buttonMoney.GetComponentInChildren<UnityEngine.UI.Text> ().text = "Add Money";
-            buttonMoney.onClick.AddListener(() => {
-                NovacBox = textboxMoney.text;
-                TrainerBehaviour.IncreaseMoney();
-            });
-            objs.Add(buttonMoney.gameObject);
-
-            //Button for MaxLand
-            var buttonMaxLand = WindowManager.SpawnButton();
-            buttonMaxLand.GetComponentInChildren<UnityEngine.UI.Text>().text = "Unlock all space";
-            buttonMaxLand.onClick.AddListener(() => {
-                behavior.UnlockAllSpace();
-            });
-            objs.Add(buttonMaxLand.gameObject);
-
-            //Textbox for Reputation
-            var textboxRep = WindowManager.SpawnInputbox();
-            textboxRep.GetComponentInChildren<UnityEngine.UI.InputField>().text = "10000";
-            objs.Add(textboxRep.gameObject);
-            //Button for AddRep
-            var buttonAddRep = WindowManager.SpawnButton();
-            buttonAddRep.GetComponentInChildren<UnityEngine.UI.Text>().text = "Add Reputation";
-            buttonAddRep.onClick.AddListener(() => {
-                RepBox = textboxRep.text;
-                TrainerBehaviour.AddRep();
-            });
-            objs.Add(buttonAddRep.gameObject);
-
-            //Button for UnlockAll
-            var buttonUnlockAll = WindowManager.SpawnButton();
-            buttonUnlockAll.GetComponentInChildren<UnityEngine.UI.Text>().text = "Unlock all Furniture";
-            buttonUnlockAll.onClick.AddListener(() => {
-                behavior.UnlockAll();
-            });
-            objs.Add(buttonUnlockAll.gameObject);
-
-            //Button for Loan Clear
-            var buttonClrLoan = WindowManager.SpawnButton();
-            buttonClrLoan.GetComponentInChildren<UnityEngine.UI.Text>().text = "Clear all loans";
-            buttonClrLoan.onClick.AddListener(() =>
-            {
-                behavior.ClearLoans();
-            });
-            objs.Add(buttonClrLoan.gameObject);
-
-            //Button for EmployeeAge
-            var buttonEmployeeAge = WindowManager.SpawnButton();
-            buttonEmployeeAge.GetComponentInChildren<UnityEngine.UI.Text>().text = "Reset age of employees";
-            buttonEmployeeAge.onClick.AddListener(() => {
-                behavior.ResetAgeOfEmployees();
-            });
-            objs.Add(buttonEmployeeAge.gameObject);
-
-            //Button for MaxSkill
-            var buttonMaxSkill = WindowManager.SpawnButton();
-            buttonMaxSkill.GetComponentInChildren<UnityEngine.UI.Text>().text = "Max Skill of employees";
-            buttonMaxSkill.onClick.AddListener(() => {
-                behavior.EmployeesToMax();
-            });
-            objs.Add(buttonMaxSkill.gameObject);
-
-            //CheckBox for EmployeeAge
-            var lockAge = WindowManager.SpawnCheckbox();
-            lockAge.GetComponentInChildren<UnityEngine.UI.Text>().text = "Lock age of employees";
-            lockAge.isOn = behavior.LockAge;
-            lockAge.onValueChanged.AddListener(a => behavior.LockAgeOfEmployees());
-            objs.Add(lockAge.gameObject);
-
-            //CheckBox for LockEmployeeStress
-            var lockStress = WindowManager.SpawnCheckbox();
-            lockStress.GetComponentInChildren<UnityEngine.UI.Text>().text = "Disable Stress";
-            lockStress.isOn = behavior.LockStress;
-            lockStress.onValueChanged.AddListener(a => behavior.LockStressOfEmployees(a));
-            objs.Add(lockStress.gameObject);
-
-            //CheckBox for Disable Needs
-            var lockNeeds = WindowManager.SpawnCheckbox();
-            lockNeeds.GetComponentInChildren<UnityEngine.UI.Text>().text = "Disable Needs";
-            lockNeeds.isOn = behavior.LockNeeds;
-            lockNeeds.onValueChanged.AddListener(a => behavior.DisableNeeds());
-            objs.Add(lockNeeds.gameObject);
-
-            //CheckBox for Free Employees
-            var lockEmpSal = WindowManager.SpawnCheckbox();
-            lockEmpSal.GetComponentInChildren<UnityEngine.UI.Text>().text = "Free Employees";
-            lockEmpSal.isOn = behavior.FreeEmployees;
-            lockEmpSal.onValueChanged.AddListener(a => behavior.LockEmpSal());
-            objs.Add(lockEmpSal.gameObject);
-
-            //CheckBox for Free Staff
-            var toggleFreeStaff = WindowManager.SpawnCheckbox();
-            toggleFreeStaff.GetComponentInChildren<UnityEngine.UI.Text>().text = "Free Staff";
-            toggleFreeStaff.isOn = behavior.FreeStaff;
-            toggleFreeStaff.onValueChanged.AddListener(a => behavior.FreeStaffBool());
-            objs.Add(toggleFreeStaff.gameObject);
-
-            //CheckBox for Efficiency & Satisfaction
-            var lockEffSat = WindowManager.SpawnCheckbox();
-            lockEffSat.GetComponentInChildren<UnityEngine.UI.Text>().text = "Max Efficiency & Satisfaction";
-            lockEffSat.isOn = behavior.LockEffSat;
-            lockEffSat.onValueChanged.AddListener(a => behavior.FullEffSat());
-            objs.Add(lockEffSat.gameObject);
-
-            //CheckBox for Free Water & Electricity
-            var toggleNoWaterElect = WindowManager.SpawnCheckbox();
-            toggleNoWaterElect.GetComponentInChildren<UnityEngine.UI.Text>().text = "Free Water & Electricity";
-            toggleNoWaterElect.isOn = behavior.NoWaterElect;
-            toggleNoWaterElect.onValueChanged.AddListener(a => behavior.NoWaterElectBool());
-            objs.Add(toggleNoWaterElect.gameObject);
-
-            //CheckBox for Lock temperature to 21 degree
-            var toggleTempLock = WindowManager.SpawnCheckbox();
-            toggleTempLock.GetComponentInChildren<UnityEngine.UI.Text>().text = "Lock temperature to 21";
-            toggleTempLock.isOn = behavior.TempLock;
-            toggleTempLock.onValueChanged.AddListener(a => behavior.TempLockBool());
-            objs.Add(toggleTempLock.gameObject);
-
-            //CheckBox for Noise Reduction
-            var toggleNoiseRed = WindowManager.SpawnCheckbox();
-            toggleNoiseRed.GetComponentInChildren<UnityEngine.UI.Text>().text = "Noise Reduction";
-            toggleNoiseRed.isOn = behavior.NoiseRed;
-            toggleNoiseRed.onValueChanged.AddListener(a => behavior.NoiseRedBool());
-            objs.Add(toggleNoiseRed.gameObject);
-
-            //CheckBox for Full Environment
-            var toggleFullEnv = WindowManager.SpawnCheckbox();
-            toggleFullEnv.GetComponentInChildren<UnityEngine.UI.Text>().text = "Full Environment";
-            toggleFullEnv.isOn = behavior.FullEnv;
-            toggleFullEnv.onValueChanged.AddListener(a => behavior.FullEnvBool());
-            objs.Add(toggleFullEnv.gameObject);
-
-            //CheckBox for CleanRooms
-            var toggleCleanRooms = WindowManager.SpawnCheckbox();
-            toggleCleanRooms.GetComponentInChildren<UnityEngine.UI.Text>().text = "Rooms are always clean";
-            toggleCleanRooms.isOn = behavior.CleanRooms;
-            toggleCleanRooms.onValueChanged.AddListener(a => behavior.CleanRoomsBool());
-            objs.Add(toggleCleanRooms.gameObject);
-
-            //CheckBox for Fullbright
-            var toggleFullbright = WindowManager.SpawnCheckbox();
-            toggleFullbright.GetComponentInChildren<UnityEngine.UI.Text>().text = "Full Sun light";
-            toggleFullbright.isOn = behavior.Fullbright;
-            toggleFullbright.onValueChanged.AddListener(a => behavior.FullbrightBool());
-            objs.Add(toggleFullbright.gameObject);
-
-            //CheckBox for No Vacation
-            var toggleNoVacation = WindowManager.SpawnCheckbox();
-            toggleNoVacation.GetComponentInChildren<UnityEngine.UI.Text>().text = "No Vacation";
-            toggleNoVacation.isOn = behavior.NoVacation;
-            toggleNoVacation.onValueChanged.AddListener(a => behavior.NoVacationBool());
-            objs.Add(toggleNoVacation.gameObject);
-
-            //Takeover Company
-            var inputField2 = WindowManager.SpawnInputbox();
-            inputField2.text = "Enter Company Name";
-            inputField2.onValueChanged.AddListener(boxText => TrainerBehaviour.CompanyText = boxText);
-            objs.Add(inputField2.gameObject);
-
-            var button5 = WindowManager.SpawnButton();
-            button5.GetComponentInChildren<UnityEngine.UI.Text>().text = "Takeover Company";
-            button5.onClick.AddListener(() => TrainerBehaviour.TakeoverCompany());
-            objs.Add(button5.gameObject);
-
-            //Change product price for my company
-          
-            var inputField3 = WindowManager.SpawnInputbox();
-            inputField3.text = "Enter Product Name";
-            inputField3.onValueChanged.AddListener(boxText => TrainerBehaviour.price_ProductName = boxText);
-            objs.Add(inputField3.gameObject);
-
-            var inputField4 = WindowManager.SpawnInputbox();
-            inputField4.text = "10";
-            inputField4.onValueChanged.AddListener(boxText => TrainerBehaviour.price_ProductPrice = boxText.ConvertToFloat(boxText));
-            objs.Add(inputField4.gameObject);
-
-            var button6 = WindowManager.SpawnButton();
-            button6.GetComponentInChildren<UnityEngine.UI.Text>().text = "Set Product Price";
-            button6.onClick.AddListener(() => TrainerBehaviour.SetProductPrice());
-            objs.Add(button6.gameObject);
-
-            var button7 = WindowManager.SpawnButton();
-            button7.GetComponentInChildren<UnityEngine.UI.Text>().text = "Sell Product Stock";
-            button7.onClick.AddListener(() => TrainerBehaviour.SetProductStock());
-            objs.Add(button7.gameObject);
-
-            var button8 = WindowManager.SpawnButton();
-            button8.GetComponentInChildren<UnityEngine.UI.Text>().text = "Add Followers";
-            button8.onClick.AddListener(() => TrainerBehaviour.AddActiveUsers());
-            objs.Add(button8.gameObject);
-
-            var button9 = WindowManager.SpawnButton();
-            button9.GetComponentInChildren<UnityEngine.UI.Text>().text = "Remove products";
-            button9.onClick.AddListener(() => behavior.RemoveSoft());
-            //objs.Add(button9.gameObject);
-            
-
-            int counter = 1;
-            foreach (var item in objs)
-            {
-                WindowManager.AddElementToElement(item, parent.gameObject, new Rect(0, counter * 32, 170, 32), //250
-                new Rect(0, 0, 0, 0));
-                counter++;
-            }
-        */
         }
 
         public string Name

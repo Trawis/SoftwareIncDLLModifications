@@ -57,17 +57,17 @@ namespace Trainer
                 Fullbright = this.LoadSetting<bool>("Fullbright", false);
                 NoVacation = this.LoadSetting<bool>("NoVacation", false);
                 LoanWindow.factor = 250000;
-                GameSettings.MaxFloor = 25; 
+                GameSettings.MaxFloor = 25;
             }
         }
         void Update()
         {
             if (ModActive && GameSettings.Instance != null && HUD.Instance != null)
             {
-                if(this.start == false)
+                if (start == false)
                 {
                     Main.Tipka();
-                    this.start = true;
+                    start = true;
                 }
                 //GameSettings.GameSpeed = 10f;
                 if (FreeStaff)
