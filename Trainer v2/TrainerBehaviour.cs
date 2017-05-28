@@ -284,19 +284,29 @@ namespace Trainer
         
         public static void RemoveSoft()
         {
-            SimulatedCompany kompanija = new SimulatedCompany();
-            foreach (SoftwareProduct product in GameSettings.Instance.MyCompany.Products)
+            SDateTime time = new SDateTime(1, 70);
+            CompanyType type = new CompanyType();
+            Dictionary<string, string[]> dict = new Dictionary<string,string[]>();
+            SimulatedCompany kompanija = new SimulatedCompany("Trainer Company", time, type, dict, 0f);
+            kompanija.CanMakeTransaction(1000000000f);
+            //kompanija.MakeTransaction(10000000f, Company.TransactionCategory.Sales);
+            foreach (SoftwareProduct prod in GameSettings.Instance.simulation.GetAllProducts())
             {
-                //kompanija.CanMakeTransaction(10000000000f);
-                //if (product.Inventor != GameSettings.Instance.MyCompany.Name)
-                using (IEnumerator<SoftwareProduct> enumerator = (IEnumerator<SoftwareProduct>)GameSettings.Instance.MyCompany.Products.GetEnumerator())
+                if (prod.DevCompany == GameSettings.Instance.MyCompany)
                 {
-                    while (enumerator.MoveNext())
-                        enumerator.Current.Trade(kompanija);
+                    if (prod.Inventor != GameSettings.Instance.MyCompany.Name)
+                    {
+                        //DevConsole.Console.Log("Prod[i]:" + prod);
+                        //DevConsole.Console.Log("Prod[i].Inventor:" + prod.Inventor);
+                        //DevConsole.Console.Log("Prod[i].DevCompany:" + prod.DevCompany);
+                        prod.Userbase = 0;
+                        prod.Price = 100000f;
+                        prod.OriginalPrice = 100000f;
+                        prod.PhysicalCopies = 0;
+                        prod.Marketing = 0;
+                        prod.Trade(kompanija);
+                    }
                 }
-                //kompanija.Products.Add(product);
-                //product.DevCompany = kompanija;
-                
             }
         }
         public static void TakeoverCompany()
@@ -430,19 +440,9 @@ namespace Trainer
                 HUD.Instance.AddPopupMessage("Trainer: All furniture has been unlocked!", "Cogs", "", 0, 0, 0, 0, 1);
             }
         }
-
     }
     public static class Extensions
     {
-        /// <summary>
-        /// Sets a _private_ Property Value from a given Object. Uses Reflection.
-        /// Throws a ArgumentOutOfRangeException if the Property is not found.
-        /// </summary>
-        /// <typeparam name="T">Type of the Property</typeparam>
-        /// <param name="obj">Object from where the Property Value is set</param>
-        /// <param name="propName">Propertyname as string.</param>
-        /// <param name="val">Value to set.</param>
-        /// <returns>PropertyValue</returns>
         public static void SetPrivatePropertyValue<T>(this object obj, string propName, T val)
         {
             Type t = obj.GetType();

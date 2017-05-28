@@ -207,7 +207,7 @@ namespace Trainer
             var button9 = WindowManager.SpawnButton();
             button9.GetComponentInChildren<UnityEngine.UI.Text>().text = "Remove products";
             button9.onClick.AddListener(() => TrainerBehaviour.RemoveSoft());
-            //objs.Add(button9.gameObject);
+            objs.Add(button9.gameObject);
 
             //CheckBox for EmployeeAge
             var lockAge = WindowManager.SpawnCheckbox();
