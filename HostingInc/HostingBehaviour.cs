@@ -8,78 +8,111 @@ using UnityEngine;
 using UnityEngine.UI;
 
 namespace HostingInc
-{
+{ 
     public class HostingBehaviour : ModBehaviour
     {
         public bool ModActive = false;
-        public bool start = false;
+        public bool pushed = false;
+        public bool reward = false;
+        public float req;
         void Start()
-        { 
+        {
             if (ModActive)
             {
-                StartCoroutine(DealGen());
             }
         }
         void Update()
         {
             if (ModActive && GameSettings.Instance != null && HUD.Instance != null)
             {
-                if (start == false)
-                {
-                    Main.Tipka();
-                    start = true;
-                }
+                int hour = TimeOfDay.Instance.Hour;
+                float min = TimeOfDay.Instance.Minute;
+                //DevConsole.Console.Log("Hour:" + hour + " Minute: " + min);
+                if ((hour == 9 || hour == 18) && pushed == false)
+                    Deals();
+                else if (hour != 9 && hour != 18 && pushed == true)
+                    pushed = false;
+                if (reward == false && hour == 12)
+                    Reward();
+                else if (hour != 12 && reward == true)
+                    reward = false;
             }
         }
-        public static void Deals()
+        public void Reward()
         {
-            Company my = GameSettings.Instance.MyCompany;
-
-            SoftwareProduct prod = new SoftwareProduct();
-            prod.Server = "Server 0";
-            prod.HandleLoad(0.5f);
-            prod.ServerReq = 0.5f;
-            prod.ExternalHostingActive = false;
-
-            ServerDeal deal = new ServerDeal(prod);
-            deal.Request = true;
-        }
-        IEnumerator<WaitForSeconds> DealGen()
-        {
-            while (true)
+            foreach (Deal x in HUD.Instance.dealWindow.GetActiveDeals())
             {
-                yield return new WaitForSeconds(60.0f);
-                
+                if (x.Active)
+                    GameSettings.Instance.MyCompany.MakeTransaction(1000, Company.TransactionCategory.Deals);
+            }
+            reward = true;
+        }
+        public void Deals()
+        {
+            pushed = true;
+            List<SoftwareProduct> list = new List<SoftwareProduct>();
+            foreach (SoftwareProduct pr in GameSettings.Instance.simulation.GetAllProducts())
+            {
+                if (pr.Type.ToString() == "CMS" || pr.Type.ToString() == "Office Software" || pr.Type.ToString() == "Operating System" || pr.Type.ToString() == "Game")
+                {
+                    if (pr.Userbase > 0 && pr.DevCompany.Name != GameSettings.Instance.MyCompany.Name)
+                    {
+                        list.Add(pr);
+                    }
+                }
+            }
+            System.Random rnd = new System.Random();
+            int index = rnd.Next(0, list.Count);
+            int year = TimeOfDay.Instance.Year;
+            DevConsole.Console.Log("Year: " + year);
+            SoftwareProduct prod = GameSettings.Instance.simulation.GetProduct((uint)list[index].SoftwareID, false);
+            /*
+            if (year >= 70 && year <= 90)
+            {
+                req = Utilities.RandomRange(0.01f, 0.09f);
+            }
+            else if (year > 90 && year <= 100)
+            {
+                req = Utilities.RandomRange(0.10f, 0.30f);
+            }
+            else if (year > 100 && year <= 110)
+            {
+                req = Utilities.RandomRange(0.30f, 0.70f);
+            }
+            else if (year > 110)
+            {
+                req = Utilities.RandomRange(0.70f, 0.99f);
+            }
+            prod.ServerReq = req;
+            prod.GetLoadRequirement().Bandwidth();*/
+            
+            //DevConsole.Console.Log("Name: " + prod.Name + ", Product Req: " + prod.ServerReq + ", Req: " + req + ", Userbase: " + prod.Userbase);
+            
+            
+            //deal.HandleLoad(req);
+            if (prod.Userbase > 0 && prod.ServerReq > 0 && !prod.ExternalHostingActive)
+            {
+                ServerDeal deal = new ServerDeal(prod);
+                deal.Request = true;
+                deal.StillValid(true);
+                HUD.Instance.dealWindow.InsertDeal(deal);
             }
         }
         public override void OnActivate()
         {
             ModActive = true;
             if (ModActive && GameSettings.Instance != null && HUD.Instance != null)
-            {
                 HUD.Instance.AddPopupMessage("Hosting Inc has been activated!", "Cogs", "", 0, 0, 0, 0, 1);
-            }
         }
         public override void OnDeactivate()
         {
             ModActive = false;
             if (!ModActive && GameSettings.Instance != null && HUD.Instance != null)
-            {
                 HUD.Instance.AddPopupMessage("Hosting Inc has been deactivated!", "Cogs", "", 0, 0, 0, 0, 1);
-            }
         }
     }
     public static class Extensions
     {
-        /// <summary>
-        /// Sets a _private_ Property Value from a given Object. Uses Reflection.
-        /// Throws a ArgumentOutOfRangeException if the Property is not found.
-        /// </summary>
-        /// <typeparam name="T">Type of the Property</typeparam>
-        /// <param name="obj">Object from where the Property Value is set</param>
-        /// <param name="propName">Propertyname as string.</param>
-        /// <param name="val">Value to set.</param>
-        /// <returns>PropertyValue</returns>
         public static void SetPrivatePropertyValue<T>(this object obj, string propName, T val)
         {
             Type t = obj.GetType();
