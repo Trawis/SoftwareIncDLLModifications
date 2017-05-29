@@ -35,11 +35,6 @@ namespace Trainer
         public bool start = false;
         void Start()
         {
-            //All ModBehaviours has a function to load settings from the mod's settings file
-            //Note that everything is saved in strings
-            //This function uses the default string converter for the generic type argument
-            //if (ModActive && GameSettings.Instance != null && HUD.Instance != null) { }
-            //this.ModActive = this.LoadSetting<bool>("ModActive", false);
             if (ModActive)
             {
                 StartCoroutine(Spremi());
@@ -171,9 +166,6 @@ namespace Trainer
         {
             GameSettings.Instance.Loans.Clear();
             HUD.Instance.AddPopupMessage("Trainer: All loans are cleared!", "Cogs", "", 0, 0, 0, 0, 1);
-            //SoftwareProduct prod = new SoftwareProduct();
-            //prod.Server = "ServerName";
-            //prod.ServerReq = 0.9f;
         }
         public static void NoVacationBool()
         {
@@ -243,15 +235,15 @@ namespace Trainer
 
         public static void SetProductPrice()
         {
-          foreach (SoftwareProduct product in GameSettings.Instance.MyCompany.Products)
-          {
-            if (product.Name == price_ProductName)
+            foreach (SoftwareProduct product in GameSettings.Instance.MyCompany.Products)
             {
-                product.Price = price_ProductPrice;
-                HUD.Instance.AddPopupMessage("Trainer: Price for " + product.Name + " has been setted up!", "Cogs", "", 0, 0, 0, 0, 1);
-                break;
+                if (product.Name == price_ProductName)
+                {
+                    product.Price = price_ProductPrice;
+                    HUD.Instance.AddPopupMessage("Trainer: Price for " + product.Name + " has been setted up!", "Cogs", "", 0, 0, 0, 0, 1);
+                    break;
+                }
             }
-          }
         }
 
         public static void SetProductStock()
@@ -263,7 +255,6 @@ namespace Trainer
                     //var st = Convert.ToInt32(product.PhysicalCopies) * (Convert.ToInt32(product.Price) / 2);
                     product.PhysicalCopies = (uint)price_ProductPrice;
                     HUD.Instance.AddPopupMessage("Trainer: Stock for " + product.Name + " has been setted up!", "Cogs", "", 0, 0, 0, 0, 1);
-                    //GameSettings.Instance.MyCompany.MakeTransaction(st, Company.TransactionCategory.Sales);
                     break;
                 }
             }
@@ -289,19 +280,15 @@ namespace Trainer
             Dictionary<string, string[]> dict = new Dictionary<string,string[]>();
             SimulatedCompany kompanija = new SimulatedCompany("Trainer Company", time, type, dict, 0f);
             kompanija.CanMakeTransaction(1000000000f);
-            //kompanija.MakeTransaction(10000000f, Company.TransactionCategory.Sales);
             foreach (SoftwareProduct prod in GameSettings.Instance.simulation.GetAllProducts())
             {
                 if (prod.DevCompany == GameSettings.Instance.MyCompany)
                 {
                     if (prod.Inventor != GameSettings.Instance.MyCompany.Name)
                     {
-                        //DevConsole.Console.Log("Prod[i]:" + prod);
-                        //DevConsole.Console.Log("Prod[i].Inventor:" + prod.Inventor);
-                        //DevConsole.Console.Log("Prod[i].DevCompany:" + prod.DevCompany);
                         prod.Userbase = 0;
-                        prod.Price = 100000f;
-                        prod.OriginalPrice = 100000f;
+                        //prod.Price = 100000f;
+                        //prod.OriginalPrice = 100000f;
                         prod.PhysicalCopies = 0;
                         prod.Marketing = 0;
                         prod.Trade(kompanija);

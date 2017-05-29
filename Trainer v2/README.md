@@ -1,6 +1,9 @@
 This Trainer is for Software Inc game. It's based on https://github.com/hrkrx/SoftwareIncDLLModifications by hrkrx
 
 Currently working features:
+27.05.2017. for Alhpa 9.7.6
+- Added button for software remove (if you not invented it)
+
 24.05.2017. for Alpha 9.7.4
 - Fixed "Trainer" button that shown in wrong place with other resolutions
 
