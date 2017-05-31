@@ -14,6 +14,15 @@ namespace HostingInc
         public bool ModActive = false;
         public bool pushed = false;
         public bool reward = false;
+        public bool dDeal = false;
+
+        void Start()
+        {
+            if (ModActive)
+            {
+                dDeal = this.LoadSetting<bool>("AutoDistDeal", false);
+            }
+        }
         void Update()
         {
             if (ModActive && GameSettings.Instance != null && HUD.Instance != null)
@@ -27,15 +36,28 @@ namespace HostingInc
                     Reward();
                 else if (hour != 12 && reward == true)
                     reward = false;
+                if (dDeal)
+                {
+                    foreach (var x in GameSettings.Instance.simulation.Companies)
+                    {
+                        x.Value.DistributionDeal = 0.1f;
+                    }
+                }
             }
+        }
+        public void dDealBool()
+        {
+            if (dDeal) dDeal = false;
+            else dDeal = true;
+            SaveSetting("AutoDistDeal", dDeal.ToString());
         }
         public void Reward()
         {
             System.Random rnd = new System.Random();
             foreach (Deal x in HUD.Instance.dealWindow.GetActiveDeals())
             {
-                if (x.Active)
-                    GameSettings.Instance.MyCompany.MakeTransaction(rnd.Next(100, 1500), Company.TransactionCategory.Deals);
+                if (x.Active && x.ToString() == "ServerDeal")
+                    GameSettings.Instance.MyCompany.MakeTransaction(rnd.Next(500, 50000), Company.TransactionCategory.Deals);
             }
             reward = true;
         }
