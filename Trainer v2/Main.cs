@@ -80,7 +80,7 @@ namespace Trainer
             pr.TitleText.text = "Trainer v2 Settings, by Trawis";
             pr.NonLocTitle = "Trainer v2 Settings, by Trawis";
             pr.MinSize.x = 530;
-            pr.MinSize.y = 450;
+            pr.MinSize.y = 480;
             List<GameObject> objs = new List<GameObject>();
             List<GameObject> objs2 = new List<GameObject>();
             List<GameObject> objs3 = new List<GameObject>();
@@ -263,7 +263,7 @@ namespace Trainer
             toggleTempLock.GetComponentInChildren<UnityEngine.UI.Text>().text = "Lock temperature to 21";
             toggleTempLock.isOn = TrainerBehaviour.TempLock;
             toggleTempLock.onValueChanged.AddListener(a => TrainerBehaviour.TempLockBool());
-            objs3.Add(toggleTempLock.gameObject);
+            objs2.Add(toggleTempLock.gameObject);
 
             //CheckBox for Noise Reduction
             var toggleNoiseRed = WindowManager.SpawnCheckbox();
@@ -300,6 +300,18 @@ namespace Trainer
             toggleNoVacation.onValueChanged.AddListener(a => TrainerBehaviour.NoVacationBool());
             objs3.Add(toggleNoVacation.gameObject);
 
+            var toggleAutoDistDeal = WindowManager.SpawnCheckbox();
+            toggleAutoDistDeal.GetComponentInChildren<UnityEngine.UI.Text>().text = "Auto Distribution Deals";
+            toggleAutoDistDeal.isOn = TrainerBehaviour.dDeal;
+            toggleAutoDistDeal.onValueChanged.AddListener(a => TrainerBehaviour.dDealBool());
+            objs3.Add(toggleAutoDistDeal.gameObject);
+
+            var toggleMoreHosting = WindowManager.SpawnCheckbox();
+            toggleMoreHosting.GetComponentInChildren<UnityEngine.UI.Text>().text = "More Hosting Deals";
+            toggleMoreHosting.isOn = TrainerBehaviour.MoreHosting;
+            toggleMoreHosting.onValueChanged.AddListener(a => TrainerBehaviour.MoreHostingBool());
+            objs3.Add(toggleMoreHosting.gameObject);
+
             pr.Show();
             int counter = 6;
             foreach (var item in objs)
@@ -323,10 +335,6 @@ namespace Trainer
         
         public void ConstructOptionsScreen(RectTransform parent, ModBehaviour[] behaviours)
         {
-            //We need a reference to a behavior to read and write from the mod settings file
-            //var behavior = behaviours.OfType<TrainerBehaviour>().First();
-            //TrainerBehaviour behavior = Enumerable.OfType<TrainerBehaviour>(behaviours).First<TrainerBehaviour>();;
-
             var label = WindowManager.SpawnLabel();
             label.text = "Created by LtPain, edit by Trawis\n\nOptions have been moved to the Main Screen of the game.\nPlease load a game and press 'Trainer' button.";
             WindowManager.AddElementToElement(label.gameObject, parent.gameObject, new Rect(0, 0, 400, 128),
@@ -335,7 +343,6 @@ namespace Trainer
 
         public string Name
         {
-            //This will be displayed as the header in the Options window
             get { return "Trainer V2"; }
         }
     }

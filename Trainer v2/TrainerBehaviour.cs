@@ -26,6 +26,10 @@ namespace Trainer
         public static bool CleanRooms = false;
         public static bool Fullbright = false;
         public static bool NoVacation = false;
+        public static bool dDeal = false;
+        public static bool MoreHosting = false;
+        public bool reward = false;
+        public bool pushed = false;
 
         public static string CompanyText = "";
         public static string price_ProductName = "";
@@ -51,6 +55,8 @@ namespace Trainer
                 CleanRooms = this.LoadSetting<bool>("CleanRooms", false);
                 Fullbright = this.LoadSetting<bool>("Fullbright", false);
                 NoVacation = this.LoadSetting<bool>("NoVacation", false);
+                dDeal = this.LoadSetting<bool>("AutoDistDeal", false);
+                MoreHosting = this.LoadSetting<bool>("MoreHosting", false);
                 LoanWindow.factor = 250000;
                 GameSettings.MaxFloor = 25;
             }
@@ -64,7 +70,6 @@ namespace Trainer
                     Main.Tipka();
                     start = true;
                 }
-                //GameSettings.GameSpeed = 10f;
                 if (FreeStaff)
                 {
                     GameSettings.Instance.StaffSalaryDue = 0f;
@@ -96,11 +101,11 @@ namespace Trainer
                     }
                     if (FullEnv)
                     {
-                        soba.FurnEnvironment = 3;
+                        soba.FurnEnvironment = 4;
                     }
                     if (Fullbright)
                     {
-                        soba.IndirectLighting = 4;
+                        soba.IndirectLighting = 6;
                     }
                 }
                 foreach (var item in GameSettings.Instance.sActorManager.Actors)
@@ -139,6 +144,26 @@ namespace Trainer
                     {
                         item.VacationMonth = SDateTime.NextMonth(60);
                     }
+                    
+                }
+                if (dDeal)
+                {
+                    foreach (var x in GameSettings.Instance.simulation.Companies)
+                    {
+                        x.Value.DistributionDeal = 0.1f; //10%
+                    }
+                }
+                if (MoreHosting)
+                {
+                    int hour = TimeOfDay.Instance.Hour;
+                    if ((hour == 9 || hour == 15) && pushed == false)
+                        Deals();
+                    else if (hour != 9 && hour != 15 && pushed == true)
+                        pushed = false;
+                    if (reward == false && hour == 12)
+                        Reward();
+                    else if (hour != 12 && reward == true)
+                        reward = false;
                 }
             }
         }
@@ -160,12 +185,24 @@ namespace Trainer
                 SaveSetting("LockEffSat", LockEffSat.ToString());
                 SaveSetting("FreeEmployees", FreeEmployees.ToString());
                 SaveSetting("LockAge", LockAge.ToString());
+                SaveSetting("AutoDistDeal", dDeal.ToString());
+                SaveSetting("MoreHosting", MoreHosting.ToString());
             }
         }
         internal void ClearLoans()
         {
             GameSettings.Instance.Loans.Clear();
             HUD.Instance.AddPopupMessage("Trainer: All loans are cleared!", "Cogs", "", 0, 0, 0, 0, 1);
+        }
+        public static void MoreHostingBool()
+        {
+            if (MoreHosting) MoreHosting = false;
+            else MoreHosting = true;
+        }
+        public static void dDealBool()
+        {
+            if (dDeal) dDeal = false;
+            else dDeal = true;
         }
         public static void NoVacationBool()
         {
@@ -232,7 +269,38 @@ namespace Trainer
             if (LockAge) LockAge = false;
             else LockAge = true;
         }
-
+        public void Reward()
+        {
+            System.Random rnd = new System.Random();
+            foreach (Deal x in HUD.Instance.dealWindow.GetActiveDeals())
+            {
+                if (x.Active && x.ToString() == "ServerDeal")
+                    GameSettings.Instance.MyCompany.MakeTransaction(rnd.Next(500, 50000), Company.TransactionCategory.Deals);
+            }
+            reward = true;
+        }
+        public void Deals()
+        {
+            pushed = true;
+            List<SoftwareProduct> list = new List<SoftwareProduct>();
+            foreach (SoftwareProduct pr in GameSettings.Instance.simulation.GetAllProducts())
+            {
+                if (pr.Type.ToString() == "CMS" || pr.Type.ToString() == "Office Software" || pr.Type.ToString() == "Operating System" || pr.Type.ToString() == "Game")
+                    if (pr.Userbase > 0 && pr.DevCompany.Name != GameSettings.Instance.MyCompany.Name)
+                        list.Add(pr);
+            }
+            System.Random rnd = new System.Random();
+            int index = rnd.Next(0, list.Count);
+            int year = TimeOfDay.Instance.Year;
+            SoftwareProduct prod = GameSettings.Instance.simulation.GetProduct((uint)list[index].SoftwareID, false);
+            if (prod.Userbase > 0 && prod.ServerReq > 0 && !prod.ExternalHostingActive)
+            {
+                ServerDeal deal = new ServerDeal(prod);
+                deal.Request = true;
+                deal.StillValid(true);
+                HUD.Instance.dealWindow.InsertDeal(deal);
+            }
+        }
         public static void SetProductPrice()
         {
             foreach (SoftwareProduct product in GameSettings.Instance.MyCompany.Products)
@@ -272,7 +340,6 @@ namespace Trainer
                 }
             }
         }
-        
         public static void RemoveSoft()
         {
             SDateTime time = new SDateTime(1, 70);
@@ -287,8 +354,6 @@ namespace Trainer
                     if (prod.Inventor != GameSettings.Instance.MyCompany.Name)
                     {
                         prod.Userbase = 0;
-                        //prod.Price = 100000f;
-                        //prod.OriginalPrice = 100000f;
                         prod.PhysicalCopies = 0;
                         prod.Marketing = 0;
                         prod.Trade(kompanija);
@@ -388,7 +453,6 @@ namespace Trainer
                     return;
                 foreach (var x in GameSettings.Instance.sActorManager.Actors)
                 {
-                    //x.HREd = true;
                     for (int index = 0; index < 5; ++index)
                     {
                         x.employee.ChangeSkill((Employee.EmployeeRole)index, 1f, false);
