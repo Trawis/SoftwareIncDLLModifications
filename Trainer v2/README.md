@@ -2,6 +2,7 @@ This Trainer is for Software Inc game. It's based on https://github.com/hrkrx/So
 
 Currently working features:
 01.06.2017. for Alpha 9.7.6
+- Fixed a bug when you enable lock age option it resets age to 20
 - Added button for software remove (if you not invented it)
 - Added option to reduce internet cost (from 50 to 20)
 - Added option to increase capacity of boxes for courier (from 54 to 110)
