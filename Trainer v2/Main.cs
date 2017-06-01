@@ -80,7 +80,7 @@ namespace Trainer
             pr.TitleText.text = "Trainer v2 Settings, by Trawis";
             pr.NonLocTitle = "Trainer v2 Settings, by Trawis";
             pr.MinSize.x = 530;
-            pr.MinSize.y = 480;
+            pr.MinSize.y = 510;
             List<GameObject> objs = new List<GameObject>();
             List<GameObject> objs2 = new List<GameObject>();
             List<GameObject> objs3 = new List<GameObject>();
@@ -270,7 +270,7 @@ namespace Trainer
             toggleNoiseRed.GetComponentInChildren<UnityEngine.UI.Text>().text = "Noise Reduction";
             toggleNoiseRed.isOn = TrainerBehaviour.NoiseRed;
             toggleNoiseRed.onValueChanged.AddListener(a => TrainerBehaviour.NoiseRedBool());
-            objs3.Add(toggleNoiseRed.gameObject);
+            objs2.Add(toggleNoiseRed.gameObject);
 
             //CheckBox for Full Environment
             var toggleFullEnv = WindowManager.SpawnCheckbox();
@@ -311,6 +311,18 @@ namespace Trainer
             toggleMoreHosting.isOn = TrainerBehaviour.MoreHosting;
             toggleMoreHosting.onValueChanged.AddListener(a => TrainerBehaviour.MoreHostingBool());
             objs3.Add(toggleMoreHosting.gameObject);
+
+            var toggleIncCourierCap = WindowManager.SpawnCheckbox();
+            toggleIncCourierCap.GetComponentInChildren<UnityEngine.UI.Text>().text = "Increase Courier Capacity";
+            toggleIncCourierCap.isOn = TrainerBehaviour.IncCourierCap;
+            toggleIncCourierCap.onValueChanged.AddListener(a => TrainerBehaviour.IncCourierCapBool());
+            objs3.Add(toggleIncCourierCap.gameObject);
+
+            var toggleRedISPCost = WindowManager.SpawnCheckbox();
+            toggleRedISPCost.GetComponentInChildren<UnityEngine.UI.Text>().text = "Reduce Internet Cost";
+            toggleRedISPCost.isOn = TrainerBehaviour.RedISPCost;
+            toggleRedISPCost.onValueChanged.AddListener(a => TrainerBehaviour.RedISPCostBool());
+            objs3.Add(toggleRedISPCost.gameObject);
 
             pr.Show();
             int counter = 6;

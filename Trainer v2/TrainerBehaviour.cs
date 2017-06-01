@@ -28,6 +28,8 @@ namespace Trainer
         public static bool NoVacation = false;
         public static bool dDeal = false;
         public static bool MoreHosting = false;
+        public static bool IncCourierCap = false;
+        public static bool RedISPCost = false;
         public bool reward = false;
         public bool pushed = false;
 
@@ -57,12 +59,20 @@ namespace Trainer
                 NoVacation = this.LoadSetting<bool>("NoVacation", false);
                 dDeal = this.LoadSetting<bool>("AutoDistDeal", false);
                 MoreHosting = this.LoadSetting<bool>("MoreHosting", false);
+                IncCourierCap = this.LoadSetting<bool>("IncreaseCourierCapacity", false);
+                RedISPCost = this.LoadSetting<bool>("ReduceISPCost", false);
                 LoanWindow.factor = 250000;
-                GameSettings.MaxFloor = 25;
+                GameSettings.MaxFloor = 25; //10 default
+                if(IncCourierCap)
+                    CourierAI.MaxBoxes = 110; //54 default
+                if(RedISPCost)
+                    Server.ISPCost = 20f; //50f default
             }
         }
         void Update()
         {
+            if (start && ModActive && GameSettings.Instance == null && HUD.Instance == null)
+                start = false;
             if (ModActive && GameSettings.Instance != null && HUD.Instance != null)
             {
                 if (start == false)
@@ -112,7 +122,7 @@ namespace Trainer
                 {
                     if (LockAge)
                     {
-                        item.employee.AgeMonth = 20 * 12;
+                        item.employee.AgeMonth = Convert.ToInt32(item.employee.Age)*12; //20*12
                         item.UpdateAgeLook();
                     }
                     if (LockStress)
@@ -144,13 +154,24 @@ namespace Trainer
                     {
                         item.VacationMonth = SDateTime.NextMonth(60);
                     }
-                    
                 }
                 if (dDeal)
                 {
                     foreach (var x in GameSettings.Instance.simulation.Companies)
                     {
-                        x.Value.DistributionDeal = 0.1f; //10%
+                        var m = x.Value.GetMoneyWithInsurance(true);
+                        if (m < 10000000f)
+                            x.Value.DistributionDeal = 0.05f;
+                        else if(m > 10000000f && m < 100000000f)
+                            x.Value.DistributionDeal = 0.10f;
+                        else if (m > 100000000f && m < 250000000f)
+                            x.Value.DistributionDeal = 0.15f;
+                        else if (m > 250000000f && m < 500000000f)
+                            x.Value.DistributionDeal = 0.20f;
+                        else if (m > 500000000f && m < 1000000000f)
+                            x.Value.DistributionDeal = 0.25f;
+                        else if (m > 1000000000f)
+                            x.Value.DistributionDeal = 0.30f;
                     }
                 }
                 if (MoreHosting)
@@ -171,7 +192,7 @@ namespace Trainer
         {
             while (true)
             {
-                yield return new WaitForSeconds(15.0f);
+                yield return new WaitForSeconds(10.0f);
                 SaveSetting("LockStress", LockStress.ToString());
                 SaveSetting("NoVacation", NoVacation.ToString());
                 SaveSetting("Fullbright", Fullbright.ToString());
@@ -187,12 +208,24 @@ namespace Trainer
                 SaveSetting("LockAge", LockAge.ToString());
                 SaveSetting("AutoDistDeal", dDeal.ToString());
                 SaveSetting("MoreHosting", MoreHosting.ToString());
+                SaveSetting("IncreaseCourierCapacity", IncCourierCap.ToString());
+                SaveSetting("ReduceISPCost", RedISPCost.ToString());
             }
         }
         internal void ClearLoans()
         {
             GameSettings.Instance.Loans.Clear();
             HUD.Instance.AddPopupMessage("Trainer: All loans are cleared!", "Cogs", "", 0, 0, 0, 0, 1);
+        }
+        public static void RedISPCostBool()
+        {
+            if (RedISPCost) RedISPCost = false;
+            else RedISPCost = true;
+        }
+        public static void IncCourierCapBool()
+        {
+            if (IncCourierCap) IncCourierCap = false;
+            else IncCourierCap = true;
         }
         public static void MoreHostingBool()
         {

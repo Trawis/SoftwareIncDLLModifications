@@ -1,13 +1,21 @@
 This Trainer is for Software Inc game. It's based on https://github.com/hrkrx/SoftwareIncDLLModifications by hrkrx
 
 Currently working features:
-31.05.2017. for Alpha 9.7.6
-- Added automatic distribution deal option (Every company will give you 10% for digital distribution)
+01.06.2017. for Alpha 9.7.6
 - Added button for software remove (if you not invented it)
+- Added option to reduce internet cost (from 50 to 20)
+- Added option to increase capacity of boxes for courier (from 54 to 110)
 - Added option to increase hosting deals:*
 - *Deals are "spawned" at 9 and 15 o'clock if product meet some requirements
-- **(Active users are larger than 0, Product need hosting, Product doesn't have any hosting active and that product is not yours)
-- ***You get extra bonus for any active server deals (between 500$ and 50000$ per deal)
+- *(Active users are larger than 0, Product need hosting, Product doesn't have any hosting active and that product is not yours)
+- *You get extra bonus for any active server deals (between 500$ and 50000$ per deal)
+- Added automatic distribution deal option*
+- *if company has less than 10 million $, deal is 5%
+- *if company has more than 10 million $ but less than 100 million $, deal is 10%
+- *if company has more than 100 million $ but less than 250 million $, deal is 15%
+- *if company has more than 250 million$ but less than 500 million $, deal is 20%
+- *if company has more than 500 million $ but less than 1 billion $, deal is 25%
+- *if company has more than 1 billion $, deal is 30%
 
 24.05.2017. for Alpha 9.7.4
 - Fixed "Trainer" button that shown in wrong place with other resolutions
