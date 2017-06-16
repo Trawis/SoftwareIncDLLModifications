@@ -1,6 +1,16 @@
 This Trainer is for Software Inc game. It's based on https://github.com/hrkrx/SoftwareIncDLLModifications by hrkrx
 
 Currently working features:
+17.06.2017. for Alpha 9.9.1
+- Option to increase bookshelf skill gain
+- Option to increase print speed
+- Option for free printing
+- Option for no maintenance
+- Option for no sickness for employees
+- Button for all AI companies go bankrupt
+- Button for specific AI company go bankrupt (Press again to recover from bankrupt)
+- F1 button opens the trainer, F2 closes it
+
 01.06.2017. for Alpha 9.7.6
 - Fixed a bug when you enable lock age option it resets age to 20
 - Added button for software remove (if you not invented it)

@@ -30,6 +30,12 @@ namespace Trainer
         public static bool MoreHosting = false;
         public static bool IncCourierCap = false;
         public static bool RedISPCost = false;
+        public static bool IncPrintSpeed = false;
+        public static bool FreePrint = false;
+        public static bool IncBookshelfSkill = false;
+        public static bool NoMaintenance = false;
+        public static bool NoSickness = false;
+        
         public bool reward = false;
         public bool pushed = false;
 
@@ -39,6 +45,7 @@ namespace Trainer
 
         public Text button = WindowManager.SpawnLabel();
         public bool start = false;
+        public bool free = true;
         void Start()
         {
             if (ModActive)
@@ -61,12 +68,11 @@ namespace Trainer
                 MoreHosting = this.LoadSetting<bool>("MoreHosting", false);
                 IncCourierCap = this.LoadSetting<bool>("IncreaseCourierCapacity", false);
                 RedISPCost = this.LoadSetting<bool>("ReduceISPCost", false);
-                LoanWindow.factor = 250000;
-                GameSettings.MaxFloor = 25; //10 default
-                if(IncCourierCap)
-                    CourierAI.MaxBoxes = 110; //54 default
-                if(RedISPCost)
-                    Server.ISPCost = 20f; //50f default
+                IncPrintSpeed = this.LoadSetting<bool>("IncPrintSpeed", false);
+                FreePrint = this.LoadSetting<bool>("FreePrint", false);
+                IncBookshelfSkill = this.LoadSetting<bool>("IncBookshelfSkill", false);
+                NoMaintenance = this.LoadSetting<bool>("NoMaintenance", false);
+                NoSickness = this.LoadSetting<bool>("NoSickness", false);
             }
         }
         void Update()
@@ -75,15 +81,20 @@ namespace Trainer
                 start = false;
             if (ModActive && GameSettings.Instance != null && HUD.Instance != null)
             {
+                if (Input.GetKey(KeyCode.F1))
+                    Main.Prozor();
+                if (Input.GetKey(KeyCode.F2))
+                {
+                    Main.pr.Close();
+                    Main.opened = false;
+                }
                 if (start == false)
                 {
                     Main.Tipka();
                     start = true;
                 }
                 if (FreeStaff)
-                {
                     GameSettings.Instance.StaffSalaryDue = 0f;
-                }
                 foreach (var stvar in GameSettings.Instance.sRoomManager.AllFurniture)
                 {
                     if (NoiseRed)
@@ -102,21 +113,13 @@ namespace Trainer
                 foreach (var soba in GameSettings.Instance.sRoomManager.Rooms)
                 {
                     if (CleanRooms)
-                    {
                         soba.ClearDirt();
-                    }
                     if (TempLock)
-                    {
                         soba.Temperature = 21f;
-                    }
                     if (FullEnv)
-                    {
-                        soba.FurnEnvironment = 4;
-                    }
+                        soba.FurnEnvironment = 2;
                     if (Fullbright)
-                    {
-                        soba.IndirectLighting = 6;
-                    }
+                        soba.IndirectLighting = 4;
                 }
                 foreach (var item in GameSettings.Instance.sActorManager.Actors)
                 {
@@ -126,12 +129,13 @@ namespace Trainer
                         item.UpdateAgeLook();
                     }
                     if (LockStress)
-                    {
                         item.employee.Stress = 1;
-                    }
                     if (LockEffSat)
                     {
-                        item.Effectiveness = 10;
+                        if (item.employee.CurrentRole.ToString() == "Lead")
+                            item.Effectiveness = 4;
+                        else
+                            item.Effectiveness = 2;
                         item.ChangeSatisfaction(10, 10, Employee.Thought.LoveWork, Employee.Thought.LikeTeamWork, 0);
                     }
                     if (LockNeeds)
@@ -147,14 +151,16 @@ namespace Trainer
                         item.NegotiateSalary = false;
                     }
                     if (NoiseRed)
-                    {
                         item.Noisiness = 0;
-                    }
                     if (NoVacation)
-                    {
-                        item.VacationMonth = SDateTime.NextMonth(60);
-                    }
+                        item.VacationMonth = SDateTime.NextMonth(24);
                 }
+                LoanWindow.factor = 250000;
+                GameSettings.MaxFloor = 25; //10 default
+                if (IncCourierCap) CourierAI.MaxBoxes = 108; //54 default
+                else CourierAI.MaxBoxes = 54;
+                if (RedISPCost) Server.ISPCost = 25f; //50f default
+                else Server.ISPCost = 50f;
                 if (dDeal)
                 {
                     foreach (var x in GameSettings.Instance.simulation.Companies)
@@ -186,6 +192,43 @@ namespace Trainer
                     else if (hour != 12 && reward == true)
                         reward = false;
                 }
+                if (IncPrintSpeed)
+                {
+                    foreach (var x in GameSettings.Instance.ProductPrinters)
+                    {
+                        x.PrintSpeed = 2f;
+                    }
+                }
+                if (FreePrint)
+                {
+                    foreach (var x in GameSettings.Instance.ProductPrinters)
+                    {
+                        x.PrintPrice = 0f;
+                    }
+                }
+                if (IncBookshelfSkill)
+                {
+                    foreach (Furniture bookshelf in GameSettings.Instance.sRoomManager.AllFurniture)
+                    {
+                        if ("Bookshelf".Equals(bookshelf.Type))
+                        {
+                            foreach (var x in bookshelf.AuraValues)
+                            {
+                                bookshelf.AuraValues[1] = 0.75f;
+                            }
+                        }
+                    }
+                }
+                if (NoMaintenance)
+                {
+                    foreach (Furniture furniture in GameSettings.Instance.sRoomManager.AllFurniture)
+                    {
+                        if ("Server".Equals(furniture.Type) || "Computer".Equals(furniture.Type) || "Product Printer".Equals(furniture.Type) || "Ventilation".Equals(furniture.Type) || "Radiator".Equals(furniture.Type) || "Lamp".Equals(furniture.Type) || "Toilet".Equals(furniture.Type))
+                            furniture.upg.Quality = 1f;
+                    }
+                }
+                if (NoSickness)
+                    GameSettings.Instance.Insurance.SickRatio = 0f;
             }
         }
         IEnumerator<WaitForSeconds> Spremi()
@@ -193,6 +236,7 @@ namespace Trainer
             while (true)
             {
                 yield return new WaitForSeconds(10.0f);
+                SaveSetting("IncBookshelfSkill", IncBookshelfSkill.ToString());
                 SaveSetting("LockStress", LockStress.ToString());
                 SaveSetting("NoVacation", NoVacation.ToString());
                 SaveSetting("Fullbright", Fullbright.ToString());
@@ -210,12 +254,42 @@ namespace Trainer
                 SaveSetting("MoreHosting", MoreHosting.ToString());
                 SaveSetting("IncreaseCourierCapacity", IncCourierCap.ToString());
                 SaveSetting("ReduceISPCost", RedISPCost.ToString());
+                SaveSetting("IncPrintSpeed", IncPrintSpeed.ToString());
+                SaveSetting("FreePrint", FreePrint.ToString());
+                SaveSetting("IncBookshelfSkill", IncBookshelfSkill.ToString());
+                SaveSetting("NoMaintenance", NoMaintenance.ToString());
+                SaveSetting("NoSickness", NoSickness.ToString());
             }
         }
         internal void ClearLoans()
         {
             GameSettings.Instance.Loans.Clear();
             HUD.Instance.AddPopupMessage("Trainer: All loans are cleared!", "Cogs", "", 0, 0, 0, 0, 1);
+        }
+        public static void NoSicknessBool()
+        {
+            if (NoSickness) NoSickness = false;
+            else NoSickness = true;
+        }
+        public static void IncPrintSpeedBool()
+        {
+            if (IncPrintSpeed) IncPrintSpeed = false;
+            else IncPrintSpeed = true;
+        }
+        public static void FreePrintBool()
+        {
+            if (FreePrint) FreePrint = false;
+            else FreePrint = true;
+        }
+        public static void IncBookshelfSkillBool()
+        {
+            if (IncBookshelfSkill) IncBookshelfSkill = false;
+            else IncBookshelfSkill = true;
+        }
+        public static void NoMaintenanceBool()
+        {
+            if (NoMaintenance) NoMaintenance = false;
+            else NoMaintenance = true;
         }
         public static void RedISPCostBool()
         {
@@ -302,6 +376,7 @@ namespace Trainer
             if (LockAge) LockAge = false;
             else LockAge = true;
         }
+        
         public void Reward()
         {
             System.Random rnd = new System.Random();
@@ -334,6 +409,45 @@ namespace Trainer
                 HUD.Instance.dealWindow.InsertDeal(deal);
             }
         }
+        public static void ChangeCompanyName()
+        { }
+        public static void ForceBankrupt()
+        {
+            foreach(KeyValuePair<uint, SimulatedCompany> sc in GameSettings.Instance.simulation.Companies)
+            {
+                if (sc.Value.Name == CompanyText)
+                {
+                    if (sc.Value.Bankrupt == false)
+                    {
+                        sc.Value.Bankrupt = true;
+                        break;
+                    }
+                    else
+                        sc.Value.Bankrupt = false;
+                }
+            }
+        }
+        internal void AIBankrupt()
+        {
+            foreach (KeyValuePair<uint, SimulatedCompany> sc in GameSettings.Instance.simulation.Companies)
+            {
+                sc.Value.Bankrupt = true;
+            }
+        }
+        internal void HREmployees()
+        {
+            if (ModActive && GameSettings.Instance != null && HUD.Instance != null)
+            {
+                if (!((UnityEngine.Object)SelectorController.Instance != (UnityEngine.Object)null))
+                    return;
+                foreach (var x in GameSettings.Instance.sActorManager.Actors)
+                {
+                    if (x.employee.CurrentRole.ToString() == "Lead")
+                        x.employee.HR = true;
+                }
+                HUD.Instance.AddPopupMessage("Trainer: All leaders are now HRed!", "Cogs", "", 0, 0, 0, 0, 1);
+            }
+        }
         public static void SetProductPrice()
         {
             foreach (SoftwareProduct product in GameSettings.Instance.MyCompany.Products)
@@ -346,21 +460,115 @@ namespace Trainer
                 }
             }
         }
-
+        public static void TestBtn()
+        {
+            foreach (SoftwareAlpha alpha in GameSettings.Instance.MyCompany.WorkItems)
+            {
+                if (alpha.Name.ToString() == price_ProductName.ToString() && alpha.InBeta)
+                {
+                    alpha.FixedBugs = alpha.Bugs;
+                    /*if (!alpha.InBeta)
+                    {
+                        alpha.LastCodeProgress = Convert.ToInt32(alpha.MaxDevDt);
+                        //if(alpha.MBArt != 0)
+                            //alpha.MBArt = alpha.MaxArtDt;
+                    }
+                    else if (alpha.InBeta)
+                    {
+                        alpha.FixedBugs = alpha.Bugs;
+                    }
+                    //alpha.MaxFollowers = 50000000;
+                    //alpha.FollowerChange += 10000000;
+                    //alpha.PhysicalCopies = 250000;
+                    //alpha.CodeProgress = alpha.MaxDevDt;
+                    //alpha.ArtProgress = alpha.MaxArtDt;
+                    //alpha.Bugs = 0;
+                    //alpha.MBArt = alpha.MaxArtDt;
+                    //alpha.LinesOfCode = Convert.ToInt32(alpha.MaxDevDt);
+                    //alpha.ReEvaluateMaxFollowers();
+                    /*
+                    if (alpha.Name != null)
+                        DevConsole.Console.Log("Product: " + alpha.Name);
+                    if (alpha.MaxDevDt != 0)
+                        DevConsole.Console.Log("Max lines: " + alpha.MaxDevDt);
+                    if (alpha.MaxArtDt != 0)
+                        DevConsole.Console.Log("Max art: " + alpha.MaxArtDt);
+                    if (alpha.MaxBugs != 0)
+                        DevConsole.Console.Log("Max bugs: " + alpha.MaxBugs);
+                    if (alpha.CodeProgress != 0)
+                        DevConsole.Console.Log("Current CodeProgress: " + alpha.CodeProgress);
+                    if (alpha.ArtProgress != 0)
+                        DevConsole.Console.Log("Current ArtProgress: " + alpha.ArtProgress);
+                    if (alpha.LinesOfCode != 0)
+                        DevConsole.Console.Log("Current Code Lines: " + alpha.LinesOfCode);
+                    if (alpha.MBArt != 0)
+                        DevConsole.Console.Log("Current Art MB: " + alpha.MBArt);
+                    if (alpha.Bugs != 0)
+                        DevConsole.Console.Log("Current bugs: " + alpha.Bugs);
+                    if (alpha.ArtProgressLim != 0)
+                        DevConsole.Console.Log("Art limit: " + alpha.ArtProgressLim);
+                    if (alpha.ArtDTMult != 0)
+                        DevConsole.Console.Log("Art DTMult: " + alpha.ArtDTMult);
+                    if (alpha.ArtCounterSpots != 0)
+                        DevConsole.Console.Log("Art counter spots: " + alpha.ArtCounterSpots);
+                    if (alpha.CodeProgressLim != 0)
+                        DevConsole.Console.Log("Code limit: " + alpha.CodeProgressLim);
+                    if (alpha.CodeDTMult != 0)
+                        DevConsole.Console.Log("Code DTMult: " + alpha.CodeDTMult);
+                    if (alpha.CodeCounterSpots != 0)
+                        DevConsole.Console.Log("Code counter spots: " + alpha.CodeCounterSpots);
+                    if (alpha.FixedBugs != 0)
+                        DevConsole.Console.Log("Fixed bugs: " + alpha.FixedBugs);
+                    if (alpha.CodeArtRatio != 0)
+                        DevConsole.Console.Log("Code/Art ratio: " + alpha.CodeArtRatio);
+                    if (alpha.LastArtProgress != 0)
+                        DevConsole.Console.Log("Art last progress: " + alpha.LastArtProgress);
+                    if (alpha.LastCodeProgress != 0)
+                        DevConsole.Console.Log("Code last progress: " + alpha.LastCodeProgress);
+                    DevConsole.Console.Log("\n");*/
+                    //break;
+                    /*
+                    RoadBuildCube.roadCost = 0f;
+                    BuildController.FencePrice = 0f;
+                    BuildController.RoomPrice = 0f;
+                    GameSettings.Instance.ExpansionCost = 0f;
+                    GameSettings.Instance.Insurance.DeathRatio = 0f;
+                    GameSettings.Instance.Insurance.RetireRatio = 0f;*/
+                }
+            }
+        }
+        public static void Test()
+        {
+            foreach (SoftwareWorkItem prod in GameSettings.Instance.MyCompany.WorkItems)
+            {
+                DevConsole.Console.Log(prod.Name + " " + prod.CurrentStage());
+            }
+        }
+        public static void SellProductsStock()
+        {
+            WindowManager.SpawnDialog("Products stock with no active users have been sold in half a price.", false, DialogWindow.DialogType.Information);
+            foreach (SoftwareProduct product in GameSettings.Instance.MyCompany.Products)
+            {
+                if (product.Userbase == 0)
+                {
+                    var st = Convert.ToInt32(product.PhysicalCopies) * (Convert.ToInt32(product.Price) / 2);
+                    product.PhysicalCopies = 0;
+                    GameSettings.Instance.MyCompany.MakeTransaction(st, Company.TransactionCategory.Sales);
+                }
+            }
+        }
         public static void SetProductStock()
         {
             foreach (SoftwareProduct product in GameSettings.Instance.MyCompany.Products)
             {
-                if (product.Name == price_ProductName) //&& product.Userbase < 500)
+                if (product.Name == price_ProductName)
                 {
-                    //var st = Convert.ToInt32(product.PhysicalCopies) * (Convert.ToInt32(product.Price) / 2);
                     product.PhysicalCopies = (uint)price_ProductPrice;
                     HUD.Instance.AddPopupMessage("Trainer: Stock for " + product.Name + " has been setted up!", "Cogs", "", 0, 0, 0, 0, 1);
                     break;
                 }
             }
         }
-
         public static void AddActiveUsers()
         {
             foreach (SoftwareProduct product in GameSettings.Instance.MyCompany.Products)
@@ -375,6 +583,7 @@ namespace Trainer
         }
         public static void RemoveSoft()
         {
+            WindowManager.SpawnDialog("Products that you didn't invent are removed.", false, DialogWindow.DialogType.Information);
             SDateTime time = new SDateTime(1, 70);
             CompanyType type = new CompanyType();
             Dictionary<string, string[]> dict = new Dictionary<string,string[]>();
