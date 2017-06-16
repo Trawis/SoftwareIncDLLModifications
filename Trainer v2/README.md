@@ -7,6 +7,8 @@ Currently working features:
 - Option for free printing
 - Option for no maintenance
 - Option for no sickness for employees
+- Button to HR all Leaders
+- Button to sell stock of all products that have no active users in half a price
 - Button for all AI companies go bankrupt
 - Button for specific AI company go bankrupt (Press again to recover from bankrupt)
 - F1 button opens the trainer, F2 closes it

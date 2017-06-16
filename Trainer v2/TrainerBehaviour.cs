@@ -236,7 +236,6 @@ namespace Trainer
             while (true)
             {
                 yield return new WaitForSeconds(10.0f);
-                SaveSetting("IncBookshelfSkill", IncBookshelfSkill.ToString());
                 SaveSetting("LockStress", LockStress.ToString());
                 SaveSetting("NoVacation", NoVacation.ToString());
                 SaveSetting("Fullbright", Fullbright.ToString());
