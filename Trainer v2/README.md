@@ -2,6 +2,9 @@ This Trainer is for Software Inc game. It's based on https://github.com/hrkrx/So
 
 Currently working features:
 17.06.2017. for Alpha 9.9.1
+- Fixed trainer button x position when different resolution or UI scale is selected
+
+16.06.2017. for Alpha 9.9.1
 - Option to increase bookshelf skill gain
 - Option to increase print speed
 - Option for free printing
