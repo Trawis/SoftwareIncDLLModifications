@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -469,47 +467,75 @@ namespace Trainer
         }
         public static void MaxCode()
         {
-            foreach (SoftwareAlpha alpha in GameSettings.Instance.MyCompany.WorkItems)
+            foreach (SoftwareWorkItem item in GameSettings.Instance.MyCompany.WorkItems)
             {
-                if (alpha.Name == price_ProductName && !alpha.InBeta)
+                if (item.GetWorkTypeName() == "Development" && item.Name == price_ProductName)
                 {
-                    alpha.CodeProgress = 0.98f;
+                    foreach (SoftwareAlpha alpha in GameSettings.Instance.MyCompany.WorkItems)
+                    {
+                        if (alpha.Name == price_ProductName && !alpha.InBeta)
+                        {
+                            alpha.CodeProgress = 0.98f;
+                            break;
+                        }
+                    }
                     break;
                 }
             }
         }
         public static void MaxArt()
         {
-            foreach (SoftwareAlpha alpha in GameSettings.Instance.MyCompany.WorkItems)
+            foreach (SoftwareWorkItem item in GameSettings.Instance.MyCompany.WorkItems)
             {
-                if (alpha.Name == price_ProductName && !alpha.InBeta)
+                if (item.GetWorkTypeName() == "Development" && item.Name == price_ProductName)
                 {
-                    alpha.ArtProgress = 0.98f;
+                    foreach (SoftwareAlpha alpha in GameSettings.Instance.MyCompany.WorkItems)
+                    {
+                        if (alpha.Name == price_ProductName && !alpha.InBeta)
+                        {
+                            alpha.ArtProgress = 0.98f;
+                            break;
+                        }
+                    }
                     break;
                 }
             }
         }
         public static void FixBugs()
         {
-            foreach (SoftwareAlpha alpha in GameSettings.Instance.MyCompany.WorkItems)
+            foreach (SoftwareWorkItem item in GameSettings.Instance.MyCompany.WorkItems)
             {
-                if (alpha.Name == price_ProductName && alpha.InBeta)
+                if (item.GetWorkTypeName() == "Development" && item.Name == price_ProductName)
                 {
-                    alpha.FixedBugs = alpha.MaxBugs;
+                    foreach (SoftwareAlpha alpha in GameSettings.Instance.MyCompany.WorkItems)
+                    {
+                        if (alpha.Name == price_ProductName && alpha.InBeta)
+                        {
+                            alpha.FixedBugs = alpha.MaxBugs;
+                            break;
+                        }
+                    }
                     break;
                 }
             }
         }
         public static void MaxFollowers()
         {
-            foreach(SoftwareAlpha alpha in GameSettings.Instance.MyCompany.WorkItems)
+            foreach (SoftwareWorkItem item in GameSettings.Instance.MyCompany.WorkItems)
             {
-                if (alpha.Name == price_ProductName && !alpha._paused)
+                if (item.GetWorkTypeName() == "Development" && item.Name == price_ProductName)
                 {
-                    alpha.MaxFollowers += 1000000000;
-                    alpha.ReEvaluateMaxFollowers();
-                    alpha.FollowerChange += 1000000000f;
-                    alpha.Followers += 1000000000f;
+                    foreach (SoftwareAlpha alpha in GameSettings.Instance.MyCompany.WorkItems)
+                    {
+                        if (alpha.Name == price_ProductName && !alpha._paused)
+                        {
+                            alpha.MaxFollowers += 1000000000;
+                            alpha.ReEvaluateMaxFollowers();
+                            alpha.FollowerChange += 1000000000f;
+                            alpha.Followers += 1000000000f;
+                            break;
+                        }
+                    }
                     break;
                 }
             }
@@ -524,90 +550,6 @@ namespace Trainer
                     HUD.Instance.AddPopupMessage("Trainer: Price for " + product.Name + " has been setted up!", "Cogs", "", 0, 0, 0, 0, 1);
                     break;
                 }
-            }
-        }
-        public static void TestBtn()
-        {
-            foreach (SoftwareAlpha alpha in GameSettings.Instance.MyCompany.WorkItems)
-            {
-                if (alpha.Name.ToString() == price_ProductName.ToString() && alpha.InBeta)
-                {
-                    alpha.FixedBugs = alpha.Bugs;
-                    /*if (!alpha.InBeta)
-                    {
-                        alpha.LastCodeProgress = Convert.ToInt32(alpha.MaxDevDt);
-                        //if(alpha.MBArt != 0)
-                            //alpha.MBArt = alpha.MaxArtDt;
-                    }
-                    else if (alpha.InBeta)
-                    {
-                        alpha.FixedBugs = alpha.Bugs;
-                    }
-                    //alpha.MaxFollowers = 50000000;
-                    //alpha.FollowerChange += 10000000;
-                    //alpha.PhysicalCopies = 250000;
-                    //alpha.CodeProgress = alpha.MaxDevDt;
-                    //alpha.ArtProgress = alpha.MaxArtDt;
-                    //alpha.Bugs = 0;
-                    //alpha.MBArt = alpha.MaxArtDt;
-                    //alpha.LinesOfCode = Convert.ToInt32(alpha.MaxDevDt);
-                    //alpha.ReEvaluateMaxFollowers();
-                    /*
-                    if (alpha.Name != null)
-                        DevConsole.Console.Log("Product: " + alpha.Name);
-                    if (alpha.MaxDevDt != 0)
-                        DevConsole.Console.Log("Max lines: " + alpha.MaxDevDt);
-                    if (alpha.MaxArtDt != 0)
-                        DevConsole.Console.Log("Max art: " + alpha.MaxArtDt);
-                    if (alpha.MaxBugs != 0)
-                        DevConsole.Console.Log("Max bugs: " + alpha.MaxBugs);
-                    if (alpha.CodeProgress != 0)
-                        DevConsole.Console.Log("Current CodeProgress: " + alpha.CodeProgress);
-                    if (alpha.ArtProgress != 0)
-                        DevConsole.Console.Log("Current ArtProgress: " + alpha.ArtProgress);
-                    if (alpha.LinesOfCode != 0)
-                        DevConsole.Console.Log("Current Code Lines: " + alpha.LinesOfCode);
-                    if (alpha.MBArt != 0)
-                        DevConsole.Console.Log("Current Art MB: " + alpha.MBArt);
-                    if (alpha.Bugs != 0)
-                        DevConsole.Console.Log("Current bugs: " + alpha.Bugs);
-                    if (alpha.ArtProgressLim != 0)
-                        DevConsole.Console.Log("Art limit: " + alpha.ArtProgressLim);
-                    if (alpha.ArtDTMult != 0)
-                        DevConsole.Console.Log("Art DTMult: " + alpha.ArtDTMult);
-                    if (alpha.ArtCounterSpots != 0)
-                        DevConsole.Console.Log("Art counter spots: " + alpha.ArtCounterSpots);
-                    if (alpha.CodeProgressLim != 0)
-                        DevConsole.Console.Log("Code limit: " + alpha.CodeProgressLim);
-                    if (alpha.CodeDTMult != 0)
-                        DevConsole.Console.Log("Code DTMult: " + alpha.CodeDTMult);
-                    if (alpha.CodeCounterSpots != 0)
-                        DevConsole.Console.Log("Code counter spots: " + alpha.CodeCounterSpots);
-                    if (alpha.FixedBugs != 0)
-                        DevConsole.Console.Log("Fixed bugs: " + alpha.FixedBugs);
-                    if (alpha.CodeArtRatio != 0)
-                        DevConsole.Console.Log("Code/Art ratio: " + alpha.CodeArtRatio);
-                    if (alpha.LastArtProgress != 0)
-                        DevConsole.Console.Log("Art last progress: " + alpha.LastArtProgress);
-                    if (alpha.LastCodeProgress != 0)
-                        DevConsole.Console.Log("Code last progress: " + alpha.LastCodeProgress);
-                    DevConsole.Console.Log("\n");*/
-                    //break;
-                    /*
-                    RoadBuildCube.roadCost = 0f;
-                    BuildController.FencePrice = 0f;
-                    BuildController.RoomPrice = 0f;
-                    GameSettings.Instance.ExpansionCost = 0f;
-                    GameSettings.Instance.Insurance.DeathRatio = 0f;
-                    GameSettings.Instance.Insurance.RetireRatio = 0f;*/
-                }
-            }
-        }
-        public static void Test()
-        {
-            foreach (SoftwareWorkItem prod in GameSettings.Instance.MyCompany.WorkItems)
-            {
-                DevConsole.Console.Log(prod.Name + " " + prod.CurrentStage());
             }
         }
         public static void SellProductsStock()

@@ -1,7 +1,4 @@
 ﻿using UnityEngine;
-using System;
-using System.Linq;
-using System.Net.Mime;
 using System.Collections.Generic;
 
 namespace Trainer
@@ -168,11 +165,6 @@ namespace Trainer
                 buttonMaxArt.onClick.AddListener(() => TrainerBehaviour.MaxArt());
                 WindowManager.AddElementToWindow(buttonMaxArt.gameObject, pr, new Rect(483, 128, 150, 32), new Rect(0, 0, 0, 0));
 
-                var buttonDevSoftMax = WindowManager.SpawnButton();
-                buttonDevSoftMax.GetComponentInChildren<UnityEngine.UI.Text>().text = "Test Btn";
-                buttonDevSoftMax.onClick.AddListener(() => TrainerBehaviour.TestBtn());
-                //WindowManager.AddElementToWindow(buttonDevSoftMax.gameObject, pr, new Rect(483, 96, 150, 32), new Rect(0, 0, 0, 0));
-
                 //Takeover Company
                 var inputField2 = WindowManager.SpawnInputbox();
                 inputField2.text = "Company Name Here";
@@ -268,10 +260,6 @@ namespace Trainer
                 btn.Add(btnList.gameObject);
                 btnList.UpdateElements();
                 */
-                var buttonDevSoftAfter = WindowManager.SpawnButton();
-                buttonDevSoftAfter.GetComponentInChildren<UnityEngine.UI.Text>().text = "Test";
-                buttonDevSoftAfter.onClick.AddListener(() => TrainerBehaviour.Test());
-                //btn.Add(buttonDevSoftAfter.gameObject);
 
                 //Employees Management
                 //CheckBox for Disable Needs
@@ -316,13 +304,6 @@ namespace Trainer
                 lockAge.onValueChanged.AddListener(a => TrainerBehaviour.LockAgeOfEmployees());
                 col1.Add(lockAge.gameObject);
 
-                //CheckBox for Efficiency & Satisfaction
-                var toggMaxOutEff = WindowManager.SpawnCheckbox();
-                toggMaxOutEff.GetComponentInChildren<UnityEngine.UI.Text>().text = "Ultra Efficiency";
-                toggMaxOutEff.isOn = TrainerBehaviour.MaxOutEff;
-                toggMaxOutEff.onValueChanged.AddListener(a => TrainerBehaviour.MaxOutEffBool());
-                col1.Add(toggMaxOutEff.gameObject);
-
                 //CheckBox for No Vacation
                 var toggleNoVacation = WindowManager.SpawnCheckbox();
                 toggleNoVacation.GetComponentInChildren<UnityEngine.UI.Text>().text = "No Vacation";
@@ -335,6 +316,13 @@ namespace Trainer
                 toggleNoSickness.isOn = TrainerBehaviour.NoSickness;
                 toggleNoSickness.onValueChanged.AddListener(a => TrainerBehaviour.NoSicknessBool());
                 col1.Add(toggleNoSickness.gameObject);
+
+                //CheckBox for Efficiency & Satisfaction
+                var toggMaxOutEff = WindowManager.SpawnCheckbox();
+                toggMaxOutEff.GetComponentInChildren<UnityEngine.UI.Text>().text = "Ultra Efficiency";
+                toggMaxOutEff.isOn = TrainerBehaviour.MaxOutEff;
+                toggMaxOutEff.onValueChanged.AddListener(a => TrainerBehaviour.MaxOutEffBool());
+                col1.Add(toggMaxOutEff.gameObject);
                 //Employees Management END
 
                 //Room Management
