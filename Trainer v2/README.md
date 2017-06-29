@@ -3,7 +3,10 @@ This Trainer is for Software Inc game. It's based on https://github.com/hrkrx/So
 		(Features that could cause some problems: AI Bankrupt All, Max Code, Max Art, Max Followers)
 
 Currently working features:
-30.06.2017. for Alpha 9.9.4
+30.06.2017. for alpha 9.9.4
+- Possible bug fix for Max Followers, Max Code, Max Art
+
+29.06.2017. for Alpha 9.9.4
 - Increased max floors to 75
 - Added option to max out followers in alpha & beta
 	(For some reason it can only be a specific number of followers)
