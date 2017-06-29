@@ -35,6 +35,7 @@ namespace Trainer
         public static bool IncBookshelfSkill = false;
         public static bool NoMaintenance = false;
         public static bool NoSickness = false;
+        public static bool MaxOutEff = false;
         
         public bool reward = false;
         public bool pushed = false;
@@ -73,6 +74,7 @@ namespace Trainer
                 IncBookshelfSkill = this.LoadSetting<bool>("IncBookshelfSkill", false);
                 NoMaintenance = this.LoadSetting<bool>("NoMaintenance", false);
                 NoSickness = this.LoadSetting<bool>("NoSickness", false);
+                MaxOutEff = this.LoadSetting<bool>("MaxOutEff", false);
             }
         }
         void Update()
@@ -133,9 +135,19 @@ namespace Trainer
                     if (LockEffSat)
                     {
                         if (item.employee.CurrentRole.ToString() == "Lead")
-                            item.Effectiveness = 4;
+                        {
+                            if (MaxOutEff)
+                                item.Effectiveness = 12;
+                            else
+                                item.Effectiveness = 4;
+                        }
                         else
-                            item.Effectiveness = 2;
+                        {
+                            if (MaxOutEff)
+                                item.Effectiveness = 10;
+                            else
+                                item.Effectiveness = 2;
+                        }
                         item.ChangeSatisfaction(10, 10, Employee.Thought.LoveWork, Employee.Thought.LikeTeamWork, 0);
                     }
                     if (LockNeeds)
@@ -149,6 +161,7 @@ namespace Trainer
                     {
                         item.employee.Salary = 0;
                         item.NegotiateSalary = false;
+                        item.IgnoreOffSalary = true;
                     }
                     if (NoiseRed)
                         item.Noisiness = 0;
@@ -156,7 +169,8 @@ namespace Trainer
                         item.VacationMonth = SDateTime.NextMonth(24);
                 }
                 LoanWindow.factor = 250000;
-                GameSettings.MaxFloor = 25; //10 default
+                GameSettings.MaxFloor = 75; //10 default
+                GameSettings.Instance.scenario.MaxFloor = 75;
                 if (IncCourierCap) CourierAI.MaxBoxes = 108; //54 default
                 else CourierAI.MaxBoxes = 54;
                 if (RedISPCost) Server.ISPCost = 25f; //50f default
@@ -258,12 +272,18 @@ namespace Trainer
                 SaveSetting("IncBookshelfSkill", IncBookshelfSkill.ToString());
                 SaveSetting("NoMaintenance", NoMaintenance.ToString());
                 SaveSetting("NoSickness", NoSickness.ToString());
+                SaveSetting("MaxOutEff", MaxOutEff.ToString());
             }
         }
         internal void ClearLoans()
         {
             GameSettings.Instance.Loans.Clear();
             HUD.Instance.AddPopupMessage("Trainer: All loans are cleared!", "Cogs", "", 0, 0, 0, 0, 1);
+        }
+        public static void MaxOutEffBool()
+        {
+            if (MaxOutEff) MaxOutEff = false;
+            else MaxOutEff = true;
         }
         public static void NoSicknessBool()
         {
@@ -445,6 +465,53 @@ namespace Trainer
                         x.employee.HR = true;
                 }
                 HUD.Instance.AddPopupMessage("Trainer: All leaders are now HRed!", "Cogs", "", 0, 0, 0, 0, 1);
+            }
+        }
+        public static void MaxCode()
+        {
+            foreach (SoftwareAlpha alpha in GameSettings.Instance.MyCompany.WorkItems)
+            {
+                if (alpha.Name == price_ProductName && !alpha.InBeta)
+                {
+                    alpha.CodeProgress = 0.98f;
+                    break;
+                }
+            }
+        }
+        public static void MaxArt()
+        {
+            foreach (SoftwareAlpha alpha in GameSettings.Instance.MyCompany.WorkItems)
+            {
+                if (alpha.Name == price_ProductName && !alpha.InBeta)
+                {
+                    alpha.ArtProgress = 0.98f;
+                    break;
+                }
+            }
+        }
+        public static void FixBugs()
+        {
+            foreach (SoftwareAlpha alpha in GameSettings.Instance.MyCompany.WorkItems)
+            {
+                if (alpha.Name == price_ProductName && alpha.InBeta)
+                {
+                    alpha.FixedBugs = alpha.MaxBugs;
+                    break;
+                }
+            }
+        }
+        public static void MaxFollowers()
+        {
+            foreach(SoftwareAlpha alpha in GameSettings.Instance.MyCompany.WorkItems)
+            {
+                if (alpha.Name == price_ProductName && !alpha._paused)
+                {
+                    alpha.MaxFollowers += 1000000000;
+                    alpha.ReEvaluateMaxFollowers();
+                    alpha.FollowerChange += 1000000000f;
+                    alpha.Followers += 1000000000f;
+                    break;
+                }
             }
         }
         public static void SetProductPrice()
@@ -661,9 +728,7 @@ namespace Trainer
         {
             ModActive = true;
             if (ModActive && GameSettings.Instance != null && HUD.Instance != null)
-            {
                 HUD.Instance.AddPopupMessage("Trainer v2 has been activated!", "Cogs", "", 0, 0, 0, 0, 1);
-            }
         }
 
         internal static void AddRep()
@@ -681,9 +746,7 @@ namespace Trainer
         {
             ModActive = false;
             if (!ModActive && GameSettings.Instance != null && HUD.Instance != null)
-            {
                 HUD.Instance.AddPopupMessage("Trainer v2 has been deactivated!", "Cogs", "", 0, 0, 0, 0, 1);
-            }
         }
 
         internal void EmployeesToMax()

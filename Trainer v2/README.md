@@ -1,6 +1,18 @@
 This Trainer is for Software Inc game. It's based on https://github.com/hrkrx/SoftwareIncDLLModifications by hrkrx
+*NOTE: I can't guarantee that some features integrated in this trainer will work with old saves. If you want to test it out, please backup your data first.
+		(Features that could cause some problems: AI Bankrupt All, Max Code, Max Art, Max Followers)
 
 Currently working features:
+30.06.2017. for Alpha 9.9.4
+- Increased max floors to 75
+- Added option to max out followers in alpha & beta
+	(For some reason it can only be a specific number of followers)
+- Added option to max out code units (Only in alpha)
+- Added option to max out art units (Only in alpha)
+- Added option to fix all bugs (Only in beta)
+- Added option to increase efficiency to 1000% for employees and 1200% for leaders
+	(You need to have both option activated; Full & Ultra efficiency)
+
 17.06.2017. for Alpha 9.9.1
 - Fixed trainer button x position when different resolution or UI scale is selected
 
