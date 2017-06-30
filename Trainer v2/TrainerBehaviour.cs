@@ -467,75 +467,71 @@ namespace Trainer
         }
         public static void MaxCode()
         {
-            foreach (SoftwareWorkItem item in GameSettings.Instance.MyCompany.WorkItems)
+            List<WorkItem> list = new List<WorkItem>();
+            foreach (WorkItem item in GameSettings.Instance.MyCompany.WorkItems)
             {
-                if (item.GetWorkTypeName() == "Development" && item.Name == price_ProductName)
+                if (item.GetType().ToString() == "SoftwareAlpha")
+                    list.Add(item);
+            }
+            foreach (SoftwareAlpha alpha in list)
+            {
+                if (alpha.Name == price_ProductName && !alpha.InBeta)
                 {
-                    foreach (SoftwareAlpha alpha in GameSettings.Instance.MyCompany.WorkItems)
-                    {
-                        if (alpha.Name == price_ProductName && !alpha.InBeta)
-                        {
-                            alpha.CodeProgress = 0.98f;
-                            break;
-                        }
-                    }
+                    alpha.CodeProgress = 0.98f;
                     break;
                 }
             }
         }
         public static void MaxArt()
         {
-            foreach (SoftwareWorkItem item in GameSettings.Instance.MyCompany.WorkItems)
+            List<WorkItem> list = new List<WorkItem>();
+            foreach (WorkItem item in GameSettings.Instance.MyCompany.WorkItems)
             {
-                if (item.GetWorkTypeName() == "Development" && item.Name == price_ProductName)
+                if (item.GetType().ToString() == "SoftwareAlpha")
+                    list.Add(item);
+            }
+            foreach (SoftwareAlpha alpha in list)
+            {
+                if (alpha.Name == price_ProductName && !alpha.InBeta)
                 {
-                    foreach (SoftwareAlpha alpha in GameSettings.Instance.MyCompany.WorkItems)
-                    {
-                        if (alpha.Name == price_ProductName && !alpha.InBeta)
-                        {
-                            alpha.ArtProgress = 0.98f;
-                            break;
-                        }
-                    }
+                    alpha.ArtProgress = 0.98f;
                     break;
                 }
             }
         }
         public static void FixBugs()
         {
-            foreach (SoftwareWorkItem item in GameSettings.Instance.MyCompany.WorkItems)
+            List<WorkItem> list = new List<WorkItem>();
+            foreach (WorkItem item in GameSettings.Instance.MyCompany.WorkItems)
             {
-                if (item.GetWorkTypeName() == "Development" && item.Name == price_ProductName)
+                if (item.GetType().ToString() == "SoftwareAlpha")
+                    list.Add(item);
+            }
+            foreach (SoftwareAlpha alpha in list)
+            {
+                if (alpha.Name == price_ProductName && alpha.InBeta)
                 {
-                    foreach (SoftwareAlpha alpha in GameSettings.Instance.MyCompany.WorkItems)
-                    {
-                        if (alpha.Name == price_ProductName && alpha.InBeta)
-                        {
-                            alpha.FixedBugs = alpha.MaxBugs;
-                            break;
-                        }
-                    }
+                    alpha.FixedBugs = alpha.MaxBugs;
                     break;
                 }
             }
         }
         public static void MaxFollowers()
         {
-            foreach (SoftwareWorkItem item in GameSettings.Instance.MyCompany.WorkItems)
+            List<WorkItem> list = new List<WorkItem>();
+            foreach (WorkItem item in GameSettings.Instance.MyCompany.WorkItems)
             {
-                if (item.GetWorkTypeName() == "Development" && item.Name == price_ProductName)
+                if (item.GetType().ToString() == "SoftwareAlpha")
+                    list.Add(item);
+            }
+            foreach (SoftwareAlpha alpha in list)
+            {
+                if (alpha.Name == price_ProductName && !alpha._paused)
                 {
-                    foreach (SoftwareAlpha alpha in GameSettings.Instance.MyCompany.WorkItems)
-                    {
-                        if (alpha.Name == price_ProductName && !alpha._paused)
-                        {
-                            alpha.MaxFollowers += 1000000000;
-                            alpha.ReEvaluateMaxFollowers();
-                            alpha.FollowerChange += 1000000000f;
-                            alpha.Followers += 1000000000f;
-                            break;
-                        }
-                    }
+                    alpha.MaxFollowers += 1000000000;
+                    alpha.ReEvaluateMaxFollowers();
+                    alpha.FollowerChange += 1000000000f;
+                    alpha.Followers += 1000000000f;
                     break;
                 }
             }

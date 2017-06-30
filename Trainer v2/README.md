@@ -3,6 +3,9 @@ This Trainer is for Software Inc game. It's based on https://github.com/hrkrx/So
 		(Features that could cause some problems: AI Bankrupt All, Max Code, Max Art, Max Followers)
 
 Currently working features:
+01.07.2017. for Alpha 9.9.7
+- Fix for Max Followers, Max Code, Max Art
+
 30.06.2017. for Alpha 9.9.4
 - Possible bug fix for Max Followers, Max Code, Max Art
 
