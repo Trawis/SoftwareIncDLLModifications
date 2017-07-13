@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Security.Cryptography;
 using UnityEngine;
 using UnityEngine.UI;
 using Random = System.Random;
@@ -302,189 +301,131 @@ namespace Trainer
             GameSettings.Instance.Loans.Clear();
             HUD.Instance.AddPopupMessage("Trainer: All loans are cleared!", "Cogs", "", 0, 0, 0, 0, 1);
         }
-        
-        public static void MaxOutEffBool() => MaxOutEff = !MaxOutEff;
-
-        public static void NoSicknessBool() => NoSickness = !NoSickness;
-
-        public static void IncPrintSpeedBool() => IncPrintSpeed = !IncPrintSpeed;
-
-        public static void FreePrintBool() => FreePrint = !FreePrint;
-
-        public static void IncBookshelfSkillBool() => IncBookshelfSkill = !IncBookshelfSkill;
-
-        public static void NoMaintenanceBool() => NoMaintenance = !NoMaintenance;
-
-        public static void RedISPCostBool() => RedISPCost = !RedISPCost;
-
-        public static void IncCourierCapBool() => IncCourierCap = !IncCourierCap;
-
-        public static void MoreHostingBool() => MoreHosting = !MoreHosting;
-
-        public static void dDealBool() => dDeal = !dDeal;
-
-        public static void NoVacationBool() => NoVacation = !NoVacation;
-
-        public static void FullbrightBool() => Fullbright = !Fullbright;
-
-        public static void CleanRoomsBool() => CleanRooms = !CleanRooms;
-
-        public static void FullEnvBool() => FullEnv = !FullEnv;
-
-        public static void NoiseRedBool() => NoiseRed = !NoiseRed;
-
-        public static void FreeStaffBool() => FreeStaff = !FreeStaff;
-
-        public static void TempLockBool() => TempLock = !TempLock;
-
-        public static void NoWaterElectBool() => NoWaterElect = !NoWaterElect;
-
-        public static void LockStressOfEmployees() => LockStress = !LockStress;
-
-        public static void DisableNeeds() => LockNeeds = !LockNeeds;
-
-        public static void LockEmpSal() => FreeEmployees = !FreeEmployees;
-
-        public static void FullEffSat() => LockEffSat = !LockEffSat;
-
-        public static void LockAgeOfEmployees() => LockAge = !LockAge;
 
         public void Reward()
         {
-            for (var i = 0; i < HUD.Instance.dealWindow.GetActiveDeals().Count; i++)
-            {
-                Deal x = HUD.Instance.dealWindow.GetActiveDeals()[i];
-                if (x.Active && x.ToString() == "ServerDeal")
-                    GameSettings.Instance.MyCompany.MakeTransaction(rnd.Next(500, 50000),
-                        Company.TransactionCategory.Deals);
-            }
+            Deal[] Deals = HUD.Instance.dealWindow.GetActiveDeals().Where(deal => deal.ToString() == "ServerDeal")
+                .ToArray();
+
+            if (Deals.Length == 0) return;
+            
+            for (int i = 0; i < Deals.Length; i++)
+                GameSettings.Instance.MyCompany.MakeTransaction(rnd.Next(500, 50000),
+                    Company.TransactionCategory.Deals);
+            
             reward = true;
         }
-        
+
         public void Deals()
         {
             pushed = true;
-            HashSet<SoftwareProduct> Products = new HashSet<SoftwareProduct>();
-            
-            foreach (SoftwareProduct pr in GameSettings.Instance.simulation.GetAllProducts())
-            {
-                if (pr.Type.ToString() == "CMS" || pr.Type.ToString() == "Office Software" || pr.Type.ToString() == "Operating System" || pr.Type.ToString() == "Game")
-                    if (pr.Userbase > 0 && pr.DevCompany.Name != GameSettings.Instance.MyCompany.Name)
-                        Products.Add(pr);
-            }
-            
-            int index = rnd.Next(0, Products.Count);
+
+            SoftwareProduct[] Products = GameSettings.Instance.simulation.GetAllProducts().Where(pr =>
+                (pr.Type.ToString() == "CMS" || pr.Type.ToString() == "Office Software" ||
+                 pr.Type.ToString() == "Operating System" || pr.Type.ToString() == "Game") && pr.Userbase > 0 &&
+                pr.DevCompany.Name != GameSettings.Instance.MyCompany.Name && pr.ServerReq > 0 &&
+                !pr.ExternalHostingActive).ToArray();
+
+            int index = rnd.Next(0, Products.Length);
             int year = TimeOfDay.Instance.Year;
-            SoftwareProduct prod = GameSettings.Instance.simulation.GetProduct(Products.ElementAt(index).SoftwareID, false);
-            
-            if (prod.Userbase > 0 && prod.ServerReq > 0 && !prod.ExternalHostingActive)
-            {
-                ServerDeal deal = new ServerDeal(prod) {Request = true};
-                deal.StillValid(true);
-                HUD.Instance.dealWindow.InsertDeal(deal);
-            }
+            SoftwareProduct prod =
+                GameSettings.Instance.simulation.GetProduct(Products.ElementAt(index).SoftwareID, false);
+            ServerDeal deal = new ServerDeal(Products[index]) {Request = true};
+            deal.StillValid(true);
+            HUD.Instance.dealWindow.InsertDeal(deal);
         }
-        
-        public static void ChangeCompanyName() { }
-        
+
+        public static void ChangeCompanyName(string Name) => typeof(Company).GetField("Name", BindingFlags.Instance).SetValue(Name, GameSettings.Instance.MyCompany);
+
         public static void ForceBankrupt()
         {
-            foreach(KeyValuePair<uint, SimulatedCompany> sc in GameSettings.Instance.simulation.Companies)
-            {
-                if (sc.Value.Name != CompanyText) continue;
-                
-                if (sc.Value.Bankrupt == false)
-                {
-                    sc.Value.Bankrupt = true;
-                    break;
-                }
-                
-                sc.Value.Bankrupt = false;
-            }
+            SimulatedCompany Company =
+                GameSettings.Instance.simulation.Companies.FirstOrDefault(company => company.Value.Name == CompanyText).Value;
+
+            if (Company == null)
+                return;
+            
+            Company.Bankrupt = !Company.Bankrupt;
         }
         
         internal void AIBankrupt()
         {
-            foreach (KeyValuePair<uint, SimulatedCompany> sc in GameSettings.Instance.simulation.Companies)
-                sc.Value.Bankrupt = true;
+            SimulatedCompany[] Companies = GameSettings.Instance.simulation.Companies.Values.ToArray();
+            
+            for (int i = 0; i < Companies.Length; i++)
+                Companies[i].Bankrupt = true;
         }
         
         internal void HREmployees()
         {
-            if (!ModActive || GameSettings.Instance == null || HUD.Instance == null) return;
-            
-            if (!(SelectorController.Instance != null))
-                return;
+            if (!DoStuff || SelectorController.Instance == null) return;
 
-            for (var i = 0; i < GameSettings.Instance.sActorManager.Actors.Count; i++)
-            {
-                var x = GameSettings.Instance.sActorManager.Actors[i];
-                
-                if (x.employee.CurrentRole.ToString() == "Lead")
-                    x.employee.HR = true;
-            }
+            Actor[] Actors = GameSettings.Instance.sActorManager.Actors
+                .Where(actor => actor.employee.CurrentRole == Employee.EmployeeRole.Lead).ToArray();
+
+            if (Actors.Length == 0) return;
+            
+            for (var i = 0; i < Actors.Length; i++)
+                Actors[i].employee.HR = true;
             
             HUD.Instance.AddPopupMessage("Trainer: All leaders are now HRed!", "Cogs", "", 0, 0, 0, 0, 1);
         }
         
         public static void MaxCode()
         {
-            HashSet<WorkItem> WorkItems = GameSettings.Instance.MyCompany.WorkItems
-                .Where(item => item.GetType().ToString() == "SoftwareAlpha").ToHashSet();
+            WorkItem WorkItem = GameSettings.Instance.MyCompany.WorkItems
+                .Where(item => item.GetType() == typeof(SoftwareAlpha)).FirstOrDefault(item =>
+                    (item as SoftwareAlpha).Name == price_ProductName && !(item as SoftwareAlpha).InBeta);
+
+            if (WorkItem == null) return;
             
-            foreach (SoftwareAlpha alpha in WorkItems)
-            {
-                if (alpha.Name != price_ProductName || alpha.InBeta) continue;
-                
-                alpha.CodeProgress = 0.98f;
-                break;
-            }
+            ((SoftwareAlpha) WorkItem).CodeProgress = 0.98f;
         }
-        
+
         public static void MaxArt()
         {
-            HashSet<WorkItem> WorkItems = GameSettings.Instance.MyCompany.WorkItems
-                .Where(item => item.GetType().ToString() == "SoftwareAlpha").ToHashSet();
-            
-            foreach (SoftwareAlpha alpha in list)
-            {
-                if (alpha.Name != price_ProductName || alpha.InBeta) continue;
-                
-                alpha.ArtProgress = 0.98f;
-                break;
-            }
+            WorkItem WorkItem = GameSettings.Instance.MyCompany.WorkItems
+                .Where(item => item.GetType() == typeof(SoftwareAlpha)).FirstOrDefault(item =>
+                    (item as SoftwareAlpha).Name == price_ProductName && !(item as SoftwareAlpha).InBeta);
+
+            if (WorkItem == null) return;
+
+            ((SoftwareAlpha) WorkItem).ArtProgress = 0.98f;
         }
-        
+
         public static void FixBugs()
         {
-            HashSet<WorkItem> WorkItems = GameSettings.Instance.MyCompany.WorkItems.Where(item => item.GetType().ToString() == "SoftwareAlpha").ToHashSet();
-            foreach (SoftwareAlpha alpha in WorkItems)
-            {
-                if (alpha.Name != price_ProductName || !alpha.InBeta) continue;
-                
-                alpha.FixedBugs = alpha.MaxBugs;
-                break;
-            }
+            WorkItem WorkItem = GameSettings.Instance.MyCompany.WorkItems
+                .Where(item => item.GetType() == typeof(SoftwareAlpha)).FirstOrDefault(item =>
+                    (item as SoftwareAlpha).Name == price_ProductName && !(item as SoftwareAlpha).InBeta);
+
+            if (WorkItem == null) return;
+
+            ((SoftwareAlpha) WorkItem).FixedBugs = ((SoftwareAlpha) WorkItem).MaxBugs;
         }
-        
+
         public static void MaxFollowers()
         {
-            HashSet<WorkItem> WorkItems = GameSettings.Instance.MyCompany.WorkItems.Where(item => item.GetType().ToString() == "SoftwareAlpha").ToHashSet();
-            foreach (SoftwareAlpha alpha in WorkItems)
-            {
-                if (alpha.Name != price_ProductName || alpha._paused) continue;
-                
-                alpha.MaxFollowers += 1000000000;
-                alpha.ReEvaluateMaxFollowers();
-                alpha.FollowerChange += 1000000000f;
-                alpha.Followers += 1000000000f;
-                break;
-            }
+            WorkItem WorkItem = GameSettings.Instance.MyCompany.WorkItems
+                .Where(item => item.GetType() == typeof(SoftwareAlpha)).FirstOrDefault(item =>
+                    (item as SoftwareAlpha).Name == price_ProductName && !(item as SoftwareAlpha).Paused);
+
+            if (WorkItem == null) return;
+
+            SoftwareAlpha alpha = (SoftwareAlpha) WorkItem;
+
+            alpha.MaxFollowers += 1000000000;
+            alpha.ReEvaluateMaxFollowers();
+            alpha.FollowerChange += 1000000000f;
+            alpha.Followers += 1000000000f;
         }
-        
+
         public static void SetProductPrice()
         {
             SoftwareProduct Product = GameSettings.Instance.MyCompany.Products.FirstOrDefault(product => product.Name == price_ProductName);
+
+            if (Product == null) return;
+            
             Product.Price = price_ProductPrice;
             HUD.Instance.AddPopupMessage("Trainer: Price for " + Product.Name + " has been setted up!", "Cogs", "", 0, 0, 0, 0, 1);
         }
@@ -496,10 +437,13 @@ namespace Trainer
             SoftwareProduct[] Products =
                 GameSettings.Instance.MyCompany.Products.Where(product => product.Userbase == 0).ToArray();
 
+            if (Products.Length == 0) return;
+
             for (int i = 0; i < Products.Length; i++)
             {
                 SoftwareProduct product = Products[i];
                 var st = Convert.ToInt32(product.PhysicalCopies) * (Convert.ToInt32(product.Price) / 2);
+                
                 product.PhysicalCopies = 0;
                 GameSettings.Instance.MyCompany.MakeTransaction(st, Company.TransactionCategory.Sales);
             }
@@ -509,6 +453,9 @@ namespace Trainer
         {
             SoftwareProduct Product =
                 GameSettings.Instance.MyCompany.Products.FirstOrDefault(product => product.Name == price_ProductName);
+
+            if (Product == null) return;
+            
             Product.PhysicalCopies = (uint) price_ProductPrice;
             HUD.Instance.AddPopupMessage("Trainer: Stock for " + Product.Name + " has been setted up!", "Cogs",
                 "", 0, 0, 0, 0, 1);
@@ -518,8 +465,14 @@ namespace Trainer
         {
             SoftwareProduct Product =
                 GameSettings.Instance.MyCompany.Products.FirstOrDefault(product => product.Name == price_ProductName);
+
+            if (Product == null)
+                return;
+            
             Product.Userbase = Convert.ToInt32(price_ProductPrice);
-            HUD.Instance.AddPopupMessage("Trainer: Added " + Convert.ToInt32(price_ProductPrice) + " active users to product " + Product.Name, "Cogs", "", 0, 0, 0, 0, 1);
+            HUD.Instance.AddPopupMessage(
+                "Trainer: Added " + Convert.ToInt32(price_ProductPrice) + " active users to product " + Product.Name,
+                "Cogs", "", 0, 0, 0, 0, 1);
         }
         
         public static void RemoveSoft()
@@ -553,6 +506,8 @@ namespace Trainer
 
             SimulatedCompany Company = GameSettings.Instance.simulation.Companies
                 .FirstOrDefault(company => company.Value.Name == CompanyText).Value;
+
+            if (Company == null) return;
             
             Company.BuyOut(GameSettings.Instance.MyCompany, true);
             HUD.Instance.AddPopupMessage("Trainer: Company " + Company.Name + " has been takovered by you!", "Cogs", "", 0, 0, 0, 0, 1);
@@ -564,6 +519,8 @@ namespace Trainer
 
             SimulatedCompany Company =
                 GameSettings.Instance.simulation.Companies.FirstOrDefault(company => company.Value.Name == CompanyText).Value;
+
+            if (Company == null) return;
             
             Company.MakeSubsidiary(GameSettings.Instance.MyCompany);
             Company.IsSubsidiary();

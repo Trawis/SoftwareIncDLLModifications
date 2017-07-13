@@ -92,7 +92,7 @@ namespace Trainer
                 pr.TitleText.text = "Trainer v2 Settings, by Trawis";
                 pr.NonLocTitle = "Trainer v2 Settings, by Trawis";
                 pr.MinSize.x = 670;
-                pr.MinSize.y = 540;
+                pr.MinSize.y = 550;
                 
                 List<GameObject> btn = new List<GameObject>();
                 List<GameObject> col1 = new List<GameObject>();
@@ -321,15 +321,6 @@ namespace Trainer
 
                 #endregion
                 
-                /*
-                var btnList = WindowManager.SpawnList();
-                btnList.ActualItems.Add("1");
-                btnList.ActualItems.Add("2");
-                btnList.ActualItems.Add("3");
-                btn.Add(btnList.gameObject);
-                btnList.UpdateElements();
-                */
-                
                 #region Employee Management
 
                 //Employees Management
@@ -337,62 +328,62 @@ namespace Trainer
                 var lockNeeds = WindowManager.SpawnCheckbox();
                 lockNeeds.GetComponentInChildren<UnityEngine.UI.Text>().text = "Disable Needs";
                 lockNeeds.isOn = TrainerBehaviour.LockNeeds;
-                lockNeeds.onValueChanged.AddListener(a => TrainerBehaviour.DisableNeeds());
+                lockNeeds.onValueChanged.AddListener(async => TrainerBehaviour.LockNeeds = !TrainerBehaviour.LockNeeds);
                 col1.Add(lockNeeds.gameObject);
 
                 //CheckBox for LockEmployeeStress
                 var lockStress = WindowManager.SpawnCheckbox();
                 lockStress.GetComponentInChildren<UnityEngine.UI.Text>().text = "Disable Stress";
                 lockStress.isOn = TrainerBehaviour.LockStress;
-                lockStress.onValueChanged.AddListener(a => TrainerBehaviour.LockStressOfEmployees());
+                lockStress.onValueChanged.AddListener(a => TrainerBehaviour.LockStress = TrainerBehaviour.LockStress);
                 col1.Add(lockStress.gameObject);
 
                 //CheckBox for Free Employees
                 var lockEmpSal = WindowManager.SpawnCheckbox();
                 lockEmpSal.GetComponentInChildren<UnityEngine.UI.Text>().text = "Free Employees";
                 lockEmpSal.isOn = TrainerBehaviour.FreeEmployees;
-                lockEmpSal.onValueChanged.AddListener(a => TrainerBehaviour.LockEmpSal());
+                lockEmpSal.onValueChanged.AddListener(a => TrainerBehaviour.FreeEmployees = !TrainerBehaviour.FreeEmployees);
                 col1.Add(lockEmpSal.gameObject);
 
                 //CheckBox for Free Staff
                 var toggleFreeStaff = WindowManager.SpawnCheckbox();
                 toggleFreeStaff.GetComponentInChildren<UnityEngine.UI.Text>().text = "Free Staff";
                 toggleFreeStaff.isOn = TrainerBehaviour.FreeStaff;
-                toggleFreeStaff.onValueChanged.AddListener(a => TrainerBehaviour.FreeStaffBool());
+                toggleFreeStaff.onValueChanged.AddListener(a => TrainerBehaviour.FreeStaff = !TrainerBehaviour.FreeStaff);
                 col1.Add(toggleFreeStaff.gameObject);
 
                 //CheckBox for Efficiency & Satisfaction
                 var lockEffSat = WindowManager.SpawnCheckbox();
                 lockEffSat.GetComponentInChildren<UnityEngine.UI.Text>().text = "Full Efficiency & Satisfaction";
                 lockEffSat.isOn = TrainerBehaviour.LockEffSat;
-                lockEffSat.onValueChanged.AddListener(a => TrainerBehaviour.FullEffSat());
+                lockEffSat.onValueChanged.AddListener(a => TrainerBehaviour.LockEffSat = !TrainerBehaviour.LockEffSat);
                 col1.Add(lockEffSat.gameObject);
 
                 //CheckBox for EmployeeAge
                 var lockAge = WindowManager.SpawnCheckbox();
                 lockAge.GetComponentInChildren<UnityEngine.UI.Text>().text = "Lock age of employees";
                 lockAge.isOn = TrainerBehaviour.LockAge;
-                lockAge.onValueChanged.AddListener(a => TrainerBehaviour.LockAgeOfEmployees());
+                lockAge.onValueChanged.AddListener(a => TrainerBehaviour.LockAge = !TrainerBehaviour.LockAge);
                 col1.Add(lockAge.gameObject);
 
                 //CheckBox for No Vacation
                 var toggleNoVacation = WindowManager.SpawnCheckbox();
                 toggleNoVacation.GetComponentInChildren<UnityEngine.UI.Text>().text = "No Vacation";
                 toggleNoVacation.isOn = TrainerBehaviour.NoVacation;
-                toggleNoVacation.onValueChanged.AddListener(a => TrainerBehaviour.NoVacationBool());
+                toggleNoVacation.onValueChanged.AddListener(a => TrainerBehaviour.NoVacation = !TrainerBehaviour.NoVacation);
                 col1.Add(toggleNoVacation.gameObject);
 
                 var toggleNoSickness = WindowManager.SpawnCheckbox();
                 toggleNoSickness.GetComponentInChildren<UnityEngine.UI.Text>().text = "No Sickness";
                 toggleNoSickness.isOn = TrainerBehaviour.NoSickness;
-                toggleNoSickness.onValueChanged.AddListener(a => TrainerBehaviour.NoSicknessBool());
+                toggleNoSickness.onValueChanged.AddListener(a => TrainerBehaviour.NoSickness = !TrainerBehaviour.NoSickness);
                 col1.Add(toggleNoSickness.gameObject);
 
                 //CheckBox for Efficiency & Satisfaction
                 var toggMaxOutEff = WindowManager.SpawnCheckbox();
                 toggMaxOutEff.GetComponentInChildren<UnityEngine.UI.Text>().text = "Ultra Efficiency";
                 toggMaxOutEff.isOn = TrainerBehaviour.MaxOutEff;
-                toggMaxOutEff.onValueChanged.AddListener(a => TrainerBehaviour.MaxOutEffBool());
+                toggMaxOutEff.onValueChanged.AddListener(a => TrainerBehaviour.MaxOutEff = !TrainerBehaviour.MaxOutEff);
                 col1.Add(toggMaxOutEff.gameObject);
                 //Employees Management END
                 
@@ -405,41 +396,41 @@ namespace Trainer
                 var toggleFullEnv = WindowManager.SpawnCheckbox();
                 toggleFullEnv.GetComponentInChildren<UnityEngine.UI.Text>().text = "Full Environment";
                 toggleFullEnv.isOn = TrainerBehaviour.FullEnv;
-                toggleFullEnv.onValueChanged.AddListener(a => TrainerBehaviour.FullEnvBool());
+                toggleFullEnv.onValueChanged.AddListener(a => TrainerBehaviour.FullEnv = !TrainerBehaviour.FullEnv);
                 col2.Add(toggleFullEnv.gameObject);
 
                 //CheckBox for Fullbright
                 var toggleFullbright = WindowManager.SpawnCheckbox();
                 toggleFullbright.GetComponentInChildren<UnityEngine.UI.Text>().text = "Full Sun light";
                 toggleFullbright.isOn = TrainerBehaviour.Fullbright;
-                toggleFullbright.onValueChanged.AddListener(a => TrainerBehaviour.FullbrightBool());
+                toggleFullbright.onValueChanged.AddListener(a => TrainerBehaviour.Fullbright = !TrainerBehaviour.Fullbright);
                 col2.Add(toggleFullbright.gameObject);
 
                 //CheckBox for Lock temperature to 21 degree
                 var toggleTempLock = WindowManager.SpawnCheckbox();
                 toggleTempLock.GetComponentInChildren<UnityEngine.UI.Text>().text = "Lock temperature to 21";
                 toggleTempLock.isOn = TrainerBehaviour.TempLock;
-                toggleTempLock.onValueChanged.AddListener(a => TrainerBehaviour.TempLockBool());
+                toggleTempLock.onValueChanged.AddListener(a => TrainerBehaviour.TempLock = !TrainerBehaviour.TempLock);
                 col2.Add(toggleTempLock.gameObject);
 
                 var toggleNoMaintenance = WindowManager.SpawnCheckbox();
                 toggleNoMaintenance.GetComponentInChildren<UnityEngine.UI.Text>().text = "No Maintenance";
                 toggleNoMaintenance.isOn = TrainerBehaviour.NoMaintenance;
-                toggleNoMaintenance.onValueChanged.AddListener(a => TrainerBehaviour.NoMaintenanceBool());
+                toggleNoMaintenance.onValueChanged.AddListener(a => TrainerBehaviour.NoMaintenance = !TrainerBehaviour.NoMaintenance);
                 col2.Add(toggleNoMaintenance.gameObject);
 
                 //CheckBox for Noise Reduction
                 var toggleNoiseRed = WindowManager.SpawnCheckbox();
                 toggleNoiseRed.GetComponentInChildren<UnityEngine.UI.Text>().text = "Noise Reduction";
                 toggleNoiseRed.isOn = TrainerBehaviour.NoiseRed;
-                toggleNoiseRed.onValueChanged.AddListener(a => TrainerBehaviour.NoiseRedBool());
+                toggleNoiseRed.onValueChanged.AddListener(a => TrainerBehaviour.NoiseRed = !TrainerBehaviour.NoiseRed);
                 col2.Add(toggleNoiseRed.gameObject);
 
                 //CheckBox for CleanRooms
                 var toggleCleanRooms = WindowManager.SpawnCheckbox();
                 toggleCleanRooms.GetComponentInChildren<UnityEngine.UI.Text>().text = "Rooms are always clean";
                 toggleCleanRooms.isOn = TrainerBehaviour.CleanRooms;
-                toggleCleanRooms.onValueChanged.AddListener(a => TrainerBehaviour.CleanRoomsBool());
+                toggleCleanRooms.onValueChanged.AddListener(a => TrainerBehaviour.CleanRooms = !TrainerBehaviour.NoiseRed);
                 col2.Add(toggleCleanRooms.gameObject);
                 //Room Management END
                 
@@ -451,80 +442,89 @@ namespace Trainer
                 var toggleAutoDistDeal = WindowManager.SpawnCheckbox();
                 toggleAutoDistDeal.GetComponentInChildren<UnityEngine.UI.Text>().text = "Auto Distribution Deals";
                 toggleAutoDistDeal.isOn = TrainerBehaviour.dDeal;
-                toggleAutoDistDeal.onValueChanged.AddListener(a => TrainerBehaviour.dDealBool());
+                toggleAutoDistDeal.onValueChanged.AddListener(a => TrainerBehaviour.dDeal = !TrainerBehaviour.dDeal);
                 col3.Add(toggleAutoDistDeal.gameObject);
 
                 var toggleFreePrint = WindowManager.SpawnCheckbox();
                 toggleFreePrint.GetComponentInChildren<UnityEngine.UI.Text>().text = "Free Print";
                 toggleFreePrint.isOn = TrainerBehaviour.FreePrint;
-                toggleFreePrint.onValueChanged.AddListener(a => TrainerBehaviour.FreePrintBool());
+                toggleFreePrint.onValueChanged.AddListener(a => TrainerBehaviour.FreePrint = !TrainerBehaviour.FreePrint);
                 col3.Add(toggleFreePrint.gameObject);
 
                 //CheckBox for Free Water & Electricity
                 var toggleNoWaterElect = WindowManager.SpawnCheckbox();
                 toggleNoWaterElect.GetComponentInChildren<UnityEngine.UI.Text>().text = "Free Water & Electricity";
                 toggleNoWaterElect.isOn = TrainerBehaviour.NoWaterElect;
-                toggleNoWaterElect.onValueChanged.AddListener(a => TrainerBehaviour.NoWaterElectBool());
+                toggleNoWaterElect.onValueChanged.AddListener(a => TrainerBehaviour.NoWaterElect = !TrainerBehaviour.NoWaterElect);
                 col3.Add(toggleNoWaterElect.gameObject);
 
                 var toggleBookshelfSkill = WindowManager.SpawnCheckbox();
                 toggleBookshelfSkill.GetComponentInChildren<UnityEngine.UI.Text>().text = "Increase Bookshelf Skill";
                 toggleBookshelfSkill.isOn = TrainerBehaviour.IncBookshelfSkill;
-                toggleBookshelfSkill.onValueChanged.AddListener(a => TrainerBehaviour.IncBookshelfSkillBool());
+                toggleBookshelfSkill.onValueChanged.AddListener(a => TrainerBehaviour.IncBookshelfSkill = !TrainerBehaviour.IncBookshelfSkill);
                 col3.Add(toggleBookshelfSkill.gameObject);
 
                 var toggleIncCourierCap = WindowManager.SpawnCheckbox();
                 toggleIncCourierCap.GetComponentInChildren<UnityEngine.UI.Text>().text = "Increase Courier Capacity";
                 toggleIncCourierCap.isOn = TrainerBehaviour.IncCourierCap;
-                toggleIncCourierCap.onValueChanged.AddListener(a => TrainerBehaviour.IncCourierCapBool());
+                toggleIncCourierCap.onValueChanged.AddListener(a => TrainerBehaviour.IncCourierCap = !TrainerBehaviour.IncCourierCap);
                 col3.Add(toggleIncCourierCap.gameObject);
 
                 var togglePrintSpeed = WindowManager.SpawnCheckbox();
                 togglePrintSpeed.GetComponentInChildren<UnityEngine.UI.Text>().text = "Increase Print Speed";
                 togglePrintSpeed.isOn = TrainerBehaviour.IncPrintSpeed;
-                togglePrintSpeed.onValueChanged.AddListener(a => TrainerBehaviour.IncPrintSpeedBool());
+                togglePrintSpeed.onValueChanged.AddListener(a => TrainerBehaviour.IncPrintSpeed = !TrainerBehaviour.IncPrintSpeed);
                 col3.Add(togglePrintSpeed.gameObject);
 
                 var toggleMoreHosting = WindowManager.SpawnCheckbox();
                 toggleMoreHosting.GetComponentInChildren<UnityEngine.UI.Text>().text = "More Hosting Deals";
                 toggleMoreHosting.isOn = TrainerBehaviour.MoreHosting;
-                toggleMoreHosting.onValueChanged.AddListener(a => TrainerBehaviour.MoreHostingBool());
+                toggleMoreHosting.onValueChanged.AddListener(a => TrainerBehaviour.MoreHosting = !TrainerBehaviour.MoreHosting);
                 col3.Add(toggleMoreHosting.gameObject);
 
                 var toggleRedISPCost = WindowManager.SpawnCheckbox();
                 toggleRedISPCost.GetComponentInChildren<UnityEngine.UI.Text>().text = "Reduce Internet Cost";
                 toggleRedISPCost.isOn = TrainerBehaviour.RedISPCost;
-                toggleRedISPCost.onValueChanged.AddListener(a => TrainerBehaviour.RedISPCostBool());
+                toggleRedISPCost.onValueChanged.AddListener(a => TrainerBehaviour.RedISPCost = !TrainerBehaviour.RedISPCost);
                 col3.Add(toggleRedISPCost.gameObject);
                 //Company Management END
                 
                 #endregion
                 
                 #region Loops
-                
+
                 for (var i = 0; i < btn.Count; i++)
                 {
                     var item = btn[i];
-                    
+
                     WindowManager.AddElementToWindow(item, pr, new Rect(1, (i + 7) * 32, 150, 32),
                         new Rect(0, 0, 0, 0));
-                    
-                    var xitem = col1[i];
-                    
-                    WindowManager.AddElementToWindow(xitem, pr, new Rect(161, (i+7) * 32, 150, 32),
-                        new Rect(0, 0, 0, 0));
-                    
-                    var zitem = col2[i];
-                    
-                    WindowManager.AddElementToWindow(zitem, pr, new Rect(322, (i + 7) * 32, 150, 32),
-                        new Rect(0, 0, 0, 0));
-                    
-                    var yitem = col3[i];
-                    
-                    WindowManager.AddElementToWindow(yitem, pr, new Rect(483, (i + 7) * 32, 150, 32),
+                }
+
+                for (int i = 0; i < col1.Count; i++)
+                {
+                    var item = col1[i];
+
+                    WindowManager.AddElementToWindow(item, pr, new Rect(161, (i + 7) * 32, 150, 32),
                         new Rect(0, 0, 0, 0));
                 }
-                
+
+                for (int i = 0; i < col2.Count; i++)
+                {
+                    var item = col2[i];
+
+                    WindowManager.AddElementToWindow(item, pr, new Rect(322, (i + 7) * 32, 150, 32),
+                        new Rect(0, 0, 0, 0));
+                }
+
+                for (int i = 0; i < col3.Count; i++)
+                {
+                    var item = col3[i];
+
+                    WindowManager.AddElementToWindow(item, pr, new Rect(483, (i + 7) * 32, 150, 32),
+                        new Rect(0, 0, 0, 0));
+                }
+
                 #endregion
             }
             else
