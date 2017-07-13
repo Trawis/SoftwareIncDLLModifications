@@ -328,7 +328,7 @@ namespace Trainer
                 var lockNeeds = WindowManager.SpawnCheckbox();
                 lockNeeds.GetComponentInChildren<UnityEngine.UI.Text>().text = "Disable Needs";
                 lockNeeds.isOn = TrainerBehaviour.LockNeeds;
-                lockNeeds.onValueChanged.AddListener(async => TrainerBehaviour.LockNeeds = !TrainerBehaviour.LockNeeds);
+                lockNeeds.onValueChanged.AddListener(a => TrainerBehaviour.LockNeeds = !TrainerBehaviour.LockNeeds);
                 col1.Add(lockNeeds.gameObject);
 
                 //CheckBox for LockEmployeeStress
