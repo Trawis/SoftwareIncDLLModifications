@@ -10,22 +10,7 @@ namespace Trainer
         //The behaviors array contains all behaviours that have been spawned for this mod, one for each implementation
         
         #region Fields
-        
-        private static string novacBox = "";
-        private static string repBox = "";
 
-        public static string NovacBox
-        {
-            get => novacBox;
-            set => novacBox = value;
-        }
-
-        public static string RepBox
-        {
-            get => repBox;
-            set => repBox = value;
-        }
-        
         public static bool opened = false;
         public static GUIWindow pr;
         
@@ -113,7 +98,7 @@ namespace Trainer
                 buttonMoney.GetComponentInChildren<UnityEngine.UI.Text>().text = "Add Money";
                 buttonMoney.onClick.AddListener(() =>
                 {
-                    NovacBox = textboxMoney.text;
+                    TrainerBehaviour.novacBox = textboxMoney.text;
                     TrainerBehaviour.IncreaseMoney();
                 });
                 WindowManager.AddElementToWindow(buttonMoney.gameObject, pr, new Rect(161, 0, 150, 32), new Rect(0, 0, 0, 0));
@@ -132,7 +117,7 @@ namespace Trainer
                 buttonAddRep.GetComponentInChildren<UnityEngine.UI.Text>().text = "Add Reputation";
                 buttonAddRep.onClick.AddListener(() =>
                 {
-                    RepBox = textboxRep.text;
+                    TrainerBehaviour.repBox = textboxRep.text;
                     TrainerBehaviour.AddRep();
                 });
                 WindowManager.AddElementToWindow(buttonAddRep.gameObject, pr, new Rect(161, 32, 150, 32), new Rect(0, 0, 0, 0));
@@ -335,7 +320,7 @@ namespace Trainer
                 var lockStress = WindowManager.SpawnCheckbox();
                 lockStress.GetComponentInChildren<UnityEngine.UI.Text>().text = "Disable Stress";
                 lockStress.isOn = TrainerBehaviour.LockStress;
-                lockStress.onValueChanged.AddListener(a => TrainerBehaviour.LockStress = TrainerBehaviour.LockStress);
+                lockStress.onValueChanged.AddListener(a => TrainerBehaviour.LockStress = !TrainerBehaviour.LockStress);
                 col1.Add(lockStress.gameObject);
 
                 //CheckBox for Free Employees

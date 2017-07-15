@@ -18,7 +18,6 @@ namespace Trainer
         public static bool ModActive;
         public static bool LockAge;
         public static bool LockStress;
-        public static bool LockHunger = false;
         public static bool LockNeeds;
         public static bool LockEffSat;
         public static bool FreeEmployees;
@@ -44,13 +43,13 @@ namespace Trainer
         public bool reward;
         public bool pushed;
 
+        public static string novacBox = "";
+        public static string repBox = "";
         public static string CompanyText = "";
         public static string price_ProductName = "";
         public static float price_ProductPrice = 10f;
 
-        public Text button = WindowManager.SpawnLabel();
         public bool start;
-        public bool free = true;
         
         #endregion
         
@@ -531,7 +530,7 @@ namespace Trainer
         {
             if (!DoStuff) return;
             
-            GameSettings.Instance.MyCompany.MakeTransaction(Main.NovacBox.ConvertToInt(Main.NovacBox), Company.TransactionCategory.Deals);
+            GameSettings.Instance.MyCompany.MakeTransaction(novacBox.ConvertToInt(novacBox), Company.TransactionCategory.Deals);
             HUD.Instance.AddPopupMessage("Trainer: Money has been added in category Deals!", "Cogs", "", 0, 0, 0, 0, 1);
         }
 
@@ -565,7 +564,7 @@ namespace Trainer
             GameSettings.Instance.MyCompany.BusinessReputation = 1f;
             SoftwareType random1 = GameSettings.Instance.SoftwareTypes.Values.Where(x => !x.OneClient).GetRandom();
             string random2 = random1.Categories.Keys.GetRandom();
-            GameSettings.Instance.MyCompany.AddFans(Main.RepBox.ConvertToInt(Main.RepBox), random1.Name, random2);
+            GameSettings.Instance.MyCompany.AddFans(repBox.ConvertToInt(repBox), random1.Name, random2);
             HUD.Instance.AddPopupMessage("Trainer: Reputation has been added for SoftwareType: "+random1.Name + ", Category: "+random2, "Cogs", "", 0, 0, 0, 0, 1);
         }
 
