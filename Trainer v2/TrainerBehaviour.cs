@@ -12,7 +12,7 @@ namespace Trainer
     {
         #region Fields
 
-        Random rnd;
+        public static Random rnd;
         public static bool DoStuff => ModActive && GameSettings.Instance != null && HUD.Instance != null;
         
         public static bool ModActive;
@@ -40,8 +40,8 @@ namespace Trainer
         public static bool NoSickness;
         public static bool MaxOutEff;
         
-        public bool reward;
-        public bool pushed;
+        public static bool reward;
+        public static bool pushed;
 
         public static string novacBox = "";
         public static string repBox = "";
@@ -295,13 +295,13 @@ namespace Trainer
             }
         }
         
-        internal void ClearLoans()
+        public static void ClearLoans()
         {
             GameSettings.Instance.Loans.Clear();
             HUD.Instance.AddPopupMessage("Trainer: All loans are cleared!", "Cogs", "", 0, 0, 0, 0, 1);
         }
 
-        public void Reward()
+        public static void Reward()
         {
             Deal[] Deals = HUD.Instance.dealWindow.GetActiveDeals().Where(deal => deal.ToString() == "ServerDeal")
                 .ToArray();
@@ -315,7 +315,7 @@ namespace Trainer
             reward = true;
         }
 
-        public void Deals()
+        public static void Deals()
         {
             pushed = true;
 
@@ -347,7 +347,7 @@ namespace Trainer
             Company.Bankrupt = !Company.Bankrupt;
         }
         
-        internal void AIBankrupt()
+        public static void AIBankrupt()
         {
             SimulatedCompany[] Companies = GameSettings.Instance.simulation.Companies.Values.ToArray();
             
@@ -355,7 +355,7 @@ namespace Trainer
                 Companies[i].Bankrupt = true;
         }
         
-        internal void HREmployees()
+        public static void HREmployees()
         {
             if (!DoStuff || SelectorController.Instance == null) return;
 
@@ -534,7 +534,7 @@ namespace Trainer
             HUD.Instance.AddPopupMessage("Trainer: Money has been added in category Deals!", "Cogs", "", 0, 0, 0, 0, 1);
         }
 
-        public void ResetAgeOfEmployees()
+        public static void ResetAgeOfEmployees()
         {
             if (!DoStuff) return;
 
@@ -556,7 +556,7 @@ namespace Trainer
                 HUD.Instance.AddPopupMessage("Trainer v2 has been activated!", "Cogs", "", 0, 0, 0, 0, 1);
         }
 
-        internal static void AddRep()
+        public static void AddRep()
         {
             if (!(GameSettings.Instance != null))
                 return;
@@ -576,7 +576,7 @@ namespace Trainer
                 HUD.Instance.AddPopupMessage("Trainer v2 has been deactivated!", "Cogs", "", 0, 0, 0, 0, 1);
         }
 
-        internal void EmployeesToMax()
+        public static void EmployeesToMax()
         {
             if (!DoStuff || SelectorController.Instance == null) return;
 
@@ -599,7 +599,7 @@ namespace Trainer
             HUD.Instance.AddPopupMessage("Trainer: All employees are now max skilled!", "Cogs", "", 0, 0, 0, 0, 1);
         }
 
-        internal void UnlockAllSpace()
+        public static void UnlockAllSpace()
         {
             if (!DoStuff) return;
             
@@ -608,7 +608,7 @@ namespace Trainer
             HUD.Instance.AddPopupMessage("Trainer: All buildable area is now unlocked!", "Cogs", "", 0, 0, 0, 0, 1);
         }
 
-        internal void UnlockAll()
+        public static void UnlockAll()
         {
             if (!DoStuff) return;
             

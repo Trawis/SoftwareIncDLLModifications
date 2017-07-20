@@ -46,8 +46,6 @@ namespace Trainer
                 List<GameObject> btn = new List<GameObject>(), col1 = new List<GameObject>(), col2 = new List<GameObject>(),
                     col3 = new List<GameObject>();
                 
-                TrainerBehaviour tb = new TrainerBehaviour();
-                
                 #endregion
                 
                 #region Money
@@ -107,27 +105,27 @@ namespace Trainer
                 
                 Utils.AddButton("Bankrupt", new Rect(483, 160, 150, 32), TrainerBehaviour.ForceBankrupt);
                 
-                Utils.AddButton("Bankrupt All", tb.AIBankrupt, ref btn);
+                Utils.AddButton("Bankrupt All", TrainerBehaviour.AIBankrupt, ref btn);
                 
                 #endregion
                 
                 #region Buttons
                 
-                Utils.AddButton("Clear all loans", tb.ClearLoans, ref btn);
+                Utils.AddButton("Clear all loans", TrainerBehaviour.ClearLoans, ref btn);
                 
-                Utils.AddButton("HR Leaders", tb.HREmployees, ref btn);
+                Utils.AddButton("HR Leaders", TrainerBehaviour.HREmployees, ref btn);
                 
-                Utils.AddButton("Max Employees' Skills", tb.EmployeesToMax, ref btn);
+                Utils.AddButton("Max Employees' Skills", TrainerBehaviour.EmployeesToMax, ref btn);
 
                 Utils.AddButton("Remove products", TrainerBehaviour.RemoveSoft, ref btn);
                 
-                Utils.AddButton("Reset Employees' Age", tb.ResetAgeOfEmployees, ref btn);
+                Utils.AddButton("Reset Employees' Age", TrainerBehaviour.ResetAgeOfEmployees, ref btn);
                 
                 Utils.AddButton("Sell products stock", TrainerBehaviour.SellProductsStock, ref btn);
                 
-                Utils.AddButton("Unlock all furniture", tb.UnlockAll, ref btn);
+                Utils.AddButton("Unlock all furniture", TrainerBehaviour.UnlockAll, ref btn);
                 
-                Utils.AddButton("Unlock all space", tb.UnlockAllSpace, ref btn);
+                Utils.AddButton("Unlock all space", TrainerBehaviour.UnlockAllSpace, ref btn);
                 
                 #endregion
                 
@@ -191,7 +189,7 @@ namespace Trainer
                 
                 #region Loops
 
-                for (var i = 0; i < btn.Count; i++)
+                for (int i = 0; i < btn.Count; i++)
                 {
                     var item = btn[i];
 
