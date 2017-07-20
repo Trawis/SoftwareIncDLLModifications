@@ -3,6 +3,10 @@ This Trainer is for Software Inc game. It's based on https://github.com/hrkrx/So
 		(Features that could cause some problems: AI Bankrupt All, Max Code, Max Art, Max Followers)
 
 Currently working features:
+- Splitted efficiency and satisfaction option
+- Increased efficiency for leaders to 2000% with "Ultra efficiency"
+- Small other fixes
+
 01.07.2017. for Alpha 9.9.7
 - Fix for Max Followers, Max Code, Max Art
 

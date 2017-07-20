@@ -39,15 +39,16 @@ namespace Trainer
         public static bool NoMaintenance;
         public static bool NoSickness;
         public static bool MaxOutEff;
+        public static bool LockSat;
         
         public bool reward;
         public bool pushed;
 
-        public static string novacBox = "";
-        public static string repBox = "";
-        public static string CompanyText = "";
-        public static string price_ProductName = "";
-        public static float price_ProductPrice = 10f;
+        public static string novacBox;
+        public static string repBox;
+        public static string CompanyText;
+        public static string price_ProductName;
+        public static float price_ProductPrice;
 
         public bool start;
         
@@ -83,6 +84,7 @@ namespace Trainer
             NoMaintenance = LoadSetting("NoMaintenance", false);
             NoSickness = LoadSetting("NoSickness", false);
             MaxOutEff = LoadSetting("MaxOutEff", false);
+            LockSat = LoadSetting("LockSat", false);
         }
         
         private void Update()
@@ -100,92 +102,92 @@ namespace Trainer
                 Main.pr.Close();
                 Main.opened = false;
             }
-            
             if (start == false)
             {
                 Main.Tipka();
+                Main.opened = false;
                 start = true;
             }
             
             if (FreeStaff)
                 GameSettings.Instance.StaffSalaryDue = 0f;
             
-            foreach (var stvar in GameSettings.Instance.sRoomManager.AllFurniture)
+            foreach (var item in GameSettings.Instance.sRoomManager.AllFurniture)
             {
                 if (NoiseRed)
                 {
-                    stvar.ActorNoise = 0f;
-                    stvar.EnvironmentNoise = 0f;
-                    stvar.FinalNoise = 0f;
-                    stvar.Noisiness = 0;
+                    item.ActorNoise = 0f;
+                    item.EnvironmentNoise = 0f;
+                    item.FinalNoise = 0f;
+                    item.Noisiness = 0;
                 }
                 
-                if (!NoWaterElect) continue;
-                
-                stvar.Water = 0;
-                stvar.Wattage = 0;
+                if (NoWaterElect) continue; //check this
+
+                item.Water = 0;
+                item.Wattage = 0;
             }
             
             for (var i = 0; i < GameSettings.Instance.sRoomManager.Rooms.Count; i++)
             {
-                var soba = GameSettings.Instance.sRoomManager.Rooms[i];
+                var room = GameSettings.Instance.sRoomManager.Rooms[i];
                 
                 if (CleanRooms)
-                    soba.ClearDirt();
+                    room.ClearDirt();
                 
                 if (TempLock)
-                    soba.Temperature = 21f;
+                    room.Temperature = 21.4f;
                 
                 if (FullEnv)
-                    soba.FurnEnvironment = 2;
+                    room.FurnEnvironment = 4;
                 
                 if (Fullbright)
-                    soba.IndirectLighting = 4;
+                    room.IndirectLighting = 8;
             }
             
             for (var i = 0; i < GameSettings.Instance.sActorManager.Actors.Count; i++)
             {
-                var item = GameSettings.Instance.sActorManager.Actors[i];
+                var act = GameSettings.Instance.sActorManager.Actors[i];
                 
                 if (LockAge)
                 {
-                    item.employee.AgeMonth = Convert.ToInt32(item.employee.Age) * 12; //20*12
-                    item.UpdateAgeLook();
+                    act.employee.AgeMonth = Convert.ToInt32(act.employee.Age) * 12; //20*12
+                    act.UpdateAgeLook();
                 }
                 
                 if (LockStress)
-                    item.employee.Stress = 1;
+                    act.employee.Stress = 1;
                 
                 if (LockEffSat)
                 {
-                    if (item.employee.CurrentRole.ToString() == "Lead")
-                        item.Effectiveness = MaxOutEff ? 12 : 4;
+                    if (act.employee.CurrentRole.ToString() == "Lead")
+                        act.Effectiveness = MaxOutEff ? 20 : 4;
                     else
-                        item.Effectiveness = MaxOutEff ? 10 : 2;
-                    
-                    item.ChangeSatisfaction(10, 10, Employee.Thought.LoveWork, Employee.Thought.LikeTeamWork, 0);
+                        act.Effectiveness = MaxOutEff ? 10 : 2;
                 }
-                
+                if (LockSat)
+                    act.ChangeSatisfaction(10, 10, Employee.Thought.LoveWork, Employee.Thought.LikeTeamWork, 0);
+
                 if (LockNeeds)
                 {
-                    item.employee.Bladder = 1;
-                    item.employee.Hunger = 1;
-                    item.employee.Energy = 1;
-                    item.employee.Social = 1;
+                    act.employee.Bladder = 1;
+                    act.employee.Hunger = 1;
+                    act.employee.Energy = 1;
+                    act.employee.Social = 1;
                 }
                 
                 if (FreeEmployees)
                 {
-                    item.employee.Salary = 0;
-                    item.NegotiateSalary = false;
-                    item.IgnoreOffSalary = true;
+                    act.employee.Salary = 0;
+                    act.NegotiateSalary = false;
+                    act.IgnoreOffSalary = true;
                 }
                 
                 if (NoiseRed)
-                    item.Noisiness = 0;
+                    act.Noisiness = 0;
                 
                 if (NoVacation)
-                    item.VacationMonth = SDateTime.NextMonth(24);
+                    act.VacationMonth = SDateTime.NextMonth(24);
             }
             
             LoanWindow.factor = 250000;
@@ -232,6 +234,7 @@ namespace Trainer
                     x.PrintSpeed = 2f;
                 }
             }
+            //add printspeed and printprice when it's disabled (else) TODO
             if (FreePrint)
             {
                 foreach (var x in GameSettings.Instance.ProductPrinters)
@@ -252,6 +255,7 @@ namespace Trainer
                     }
                 }
             }
+            //else 0.25 TODO
             if (NoMaintenance)
             {
                 foreach (Furniture furniture in GameSettings.Instance.sRoomManager.AllFurniture)
@@ -292,6 +296,7 @@ namespace Trainer
                 SaveSetting("NoMaintenance", NoMaintenance.ToString());
                 SaveSetting("NoSickness", NoSickness.ToString());
                 SaveSetting("MaxOutEff", MaxOutEff.ToString());
+                SaveSetting("LockSat", LockSat.ToString());
             }
         }
         
@@ -396,7 +401,7 @@ namespace Trainer
         {
             WorkItem WorkItem = GameSettings.Instance.MyCompany.WorkItems
                 .Where(item => item.GetType() == typeof(SoftwareAlpha)).FirstOrDefault(item =>
-                    (item as SoftwareAlpha).Name == price_ProductName && !(item as SoftwareAlpha).InBeta);
+                    (item as SoftwareAlpha).Name == price_ProductName && (item as SoftwareAlpha).InBeta); //! removed
 
             if (WorkItem == null) return;
 
@@ -480,8 +485,8 @@ namespace Trainer
             SDateTime time = new SDateTime(1, 70);
             CompanyType type = new CompanyType();
             Dictionary<string, string[]> dict = new Dictionary<string,string[]>();
-            SimulatedCompany kompanija = new SimulatedCompany("Trainer Company", time, type, dict, 0f);
-            kompanija.CanMakeTransaction(1000000000f);
+            SimulatedCompany simComp = new SimulatedCompany("Trainer Company", time, type, dict, 0f);
+            simComp.CanMakeTransaction(1000000000f);
 
             SoftwareProduct[] Products = GameSettings.Instance.simulation.GetAllProducts().Where(product =>
                 product.DevCompany == GameSettings.Instance.MyCompany &&
@@ -495,7 +500,7 @@ namespace Trainer
                 Product.Userbase = 0;
                 Product.PhysicalCopies = 0;
                 Product.Marketing = 0;
-                Product.Trade(kompanija);
+                Product.Trade(simComp);
             }
         }
         
@@ -529,8 +534,9 @@ namespace Trainer
         public static void IncreaseMoney()
         {
             if (!DoStuff) return;
-            
-            GameSettings.Instance.MyCompany.MakeTransaction(novacBox.ConvertToInt(novacBox), Company.TransactionCategory.Deals);
+
+            GameSettings.Instance.MyCompany.MakeTransaction(int.Parse(novacBox), Company.TransactionCategory.Deals);
+            //GameSettings.Instance.MyCompany.MakeTransaction(novacBox.ConvertToInt(novacBox), Company.TransactionCategory.Deals);
             HUD.Instance.AddPopupMessage("Trainer: Money has been added in category Deals!", "Cogs", "", 0, 0, 0, 0, 1);
         }
 
@@ -564,7 +570,7 @@ namespace Trainer
             GameSettings.Instance.MyCompany.BusinessReputation = 1f;
             SoftwareType random1 = GameSettings.Instance.SoftwareTypes.Values.Where(x => !x.OneClient).GetRandom();
             string random2 = random1.Categories.Keys.GetRandom();
-            GameSettings.Instance.MyCompany.AddFans(repBox.ConvertToInt(repBox), random1.Name, random2);
+            GameSettings.Instance.MyCompany.AddFans(int.Parse(repBox), random1.Name, random2);
             HUD.Instance.AddPopupMessage("Trainer: Reputation has been added for SoftwareType: "+random1.Name + ", Category: "+random2, "Cogs", "", 0, 0, 0, 0, 1);
         }
 
