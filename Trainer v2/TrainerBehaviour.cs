@@ -334,7 +334,7 @@ namespace Trainer
             HUD.Instance.dealWindow.InsertDeal(deal);
         }
 
-        public static void ChangeCompanyName(string Name) => typeof(Company).GetField("Name", BindingFlags.Instance).SetValue(Name, GameSettings.Instance.MyCompany);
+        public static void ChangeCompanyName(string Name) => typeof(Company).GetField("Name", BindingFlags.Instance).SetValue(GameSettings.Instance.MyCompany, Name);
 
         public static void ForceBankrupt()
         {
@@ -378,7 +378,7 @@ namespace Trainer
 
             if (WorkItem == null) return;
             
-            ((SoftwareAlpha) WorkItem).CodeProgress = 0.98f;
+            ((SoftwareAlpha) WorkItem).CodeProgress = ((SoftwareAlpha) WorkItem).MaxDevDt;
         }
 
         public static void MaxArt()
@@ -389,7 +389,7 @@ namespace Trainer
 
             if (WorkItem == null) return;
 
-            ((SoftwareAlpha) WorkItem).ArtProgress = 0.98f;
+            ((SoftwareAlpha) WorkItem).ArtProgress = ((SoftwareAlpha) WorkItem).MaxArtDt;
         }
 
         public static void FixBugs()
