@@ -378,7 +378,7 @@ namespace Trainer
 
             if (WorkItem == null) return;
             
-            ((SoftwareAlpha) WorkItem).CodeProgress = ((SoftwareAlpha) WorkItem).MaxDevDt;
+            ((SoftwareAlpha) WorkItem).CodeProgress = 0.98f;
         }
 
         public static void MaxArt()
@@ -389,14 +389,14 @@ namespace Trainer
 
             if (WorkItem == null) return;
 
-            ((SoftwareAlpha) WorkItem).ArtProgress = ((SoftwareAlpha) WorkItem).MaxArtDt;
+            ((SoftwareAlpha) WorkItem).ArtProgress = 0.98f;
         }
 
         public static void FixBugs()
         {
             WorkItem WorkItem = GameSettings.Instance.MyCompany.WorkItems
                 .Where(item => item.GetType() == typeof(SoftwareAlpha)).FirstOrDefault(item =>
-                    (item as SoftwareAlpha).Name == price_ProductName && !(item as SoftwareAlpha).InBeta);
+                    (item as SoftwareAlpha).Name == price_ProductName && (item as SoftwareAlpha).InBeta);
 
             if (WorkItem == null) return;
 

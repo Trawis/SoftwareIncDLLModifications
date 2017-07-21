@@ -51,5 +51,40 @@ namespace Trainer
             });
             Toggles.Add(x.gameObject);
         }
+
+        public static void DoLoops(ref List<GameObject> btn, ref List<GameObject> col1, ref List<GameObject> col2, ref List<GameObject> col3)
+        {
+            for (int i = 0; i < btn.Count; i++)
+            {
+                var item = btn[i];
+
+                WindowManager.AddElementToWindow(item, Main.pr, new Rect(1, (i + 7) * 32, 150, 32),
+                    new Rect(0, 0, 0, 0));
+            }
+
+            for (int i = 0; i < col1.Count; i++)
+            {
+                var item = col1[i];
+
+                WindowManager.AddElementToWindow(item, Main.pr, new Rect(161, (i + 7) * 32, 150, 32),
+                    new Rect(0, 0, 0, 0));
+            }
+
+            for (int i = 0; i < col2.Count; i++)
+            {
+                var item = col2[i];
+
+                WindowManager.AddElementToWindow(item, Main.pr, new Rect(322, (i + 7) * 32, 150, 32),
+                    new Rect(0, 0, 0, 0));
+            }
+
+            for (int i = 0; i < col3.Count; i++)
+            {
+                var item = col3[i];
+
+                WindowManager.AddElementToWindow(item, Main.pr, new Rect(483, (i + 7) * 32, 150, 32),
+                    new Rect(0, 0, 0, 0));
+            }
+        }
     }
 }
