@@ -326,7 +326,6 @@ namespace Trainer
                 !pr.ExternalHostingActive).ToArray();
 
             int index = rnd.Next(0, Products.Length);
-            int year = TimeOfDay.Instance.Year;
             SoftwareProduct prod =
                 GameSettings.Instance.simulation.GetProduct(Products.ElementAt(index).SoftwareID, false);
             ServerDeal deal = new ServerDeal(Products[index]) {Request = true};

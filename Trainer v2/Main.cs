@@ -131,67 +131,63 @@ namespace Trainer
                 
                 #region Employee Management
 
-                Utils.AddCheckBox("Disable Needs", boolean => TrainerBehaviour.LockNeeds = boolean, ref col1);
+                Utils.AddCheckBox("Disable Needs", ref TrainerBehaviour.LockNeeds, ref col1);
 
-                Utils.AddCheckBox("Disable Stress", boolean => TrainerBehaviour.LockStress = boolean, ref col1);
+                Utils.AddCheckBox("Disable Stress", ref TrainerBehaviour.LockStress, ref col1);
 
-                Utils.AddCheckBox("Free Employees", boolean => TrainerBehaviour.FreeEmployees = boolean, ref col1);
+                Utils.AddCheckBox("Free Employees", ref TrainerBehaviour.FreeEmployees, ref col1);
                 
-                Utils.AddCheckBox("Free Staff", boolean => TrainerBehaviour.FreeStaff = boolean, ref col1);
+                Utils.AddCheckBox("Free Staff", ref TrainerBehaviour.FreeStaff, ref col1);
                 
-                Utils.AddCheckBox("Full Efficiency & Satisfaction", boolean => TrainerBehaviour.LockEffSat = boolean, ref col1);
+                Utils.AddCheckBox("Full Efficiency & Satisfaction", ref TrainerBehaviour.LockEffSat, ref col1);
                 
-                Utils.AddCheckBox("Lock employees' age", boolean => TrainerBehaviour.LockAge = boolean, ref col1);
+                Utils.AddCheckBox("Lock employees' age", ref TrainerBehaviour.LockAge, ref col1);
 
-                Utils.AddCheckBox("No Vacation", boolean => TrainerBehaviour.NoVacation = boolean, ref col1);
+                Utils.AddCheckBox("No Vacation", ref TrainerBehaviour.NoVacation, ref col1);
                 
-                Utils.AddCheckBox("No Sickness", boolean => TrainerBehaviour.NoVacation = boolean, ref col1);
+                Utils.AddCheckBox("No Sickness", ref TrainerBehaviour.NoVacation, ref col1);
                 
-                Utils.AddCheckBox("Ultra Efficiency", boolean => TrainerBehaviour.MaxOutEff = boolean, ref col1);
+                Utils.AddCheckBox("Ultra Efficiency", ref TrainerBehaviour.MaxOutEff, ref col1);
                 
                 #endregion
                 
                 #region Room Management
                 
-                Utils.AddCheckBox("Full Environment", boolean => TrainerBehaviour.FullEnv = boolean, ref col2);
+                Utils.AddCheckBox("Full Environment", ref TrainerBehaviour.FullEnv, ref col2);
                 
-                Utils.AddCheckBox("Full Sunlight", boolean => TrainerBehaviour.Fullbright = boolean, ref col2);
+                Utils.AddCheckBox("Full Sunlight", ref TrainerBehaviour.Fullbright, ref col2);
                 
-                Utils.AddCheckBox("Lock temperature to 21", boolean => TrainerBehaviour.TempLock = !TrainerBehaviour.TempLock, ref col2);
+                Utils.AddCheckBox("Lock temperature to 21", ref TrainerBehaviour.TempLock, ref col2);
                 
-                Utils.AddCheckBox("No Maintenance", boolean => TrainerBehaviour.NoMaintenance = boolean, ref col2);
+                Utils.AddCheckBox("No Maintenance", ref TrainerBehaviour.NoMaintenance, ref col2);
                 
-                Utils.AddCheckBox("Noise Reduction", boolean => TrainerBehaviour.NoiseRed = boolean, ref col2);
+                Utils.AddCheckBox("Noise Reduction", ref TrainerBehaviour.NoiseRed, ref col2);
                 
-                Utils.AddCheckBox("Rooms never dirty", boolean => TrainerBehaviour.CleanRooms = boolean, ref col2);
+                Utils.AddCheckBox("Rooms never dirty", ref TrainerBehaviour.CleanRooms, ref col2);
                 
                 #endregion
                 
                 #region Company Management
                 
-                Utils.AddCheckBox("Auto Distribution Deals", boolean => TrainerBehaviour.dDeal = boolean, ref col3);
+                Utils.AddCheckBox("Auto Distribution Deals", ref TrainerBehaviour.dDeal, ref col3);
                 
-                Utils.AddCheckBox("Free Print", boolean => TrainerBehaviour.FreePrint = boolean, ref col3);
+                Utils.AddCheckBox("Free Print", ref TrainerBehaviour.FreePrint, ref col3);
                 
-                Utils.AddCheckBox("Free Water & Electricity", boolean => TrainerBehaviour.NoWaterElect = boolean, ref col3);
+                Utils.AddCheckBox("Free Water & Electricity", ref TrainerBehaviour.NoWaterElect, ref col3);
                 
-                Utils.AddCheckBox("Increase Bookshelf Skill", boolean => TrainerBehaviour.IncBookshelfSkill = boolean, ref col3);
+                Utils.AddCheckBox("Increase Bookshelf Skill", ref TrainerBehaviour.IncBookshelfSkill, ref col3);
                 
-                Utils.AddCheckBox("Increase Courier Capacity", boolean => TrainerBehaviour.IncCourierCap = boolean, ref col3);
+                Utils.AddCheckBox("Increase Courier Capacity", ref TrainerBehaviour.IncCourierCap, ref col3);
                 
-                Utils.AddCheckBox("Increase Print Speed", boolean => TrainerBehaviour.IncPrintSpeed = boolean, ref col3);
+                Utils.AddCheckBox("Increase Print Speed", ref TrainerBehaviour.IncPrintSpeed, ref col3);
 
-                Utils.AddCheckBox("More Hosting Deals", boolean => TrainerBehaviour.MoreHosting = boolean, ref col3);
+                Utils.AddCheckBox("More Hosting Deals", ref TrainerBehaviour.MoreHosting, ref col3);
                 
-                Utils.AddCheckBox("Reduce Internet Cost", boolean => TrainerBehaviour.RedISPCost = boolean, ref col3);
+                Utils.AddCheckBox("Reduce Internet Cost", ref TrainerBehaviour.RedISPCost, ref col3);
                 
                 #endregion
                 
-                #region Loops
-
                 Utils.DoLoops(ref btn, ref col1, ref col2, ref col3);
-
-                #endregion
             }
             else
             {

@@ -39,16 +39,13 @@ namespace Trainer
             WindowManager.AddElementToWindow(x.gameObject, Main.pr, Label, new Rect(0, 0, 0, 0));
         }
 
-        public static void AddCheckBox(String Text, UnityAction<bool> Action, ref List<GameObject> Toggles)
+        public static void AddCheckBox(String Text, ref bool Bool, ref List<GameObject> Toggles)
         {
             Toggle x = WindowManager.SpawnCheckbox();
-            x.GetComponentInChildren<UnityEngine.UI.Text>().text = Text;
-            x.isOn = TrainerBehaviour.LockNeeds;
-            x.onValueChanged.AddListener((boolean) =>
-            {
-                Action.Invoke(boolean);
-                x.isOn = !x.isOn;
-            });
+            x.GetComponentInChildren<Text>().text = Text;
+            x.isOn = Bool;
+            Bool = x;
+            x.onValueChanged.AddListener((boolean) => x.isOn = !x.isOn);
             Toggles.Add(x.gameObject);
         }
 
