@@ -1,0 +1,23 @@
+Description of each option:
+- Add money: Type amount that you want to add (add minus to subtract) and press the button
+- Add reputation: Type amount that you want to add (add minus to subtract) and press the button, press more to get high reputation in all fields
+- Product name: This cell and cell right to it is for multiple options, but it applies only to your products, not from other company
+- Set product price: Type product name and type price into the box, press the button to ajdust the price
+- Set product stock: Type product name and type stock number into the box, press the button to ajdust the product stock (value is replaced)
+- Max followers: Type product name, press the button to add maximum possible followers for that product, it's only when you in alpha development stage
+- Fix bugs: Type product name, press the button to fix all bugs for that product, it's only when you in beta development stage
+- Max code: Type product name, press the button to set maximum code units for that product, it's only when you in alpha development stage, quality of that code is based on skill of your employees
+- Max art: Type product name, press the button to set maximum art units for that product, it's only when you in alpha development stage, quality of that code is based on skill of your employees
+- Company name: This cell is for name of the company that you want to takeover or to be your subsidiary or to bankrupt that company
+- Takeover company: Type company name, press the button and you will takeover that company
+- Subsidiary company: Type company name, press the button and you will subsidiary that company
+- Bankrupt company: Type company name, press the button and you set bankrupt that company
+- AI bankrupt all: This button is for option to set all AI companies bankrupt
+- Clear all loans: This button removes your loans (if you have any) without any fee
+- HR leaders: Train all leaders in HR (Human Resources) managment
+- Max Skills of Employees: Trains all employees in all fields of specialization
+- Remove products: This option removes (transfer) product that you own but didn't invented it (takovered company). Only works when you have active users 0 (zero)
+- Reset age of employees: This options reset age of all employees to 20 years
+- Sell products stock: This options sells all stock for your products that have 0 (zero) active users in half of price of your product
+- Unlock all furniture: Unlocks all furniture, it will say that is still locked but you can use them
+- Unlock all space: All are that is buildable is now unlocked for free
