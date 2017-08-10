@@ -135,8 +135,7 @@ namespace Trainer
 
                 var inputField4 = WindowManager.SpawnInputbox();
                 inputField4.text = "10";
-                inputField4.onValueChanged.AddListener(boxText => TrainerBehaviour.price_ProductPrice = float.Parse(boxText));
-                //inputField4.onValueChanged.AddListener(boxText => TrainerBehaviour.price_ProductPrice = boxText.ConvertToFloat(boxText));
+                inputField4.onValueChanged.AddListener(boxText => TrainerBehaviour.price_ProductPrice = boxText.ConvertToFloatDef(10f));
 
                 WindowManager.AddElementToWindow(inputField4.gameObject, pr, new Rect(161, 64, 150, 32), new Rect(0, 0, 0, 0));
 
@@ -481,6 +480,7 @@ namespace Trainer
                 toggleRedISPCost.isOn = TrainerBehaviour.RedISPCost;
                 toggleRedISPCost.onValueChanged.AddListener(a => TrainerBehaviour.RedISPCost = !TrainerBehaviour.RedISPCost);
                 col3.Add(toggleRedISPCost.gameObject);
+
                 //Company Management END
 
                 #endregion

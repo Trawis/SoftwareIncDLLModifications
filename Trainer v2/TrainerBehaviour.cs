@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using UnityEngine;
-using UnityEngine.UI;
 using Random = System.Random;
 
 namespace Trainer
@@ -40,7 +39,8 @@ namespace Trainer
         public static bool NoSickness;
         public static bool MaxOutEff;
         public static bool LockSat;
-        
+        public static bool UltraSpeed;
+
         public bool reward;
         public bool pushed;
 
@@ -195,7 +195,7 @@ namespace Trainer
             GameSettings.Instance.scenario.MaxFloor = 75;
             CourierAI.MaxBoxes = IncCourierCap ? 108 : 54;
             Server.ISPCost = RedISPCost ? 25f : 50f;
-            
+
             if (dDeal)
             {
                 foreach (var x in GameSettings.Instance.simulation.Companies)
@@ -429,7 +429,7 @@ namespace Trainer
             SoftwareProduct Product = GameSettings.Instance.MyCompany.Products.FirstOrDefault(product => product.Name == price_ProductName);
 
             if (Product == null) return;
-            
+
             Product.Price = price_ProductPrice;
             HUD.Instance.AddPopupMessage("Trainer: Price for " + Product.Name + " has been setted up!", "Cogs", "", 0, 0, 0, 0, 1);
         }
@@ -535,8 +535,7 @@ namespace Trainer
         {
             if (!DoStuff) return;
 
-            GameSettings.Instance.MyCompany.MakeTransaction(int.Parse(novacBox), Company.TransactionCategory.Deals);
-            //GameSettings.Instance.MyCompany.MakeTransaction(novacBox.ConvertToInt(novacBox), Company.TransactionCategory.Deals);
+            GameSettings.Instance.MyCompany.MakeTransaction(novacBox.ConvertToIntDef(100000), Company.TransactionCategory.Deals);
             HUD.Instance.AddPopupMessage("Trainer: Money has been added in category Deals!", "Cogs", "", 0, 0, 0, 0, 1);
         }
 
@@ -566,11 +565,11 @@ namespace Trainer
         {
             if (!(GameSettings.Instance != null))
                 return;
-            
+
             GameSettings.Instance.MyCompany.BusinessReputation = 1f;
             SoftwareType random1 = GameSettings.Instance.SoftwareTypes.Values.Where(x => !x.OneClient).GetRandom();
             string random2 = random1.Categories.Keys.GetRandom();
-            GameSettings.Instance.MyCompany.AddFans(int.Parse(repBox), random1.Name, random2);
+            GameSettings.Instance.MyCompany.AddFans(repBox.ConvertToIntDef(10000), random1.Name, random2);
             HUD.Instance.AddPopupMessage("Trainer: Reputation has been added for SoftwareType: "+random1.Name + ", Category: "+random2, "Cogs", "", 0, 0, 0, 0, 1);
         }
 
