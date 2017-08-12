@@ -3,6 +3,12 @@ This Trainer is for Software Inc game. It's based on https://github.com/hrkrx/So
 		(Features that could cause some problems: AI Bankrupt All, Max Code, Max Art, Max Followers)
 
 Currently working features:
+12.08.2017. for Alpha 9.10.4
+- Reworked Add Money button
+- Reworked Add Reputation button
+- Added button for changing days per month
+
+10.08.2017. for Alpha 9.10.4
 - Splitted efficiency and satisfaction option
 - Increased efficiency for leaders to 2000% with "Ultra efficiency"
 - Small other fixes

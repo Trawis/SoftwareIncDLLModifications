@@ -88,39 +88,42 @@ namespace Trainer
 
                 #region Money
 
+                /*
                 //TextBox for Money
                 var textboxMoney = WindowManager.SpawnInputbox();
                 textboxMoney.GetComponentInChildren<UnityEngine.UI.InputField>().text = "100000";
                 WindowManager.AddElementToWindow(textboxMoney.gameObject, pr, new Rect(1, 0, 150, 32), new Rect(0, 0, 0, 0));
-
+                */
                 //Button for some Money
                 var buttonMoney = WindowManager.SpawnButton();
                 buttonMoney.GetComponentInChildren<UnityEngine.UI.Text>().text = "Add Money";
                 buttonMoney.onClick.AddListener(() =>
                 {
-                    TrainerBehaviour.novacBox = textboxMoney.text;
+                    //TrainerBehaviour.novacBox = textboxMoney.text;
                     TrainerBehaviour.IncreaseMoney();
                 });
-                WindowManager.AddElementToWindow(buttonMoney.gameObject, pr, new Rect(161, 0, 150, 32), new Rect(0, 0, 0, 0));
+                //WindowManager.AddElementToWindow(buttonMoney.gameObject, pr, new Rect(161, 0, 150, 32), new Rect(0, 0, 0, 0));
+                WindowManager.AddElementToWindow(buttonMoney.gameObject, pr, new Rect(1, 0, 150, 32), new Rect(0, 0, 0, 0));
 
                 #endregion
 
                 #region Reputation
-
+                /*
                 //Textbox for Reputation
                 var textboxRep = WindowManager.SpawnInputbox();
                 textboxRep.GetComponentInChildren<UnityEngine.UI.InputField>().text = "10000";
                 WindowManager.AddElementToWindow(textboxRep.gameObject, pr, new Rect(1, 32, 150, 32), new Rect(0, 0, 0, 0));
-
+                */
                 //Button for AddRep
                 var buttonAddRep = WindowManager.SpawnButton();
                 buttonAddRep.GetComponentInChildren<UnityEngine.UI.Text>().text = "Add Reputation";
                 buttonAddRep.onClick.AddListener(() =>
                 {
-                    TrainerBehaviour.repBox = textboxRep.text;
+                    //TrainerBehaviour.repBox = textboxRep.text;
                     TrainerBehaviour.AddRep();
                 });
-                WindowManager.AddElementToWindow(buttonAddRep.gameObject, pr, new Rect(161, 32, 150, 32), new Rect(0, 0, 0, 0));
+                //WindowManager.AddElementToWindow(buttonAddRep.gameObject, pr, new Rect(161, 32, 150, 32), new Rect(0, 0, 0, 0));
+                WindowManager.AddElementToWindow(buttonAddRep.gameObject, pr, new Rect(161, 0, 150, 32), new Rect(0, 0, 0, 0));
 
                 #endregion
 
@@ -207,11 +210,26 @@ namespace Trainer
                 buttonForceBankrupt.onClick.AddListener(() => TrainerBehaviour.ForceBankrupt());
                 WindowManager.AddElementToWindow(buttonForceBankrupt.gameObject, pr, new Rect(483, 160, 150, 32), new Rect(0, 0, 0, 0));
 
-                TrainerBehaviour tb = new TrainerBehaviour();
+                #endregion
+
+                #region AI Bankrupt
                 var buttonAIBankrupt = WindowManager.SpawnButton();
                 buttonAIBankrupt.GetComponentInChildren<UnityEngine.UI.Text>().text = "AI Bankrupt All";
-                buttonAIBankrupt.onClick.AddListener(() => tb.AIBankrupt());
+                buttonAIBankrupt.onClick.AddListener(() => TrainerBehaviour.AIBankrupt());
                 btn.Add(buttonAIBankrupt.gameObject);
+
+                #endregion
+
+                #region MonthDays
+
+                //Button for Changing days per month
+                var buttonMonthDays = WindowManager.SpawnButton();
+                buttonMonthDays.GetComponentInChildren<UnityEngine.UI.Text>().text = "Days per month";
+                buttonMonthDays.onClick.AddListener(() =>
+                {
+                    TrainerBehaviour.MonthDays();
+                });
+                btn.Add(buttonMonthDays.gameObject);
 
                 #endregion
 
@@ -222,7 +240,7 @@ namespace Trainer
                 buttonClrLoan.GetComponentInChildren<UnityEngine.UI.Text>().text = "Clear all loans";
                 buttonClrLoan.onClick.AddListener(() =>
                 {
-                    tb.ClearLoans();
+                    TrainerBehaviour.ClearLoans();
                 });
                 btn.Add(buttonClrLoan.gameObject);
 
@@ -232,7 +250,7 @@ namespace Trainer
 
                 var buttonHREmployees = WindowManager.SpawnButton();
                 buttonHREmployees.GetComponentInChildren<UnityEngine.UI.Text>().text = "HR Leaders";
-                buttonHREmployees.onClick.AddListener(() => tb.HREmployees());
+                buttonHREmployees.onClick.AddListener(() => TrainerBehaviour.HREmployees());
                 btn.Add(buttonHREmployees.gameObject);
 
                 #endregion
@@ -244,7 +262,7 @@ namespace Trainer
                 buttonMaxSkill.GetComponentInChildren<UnityEngine.UI.Text>().text = "Max Skill of employees";
                 buttonMaxSkill.onClick.AddListener(() =>
                 {
-                    tb.EmployeesToMax();
+                    TrainerBehaviour.EmployeesToMax();
                 });
                 btn.Add(buttonMaxSkill.gameObject);
 
@@ -266,7 +284,7 @@ namespace Trainer
                 buttonEmployeeAge.GetComponentInChildren<UnityEngine.UI.Text>().text = "Reset age of employees";
                 buttonEmployeeAge.onClick.AddListener(() =>
                 {
-                    tb.ResetAgeOfEmployees();
+                    TrainerBehaviour.ResetAgeOfEmployees();
                 });
                 btn.Add(buttonEmployeeAge.gameObject);
 
@@ -288,7 +306,7 @@ namespace Trainer
                 buttonUnlockAll.GetComponentInChildren<UnityEngine.UI.Text>().text = "Unlock all furniture";
                 buttonUnlockAll.onClick.AddListener(() =>
                 {
-                    tb.UnlockAll();
+                    TrainerBehaviour.UnlockAll();
                 });
                 btn.Add(buttonUnlockAll.gameObject);
 
@@ -301,7 +319,7 @@ namespace Trainer
                 buttonMaxLand.GetComponentInChildren<UnityEngine.UI.Text>().text = "Unlock all space";
                 buttonMaxLand.onClick.AddListener(() =>
                 {
-                    tb.UnlockAllSpace();
+                    TrainerBehaviour.UnlockAllSpace();
                 });
                 btn.Add(buttonMaxLand.gameObject);
 
