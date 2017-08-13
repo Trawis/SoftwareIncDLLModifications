@@ -39,16 +39,11 @@ namespace Trainer
         public static bool NoSickness;
         public static bool MaxOutEff;
         public static bool LockSat;
-        public static bool UltraSpeed;
 
         public bool reward;
         public bool pushed;
 
-        public static string novacBox;
-        public static string repBox;
-        public static string CompanyText;
         public static string price_ProductName;
-        public static float price_ProductPrice;
 
         public bool start;
 
@@ -272,7 +267,7 @@ namespace Trainer
         {
             while (true)
             {
-                yield return new WaitForSeconds(10.0f);
+                yield return new WaitForSeconds(15.0f);
                 SaveSetting("LockStress", LockStress.ToString());
                 SaveSetting("NoVacation", NoVacation.ToString());
                 SaveSetting("Fullbright", Fullbright.ToString());
@@ -341,27 +336,15 @@ namespace Trainer
 
         public static void ChangeCompanyName(string Name) => typeof(Company).GetField("Name", BindingFlags.Instance).SetValue(Name, GameSettings.Instance.MyCompany);
 
-        
-        public static void PromijeniDane(string input)
+        public static void MonthDaysAction(string input)
         {
             GameSettings.DaysPerMonth = int.Parse(input);
             WindowManager.SpawnDialog("You have changed days per month. Best option is to restart the game to decrease bugs that may appear.", false, DialogWindow.DialogType.Warning);
         }
         public static void MonthDays()
         {
-            Action<string> onFinish = PromijeniDane;
+            Action<string> onFinish = MonthDaysAction;
             WindowManager.SpawnInputDialog("How many days per month do you want?", "Days per month - IN TESTING", "2", onFinish, null);
-        }
-        
-        public static void ForceBankrupt()
-        {
-            SimulatedCompany Company =
-                GameSettings.Instance.simulation.Companies.FirstOrDefault(company => company.Value.Name == CompanyText).Value;
-
-            if (Company == null)
-                return;
-            
-            Company.Bankrupt = !Company.Bankrupt;
         }
         
         public static void AIBankrupt()
@@ -386,45 +369,61 @@ namespace Trainer
             
             HUD.Instance.AddPopupMessage("Trainer: All leaders are now HRed!", "Cogs", "", 0, 0, 0, 0, 1);
         }
-        
-        public static void MaxCode()
+        public static void MaxCodeAction(string input)
         {
             WorkItem WorkItem = GameSettings.Instance.MyCompany.WorkItems
                 .Where(item => item.GetType() == typeof(SoftwareAlpha)).FirstOrDefault(item =>
-                    (item as SoftwareAlpha).Name == price_ProductName && !(item as SoftwareAlpha).InBeta);
+                    (item as SoftwareAlpha).Name == input && !(item as SoftwareAlpha).InBeta);
 
             if (WorkItem == null) return;
-            
-            ((SoftwareAlpha) WorkItem).CodeProgress = 0.98f;
+
+            ((SoftwareAlpha)WorkItem).CodeProgress = 0.98f;
+        }
+        public static void MaxCode()
+        {
+            Action<string> onFinish = MaxCodeAction;
+            WindowManager.SpawnInputDialog("Type product name:", "Max Code", "", onFinish, null);
         }
 
-        public static void MaxArt()
+        public static void MaxArtAction(string input)
         {
             WorkItem WorkItem = GameSettings.Instance.MyCompany.WorkItems
                 .Where(item => item.GetType() == typeof(SoftwareAlpha)).FirstOrDefault(item =>
-                    (item as SoftwareAlpha).Name == price_ProductName && !(item as SoftwareAlpha).InBeta);
+                    (item as SoftwareAlpha).Name == input && !(item as SoftwareAlpha).InBeta);
 
             if (WorkItem == null) return;
 
             ((SoftwareAlpha) WorkItem).ArtProgress = 0.98f;
         }
 
-        public static void FixBugs()
+        public static void MaxArt()
+        {
+            Action<string> onFinish = MaxArtAction;
+            WindowManager.SpawnInputDialog("Type product name:", "Max Art", "", onFinish, null);
+        }
+
+        public static void FixBugsAction(string input)
         {
             WorkItem WorkItem = GameSettings.Instance.MyCompany.WorkItems
                 .Where(item => item.GetType() == typeof(SoftwareAlpha)).FirstOrDefault(item =>
-                    (item as SoftwareAlpha).Name == price_ProductName && (item as SoftwareAlpha).InBeta); //! removed
+                    (item as SoftwareAlpha).Name == input && (item as SoftwareAlpha).InBeta); //! removed
 
             if (WorkItem == null) return;
 
             ((SoftwareAlpha) WorkItem).FixedBugs = ((SoftwareAlpha) WorkItem).MaxBugs;
         }
 
-        public static void MaxFollowers()
+        public static void FixBugs()
+        {
+            Action<string> onFinish = FixBugsAction;
+            WindowManager.SpawnInputDialog("Type product name:", "Fix Bugs", "", onFinish, null);
+        }
+
+        public static void MaxFollowersAction(string input)
         {
             WorkItem WorkItem = GameSettings.Instance.MyCompany.WorkItems
                 .Where(item => item.GetType() == typeof(SoftwareAlpha)).FirstOrDefault(item =>
-                    (item as SoftwareAlpha).Name == price_ProductName && !(item as SoftwareAlpha).Paused);
+                    (item as SoftwareAlpha).Name == input && !(item as SoftwareAlpha).Paused);
 
             if (WorkItem == null) return;
 
@@ -436,16 +435,12 @@ namespace Trainer
             alpha.Followers += 1000000000f;
         }
 
-        public static void SetProductPrice()
+        public static void MaxFollowers()
         {
-            SoftwareProduct Product = GameSettings.Instance.MyCompany.Products.FirstOrDefault(product => product.Name == price_ProductName);
-
-            if (Product == null) return;
-
-            Product.Price = price_ProductPrice;
-            HUD.Instance.AddPopupMessage("Trainer: Price for " + Product.Name + " has been setted up!", "Cogs", "", 0, 0, 0, 0, 1);
+            Action<string> onFinish = MaxFollowersAction;
+            WindowManager.SpawnInputDialog("Type product name:", "Max Followers", "", onFinish, null);
         }
-        
+
         public static void SellProductsStock()
         {
             WindowManager.SpawnDialog("Products stock with no active users have been sold in half a price.", false, DialogWindow.DialogType.Information);
@@ -464,20 +459,41 @@ namespace Trainer
                 GameSettings.Instance.MyCompany.MakeTransaction(st, Company.TransactionCategory.Sales);
             }
         }
-        
-        public static void SetProductStock()
+
+        public static void SetProductPriceAction(string input)
+        {
+            SoftwareProduct Product = GameSettings.Instance.MyCompany.Products.FirstOrDefault(product => product.Name == price_ProductName);
+
+            if (Product == null) return;
+
+            Product.Price = input.ConvertToFloatDef(50f);
+            HUD.Instance.AddPopupMessage("Trainer: Price for " + Product.Name + " has been setted up!", "Cogs", "", 0, 0, 0, 0, 1);
+        }
+
+        public static void SetProductPrice()
+        {
+            Action<string> onFinish = SetProductPriceAction;
+            WindowManager.SpawnInputDialog("Type product price:", "Product price", "50", onFinish, null);
+        }
+
+        public static void SetProductStockAction(string input)
         {
             SoftwareProduct Product =
                 GameSettings.Instance.MyCompany.Products.FirstOrDefault(product => product.Name == price_ProductName);
 
             if (Product == null) return;
             
-            Product.PhysicalCopies = (uint) price_ProductPrice;
-            HUD.Instance.AddPopupMessage("Trainer: Stock for " + Product.Name + " has been setted up!", "Cogs",
-                "", 0, 0, 0, 0, 1);
+            Product.PhysicalCopies = (uint)input.ConvertToIntDef(100000);
+            HUD.Instance.AddPopupMessage("Trainer: Stock for " + Product.Name + " has been setted up!", "Cogs", "", 0, 0, 0, 0, 1);
         }
-        
-        public static void AddActiveUsers()
+
+        public static void SetProductStock()
+        {
+            Action<string> onFinish = SetProductStockAction;
+            WindowManager.SpawnInputDialog("Type product stock:", "Product stock", "100000", onFinish, null);
+        }
+
+        public static void AddActiveUsersAction(string input)
         {
             SoftwareProduct Product =
                 GameSettings.Instance.MyCompany.Products.FirstOrDefault(product => product.Name == price_ProductName);
@@ -485,12 +501,17 @@ namespace Trainer
             if (Product == null)
                 return;
             
-            Product.Userbase = Convert.ToInt32(price_ProductPrice);
+            Product.Userbase = input.ConvertToIntDef(100000);
             HUD.Instance.AddPopupMessage(
-                "Trainer: Added " + Convert.ToInt32(price_ProductPrice) + " active users to product " + Product.Name,
-                "Cogs", "", 0, 0, 0, 0, 1);
+                "Trainer: Active users for " + Product.Name + " has been setted up!", "Cogs", "", 0, 0, 0, 0, 1);
         }
-        
+
+        public static void AddActiveUsers()
+        {
+            Action<string> onFinish = AddActiveUsersAction;
+            WindowManager.SpawnInputDialog("Type product active users:", "Product active users", "100000", onFinish, null);
+        }
+
         public static void RemoveSoft()
         {
             WindowManager.SpawnDialog("Products that you didn't invent are removed.", false, DialogWindow.DialogType.Information);
@@ -516,25 +537,26 @@ namespace Trainer
             }
         }
         
-        public static void TakeoverCompany()
+        public static void TakeoverCompanyAction(string input)
         {
-            if (!DoStuff) return;
-
             SimulatedCompany Company = GameSettings.Instance.simulation.Companies
-                .FirstOrDefault(company => company.Value.Name == CompanyText).Value;
+                .FirstOrDefault(company => company.Value.Name == input).Value;
 
             if (Company == null) return;
-            
+
             Company.BuyOut(GameSettings.Instance.MyCompany, true);
             HUD.Instance.AddPopupMessage("Trainer: Company " + Company.Name + " has been takovered by you!", "Cogs", "", 0, 0, 0, 0, 1);
         }
-        
-        public static void SubDCompany()
+        public static void TakeoverCompany()
         {
-            if (!DoStuff) return;
-
+            Action<string> onFinish = TakeoverCompanyAction;
+            WindowManager.SpawnInputDialog("Type company name:", "Takeover Company", "", onFinish, null);
+        }
+        
+        public static void SubDCompanyAction(string input)
+        {
             SimulatedCompany Company =
-                GameSettings.Instance.simulation.Companies.FirstOrDefault(company => company.Value.Name == CompanyText).Value;
+                GameSettings.Instance.simulation.Companies.FirstOrDefault(company => company.Value.Name == input).Value;
 
             if (Company == null) return;
             
@@ -542,8 +564,31 @@ namespace Trainer
             Company.IsSubsidiary();
             HUD.Instance.AddPopupMessage("Trainer: Company " + Company.Name + " is now your subsidiary!", "Cogs", "", 0, 0, 0, 0, 1);
         }
-        
-        public static void MoneyAdd(string input)
+
+        public static void SubDCompany()
+        {
+            Action<string> onFinish = SubDCompanyAction;
+            WindowManager.SpawnInputDialog("Type company name:", "Subsidiary Company", "", onFinish, null);
+        }
+
+        public static void ForceBankruptAction(string input)
+        {
+            SimulatedCompany Company =
+                GameSettings.Instance.simulation.Companies.FirstOrDefault(company => company.Value.Name == input).Value;
+
+            if (Company == null)
+                return;
+
+            Company.Bankrupt = !Company.Bankrupt;
+        }
+
+        public static void ForceBankrupt()
+        {
+            Action<string> onFinish = ForceBankruptAction;
+            WindowManager.SpawnInputDialog("Type company name:", "Force Bankrupt", "", onFinish, null);
+        }
+
+        public static void IncreaseMoneyAction(string input)
         {
             GameSettings.Instance.MyCompany.MakeTransaction(input.ConvertToIntDef(100000), Company.TransactionCategory.Deals);
             HUD.Instance.AddPopupMessage("Trainer: Money has been added in category Deals!", "Cogs", "", 0, 0, 0, 0, 1);
@@ -551,27 +596,11 @@ namespace Trainer
 
         public static void IncreaseMoney()
         {
-            if (!DoStuff) return;
-
-            Action<string> onFinish = MoneyAdd;
+            Action<string> onFinish = IncreaseMoneyAction;
             WindowManager.SpawnInputDialog("How much money do you want to add?", "Add Money", "100000", onFinish, null);
         }
 
-        public static void ResetAgeOfEmployees()
-        {
-            if (!DoStuff) return;
-
-            for (var i = 0; i < GameSettings.Instance.sActorManager.Actors.Count; i++)
-            {
-                var item = GameSettings.Instance.sActorManager.Actors[i];
-                item.employee.AgeMonth = 240;
-                item.UpdateAgeLook();
-            }
-            
-            HUD.Instance.AddPopupMessage("Trainer: Age of employees has been reset!", "Cogs", "", 0, 0, 0, 0, 1);
-        }
-
-        public static void RepAdd(string input)
+        public static void AddRepAction(string input)
         {
             GameSettings.Instance.MyCompany.BusinessReputation = 1f;
             SoftwareType random1 = GameSettings.Instance.SoftwareTypes.Values.Where(x => !x.OneClient).GetRandom();
@@ -582,11 +611,20 @@ namespace Trainer
 
         public static void AddRep()
         {
-            if (!(GameSettings.Instance != null))
-                return;
-
-            Action<string> onFinish = RepAdd;
+            Action<string> onFinish = AddRepAction;
             WindowManager.SpawnInputDialog("How much reputation do you want to add?", "Add Reputation", "10000", onFinish, null);
+        }
+
+        public static void ResetAgeOfEmployees()
+        {
+            for (var i = 0; i < GameSettings.Instance.sActorManager.Actors.Count; i++)
+            {
+                var item = GameSettings.Instance.sActorManager.Actors[i];
+                item.employee.AgeMonth = 240;
+                item.UpdateAgeLook();
+            }
+            
+            HUD.Instance.AddPopupMessage("Trainer: Age of employees has been reset!", "Cogs", "", 0, 0, 0, 0, 1);
         }
 
         public static void EmployeesToMax()

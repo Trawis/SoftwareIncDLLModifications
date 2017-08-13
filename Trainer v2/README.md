@@ -3,6 +3,18 @@ This Trainer is for Software Inc game. It's based on https://github.com/hrkrx/So
 		(Features that could cause some problems: AI Bankrupt All, Max Code, Max Art, Max Followers)
 
 Currently working features:
+13.08.2017. for Alpha 9.10.4
+- Reworked Product Price option
+- Reworked Product Stock option
+- Reworked Product Active Users option
+- Reworked Takeover Company option
+- Reworked Subsidiary Company option
+- Reworked Bankrupt Company option
+- Reworked Max Followers option
+- Reworked Fix Bugs option
+- Reworked Max Code option
+- Reworked Max Art option
+
 12.08.2017. for Alpha 9.10.4
 - Reworked Add Money button
 - Reworked Add Reputation button
