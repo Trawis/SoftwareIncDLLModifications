@@ -12,19 +12,21 @@ namespace Trainer
         #region Fields
 
         public static bool opened = false;
-        public static GUIWindow pr;
-        
+        public static GUIWindow win;
+
+        static string version = "(v2.12)";
+
         #endregion
-        
-        public static void Tipka()
+
+        public static void Button()
         {
             var btn = WindowManager.SpawnButton();
-            btn.GetComponentInChildren<UnityEngine.UI.Text>().text = "Trainer";
-            btn.onClick.AddListener(Prozor);
-            WindowManager.AddElementToElement(btn.gameObject, WindowManager.FindElementPath("MainPanel/Holder/FanPanel", null).gameObject, new Rect(164, 0, 70, 32), new Rect(0, 0, 0, 0));
+            btn.GetComponentInChildren<UnityEngine.UI.Text>().text = "Trainer " + version;
+            btn.onClick.AddListener(Window);
+            WindowManager.AddElementToElement(btn.gameObject, WindowManager.FindElementPath("MainPanel/Holder/FanPanel", null).gameObject, new Rect(164, 0, 100, 32), new Rect(0, 0, 0, 0));
         }
         
-        public static void Prozor()
+        public static void Window()
         {
             if (!opened)
             {
@@ -32,12 +34,12 @@ namespace Trainer
 
                 #region Initialization
 
-                pr = WindowManager.SpawnWindow();
-                pr.InitialTitle = "Trainer v2 Settings, by Trawis";
-                pr.TitleText.text = "Trainer v2 Settings, by Trawis";
-                pr.NonLocTitle = "Trainer v2 Settings, by Trawis";
-                pr.MinSize.x = 670;
-                pr.MinSize.y = 580;
+                win = WindowManager.SpawnWindow();
+                win.InitialTitle = "Trainer Settings, by Trawis " + version;
+                win.TitleText.text = "TrainerSettings, by Trawis " + version;
+                win.NonLocTitle = "TrainerSettings, by Trawis " + version;
+                win.MinSize.x = 670;
+                win.MinSize.y = 580;
 
                 List<GameObject> btn = new List<GameObject>();
                 List<GameObject> col1 = new List<GameObject>();
@@ -52,7 +54,7 @@ namespace Trainer
                 var buttonMoney = WindowManager.SpawnButton();
                 buttonMoney.GetComponentInChildren<UnityEngine.UI.Text>().text = "Add Money";
                 buttonMoney.onClick.AddListener(() => TrainerBehaviour.IncreaseMoney());
-                WindowManager.AddElementToWindow(buttonMoney.gameObject, pr, new Rect(1, 0, 150, 32), new Rect(0, 0, 0, 0));
+                WindowManager.AddElementToWindow(buttonMoney.gameObject, win, new Rect(1, 0, 150, 32), new Rect(0, 0, 0, 0));
 
                 #endregion
 
@@ -62,7 +64,7 @@ namespace Trainer
                 var buttonAddRep = WindowManager.SpawnButton();
                 buttonAddRep.GetComponentInChildren<UnityEngine.UI.Text>().text = "Add Reputation";
                 buttonAddRep.onClick.AddListener(() => TrainerBehaviour.AddRep());
-                WindowManager.AddElementToWindow(buttonAddRep.gameObject, pr, new Rect(161, 0, 150, 32), new Rect(0, 0, 0, 0));
+                WindowManager.AddElementToWindow(buttonAddRep.gameObject, win, new Rect(161, 0, 150, 32), new Rect(0, 0, 0, 0));
 
                 #endregion
 
@@ -70,31 +72,25 @@ namespace Trainer
 
                 //Change product price for my company
 
-                var inputField3 = WindowManager.SpawnInputbox();
-                inputField3.text = "Product Name Here";
-                inputField3.onValueChanged.AddListener(boxText => TrainerBehaviour.price_ProductName = boxText);
-                WindowManager.AddElementToWindow(inputField3.gameObject, pr, new Rect(1, 96, 150, 32), new Rect(0, 0, 0, 0));
+                var inputProductName = WindowManager.SpawnInputbox();
+                inputProductName.text = "Product Name Here";
+                inputProductName.onValueChanged.AddListener(boxText => TrainerBehaviour.price_ProductName = boxText);
+                WindowManager.AddElementToWindow(inputProductName.gameObject, win, new Rect(1, 96, 150, 32), new Rect(0, 0, 0, 0));
 
-                /*
-                var lbl1 = WindowManager.SpawnLabel();
-                lbl1.text = "^^ This cell is universal for\nPrice, Stock, Active Users";
-                WindowManager.AddElementToWindow(lbl1.gameObject, pr, new Rect(1, 128, 400, 32), new Rect(0, 0, 0, 0));
-                */
+                var buttonSetProductPrice = WindowManager.SpawnButton();
+                buttonSetProductPrice.GetComponentInChildren<UnityEngine.UI.Text>().text = "Set Product Price";
+                buttonSetProductPrice.onClick.AddListener(() => TrainerBehaviour.SetProductPrice());
+                WindowManager.AddElementToWindow(buttonSetProductPrice.gameObject, win, new Rect(161, 96, 150, 32), new Rect(0, 0, 0, 0));
 
-                var button6 = WindowManager.SpawnButton();
-                button6.GetComponentInChildren<UnityEngine.UI.Text>().text = "Set Product Price";
-                button6.onClick.AddListener(() => TrainerBehaviour.SetProductPrice());
-                WindowManager.AddElementToWindow(button6.gameObject, pr, new Rect(161, 96, 150, 32), new Rect(0, 0, 0, 0));
+                var buttonSetProductStock = WindowManager.SpawnButton();
+                buttonSetProductStock.GetComponentInChildren<UnityEngine.UI.Text>().text = "Set Product Stock";
+                buttonSetProductStock.onClick.AddListener(() => TrainerBehaviour.SetProductStock());
+                WindowManager.AddElementToWindow(buttonSetProductStock.gameObject, win, new Rect(322, 96, 150, 32), new Rect(0, 0, 0, 0));
 
-                var button7 = WindowManager.SpawnButton();
-                button7.GetComponentInChildren<UnityEngine.UI.Text>().text = "Set Product Stock";
-                button7.onClick.AddListener(() => TrainerBehaviour.SetProductStock());
-                WindowManager.AddElementToWindow(button7.gameObject, pr, new Rect(322, 96, 150, 32), new Rect(0, 0, 0, 0));
-
-                var button8 = WindowManager.SpawnButton();
-                button8.GetComponentInChildren<UnityEngine.UI.Text>().text = "Set Active Users";
-                button8.onClick.AddListener(() => TrainerBehaviour.AddActiveUsers());
-                WindowManager.AddElementToWindow(button8.gameObject, pr, new Rect(483, 96, 150, 32), new Rect(0, 0, 0, 0));
+                var buttonSetActiveUsers = WindowManager.SpawnButton();
+                buttonSetActiveUsers.GetComponentInChildren<UnityEngine.UI.Text>().text = "Set Active Users";
+                buttonSetActiveUsers.onClick.AddListener(() => TrainerBehaviour.AddActiveUsers());
+                WindowManager.AddElementToWindow(buttonSetActiveUsers.gameObject, win, new Rect(483, 96, 150, 32), new Rect(0, 0, 0, 0));
 
                 #endregion
 
@@ -103,48 +99,43 @@ namespace Trainer
                 var buttonMaxFollowers = WindowManager.SpawnButton();
                 buttonMaxFollowers.GetComponentInChildren<UnityEngine.UI.Text>().text = "Max Followers";
                 buttonMaxFollowers.onClick.AddListener(() => TrainerBehaviour.MaxFollowers());
-                WindowManager.AddElementToWindow(buttonMaxFollowers.gameObject, pr, new Rect(1, 32, 150, 32), new Rect(0, 0, 0, 0));
+                WindowManager.AddElementToWindow(buttonMaxFollowers.gameObject, win, new Rect(1, 32, 150, 32), new Rect(0, 0, 0, 0));
 
                 var buttonFixBugs = WindowManager.SpawnButton();
                 buttonFixBugs.GetComponentInChildren<UnityEngine.UI.Text>().text = "Fix Bugs";
                 buttonFixBugs.onClick.AddListener(() => TrainerBehaviour.FixBugs());
-                WindowManager.AddElementToWindow(buttonFixBugs.gameObject, pr, new Rect(161, 32, 150, 32), new Rect(0, 0, 0, 0));
+                WindowManager.AddElementToWindow(buttonFixBugs.gameObject, win, new Rect(161, 32, 150, 32), new Rect(0, 0, 0, 0));
 
                 var buttonMaxCode = WindowManager.SpawnButton();
                 buttonMaxCode.GetComponentInChildren<UnityEngine.UI.Text>().text = "Max Code";
                 buttonMaxCode.onClick.AddListener(() => TrainerBehaviour.MaxCode());
-                WindowManager.AddElementToWindow(buttonMaxCode.gameObject, pr, new Rect(322, 32, 150, 32), new Rect(0, 0, 0, 0));
+                WindowManager.AddElementToWindow(buttonMaxCode.gameObject, win, new Rect(322, 32, 150, 32), new Rect(0, 0, 0, 0));
 
                 var buttonMaxArt = WindowManager.SpawnButton();
                 buttonMaxArt.GetComponentInChildren<UnityEngine.UI.Text>().text = "Max Art";
                 buttonMaxArt.onClick.AddListener(() => TrainerBehaviour.MaxArt());
-                WindowManager.AddElementToWindow(buttonMaxArt.gameObject, pr, new Rect(483, 32, 150, 32), new Rect(0, 0, 0, 0));
+                WindowManager.AddElementToWindow(buttonMaxArt.gameObject, win, new Rect(483, 32, 150, 32), new Rect(0, 0, 0, 0));
 
                 #endregion
 
                 #region Companies
 
                 //Takeover Company
-                /*
-                var inputField2 = WindowManager.SpawnInputbox();
-                inputField2.text = "Company Name Here";
-                inputField2.onValueChanged.AddListener(boxText => TrainerBehaviour.CompanyText = boxText);
-                WindowManager.AddElementToWindow(inputField2.gameObject, pr, new Rect(1, 160, 150, 32), new Rect(0, 0, 0, 0));*/
 
-                var button5 = WindowManager.SpawnButton();
-                button5.GetComponentInChildren<UnityEngine.UI.Text>().text = "Takeover Company";
-                button5.onClick.AddListener(() => TrainerBehaviour.TakeoverCompany());
-                WindowManager.AddElementToWindow(button5.gameObject, pr, new Rect(1, 160, 150, 32), new Rect(0, 0, 0, 0));
+                var buttonTakeoverCompany = WindowManager.SpawnButton();
+                buttonTakeoverCompany.GetComponentInChildren<UnityEngine.UI.Text>().text = "Takeover Company";
+                buttonTakeoverCompany.onClick.AddListener(() => TrainerBehaviour.TakeoverCompany());
+                WindowManager.AddElementToWindow(buttonTakeoverCompany.gameObject, win, new Rect(1, 160, 150, 32), new Rect(0, 0, 0, 0));
 
-                var button10 = WindowManager.SpawnButton();
-                button10.GetComponentInChildren<UnityEngine.UI.Text>().text = "Subsidiary Company";
-                button10.onClick.AddListener(() => TrainerBehaviour.SubDCompany());
-                WindowManager.AddElementToWindow(button10.gameObject, pr, new Rect(161, 160, 150, 32), new Rect(0, 0, 0, 0));
+                var buttonSubsidiaryCompany = WindowManager.SpawnButton();
+                buttonSubsidiaryCompany.GetComponentInChildren<UnityEngine.UI.Text>().text = "Subsidiary Company";
+                buttonSubsidiaryCompany.onClick.AddListener(() => TrainerBehaviour.SubDCompany());
+                WindowManager.AddElementToWindow(buttonSubsidiaryCompany.gameObject, win, new Rect(161, 160, 150, 32), new Rect(0, 0, 0, 0));
 
                 var buttonForceBankrupt = WindowManager.SpawnButton();
                 buttonForceBankrupt.GetComponentInChildren<UnityEngine.UI.Text>().text = "Bankrupt";
                 buttonForceBankrupt.onClick.AddListener(() => TrainerBehaviour.ForceBankrupt());
-                WindowManager.AddElementToWindow(buttonForceBankrupt.gameObject, pr, new Rect(322, 160, 150, 32), new Rect(0, 0, 0, 0));
+                WindowManager.AddElementToWindow(buttonForceBankrupt.gameObject, win, new Rect(322, 160, 150, 32), new Rect(0, 0, 0, 0));
 
                 #endregion
 
@@ -206,10 +197,10 @@ namespace Trainer
 
                 #region Remove Products
 
-                var button9 = WindowManager.SpawnButton();
-                button9.GetComponentInChildren<UnityEngine.UI.Text>().text = "Remove products";
-                button9.onClick.AddListener(() => TrainerBehaviour.RemoveSoft());
-                btn.Add(button9.gameObject);
+                var buttonRemoveProducts = WindowManager.SpawnButton();
+                buttonRemoveProducts.GetComponentInChildren<UnityEngine.UI.Text>().text = "Remove products";
+                buttonRemoveProducts.onClick.AddListener(() => TrainerBehaviour.RemoveSoft());
+                btn.Add(buttonRemoveProducts.gameObject);
 
                 #endregion
 
@@ -445,7 +436,7 @@ namespace Trainer
                 {
                     var item = btn[i];
 
-                    WindowManager.AddElementToWindow(item, pr, new Rect(1, (i + 7) * 32, 150, 32),
+                    WindowManager.AddElementToWindow(item, win, new Rect(1, (i + 7) * 32, 150, 32),
                         new Rect(0, 0, 0, 0));
                 }
 
@@ -453,7 +444,7 @@ namespace Trainer
                 {
                     var item = col1[i];
 
-                    WindowManager.AddElementToWindow(item, pr, new Rect(161, (i + 7) * 32, 150, 32),
+                    WindowManager.AddElementToWindow(item, win, new Rect(161, (i + 7) * 32, 150, 32),
                         new Rect(0, 0, 0, 0));
                 }
 
@@ -461,7 +452,7 @@ namespace Trainer
                 {
                     var item = col2[i];
 
-                    WindowManager.AddElementToWindow(item, pr, new Rect(322, (i + 7) * 32, 150, 32),
+                    WindowManager.AddElementToWindow(item, win, new Rect(322, (i + 7) * 32, 150, 32),
                         new Rect(0, 0, 0, 0));
                 }
 
@@ -469,7 +460,7 @@ namespace Trainer
                 {
                     var item = col3[i];
 
-                    WindowManager.AddElementToWindow(item, pr, new Rect(483, (i + 7) * 32, 150, 32),
+                    WindowManager.AddElementToWindow(item, win, new Rect(483, (i + 7) * 32, 150, 32),
                         new Rect(0, 0, 0, 0));
                 }
 
@@ -477,7 +468,7 @@ namespace Trainer
             }
             else
             {
-                pr.Close();
+                win.Close();
                 opened = false;
             }
         }
@@ -490,6 +481,6 @@ namespace Trainer
                 new Rect(0, 0, 0, 0));
         }
 
-        public string Name => "Trainer V2";
+        public string Name => "Trainer v2";
     }
 }

@@ -90,16 +90,16 @@ namespace Trainer
             if (!ModActive || GameSettings.Instance == null || HUD.Instance == null) return;
 
             if (Input.GetKey(KeyCode.F1))
-                Main.Prozor();
+                Main.Window();
 
             if (Input.GetKey(KeyCode.F2))
             {
-                Main.pr.Close();
+                Main.win.Close();
                 Main.opened = false;
             }
             if (start == false)
             {
-                Main.Tipka();
+                Main.Button();
                 Main.opened = false;
                 start = true;
             }
@@ -336,6 +336,10 @@ namespace Trainer
 
         public static void ChangeCompanyName(string Name) => typeof(Company).GetField("Name", BindingFlags.Instance).SetValue(Name, GameSettings.Instance.MyCompany);
 
+        public static void ChangeEducationDays()
+        {
+            
+        }
         public static void MonthDaysAction(string input)
         {
             GameSettings.DaysPerMonth = int.Parse(input);
