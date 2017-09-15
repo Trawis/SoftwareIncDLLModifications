@@ -11,7 +11,7 @@ namespace Trainer
     {
         #region Fields
 
-        Random rnd;
+        public static Random rnd;
         public static bool DoStuff => ModActive && GameSettings.Instance != null && HUD.Instance != null;
 
         public static bool ModActive;
@@ -301,7 +301,7 @@ namespace Trainer
             HUD.Instance.AddPopupMessage("Trainer: All loans are cleared!", "Cogs", "", 0, 0, 0, 0, 1);
         }
 
-        public void Reward()
+        public static void Reward()
         {
             Deal[] Deals = HUD.Instance.dealWindow.GetActiveDeals().Where(deal => deal.ToString() == "ServerDeal")
                 .ToArray();
@@ -315,7 +315,7 @@ namespace Trainer
             reward = true;
         }
 
-        public void Deals()
+        public static void Deals()
         {
             pushed = true;
 
@@ -326,7 +326,6 @@ namespace Trainer
                 !pr.ExternalHostingActive).ToArray();
 
             int index = rnd.Next(0, Products.Length);
-            int year = TimeOfDay.Instance.Year;
             SoftwareProduct prod =
                 GameSettings.Instance.simulation.GetProduct(Products.ElementAt(index).SoftwareID, false);
             ServerDeal deal = new ServerDeal(Products[index]) { Request = true };
@@ -334,7 +333,7 @@ namespace Trainer
             HUD.Instance.dealWindow.InsertDeal(deal);
         }
 
-        public static void ChangeCompanyName(string Name) => typeof(Company).GetField("Name", BindingFlags.Instance).SetValue(Name, GameSettings.Instance.MyCompany);
+        public static void ChangeCompanyName(string Name) => typeof(Company).GetField("Name", BindingFlags.Instance).SetValue(GameSettings.Instance.MyCompany, Name);
 
         public static void ChangeEducationDays()
         {
