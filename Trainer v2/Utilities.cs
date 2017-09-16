@@ -39,6 +39,15 @@ namespace Trainer
             WindowManager.AddElementToWindow(x.gameObject, Main.win, Label, new Rect(0, 0, 0, 0));
         }
 
+        public static void AddToggle(String Text, bool isOn, UnityAction<bool> Action, ref List<GameObject> Toggles)
+        {
+            Toggle Toggle = WindowManager.SpawnCheckbox();
+            Toggle.GetComponentInChildren<UnityEngine.UI.Text>().text = Text;
+            Toggle.isOn = isOn;
+            Toggle.onValueChanged.AddListener(Action);
+            Toggles.Add(Toggle.gameObject);
+        }
+
         public static void DoLoops(GameObject[] Buttons, GameObject[] Col1, GameObject[] Col2, GameObject[] Col3)
         {
             for (int i = 0; i < Buttons.Length; i++)

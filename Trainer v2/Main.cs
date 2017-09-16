@@ -109,185 +109,80 @@ namespace Trainer
             Utils.AddButton("Unlock all space", TrainerBehaviour.UnlockAllSpace, ref Buttons);
 
             #endregion
+            
+            #region Toggles
 
-            #region Employee Management
+            Utils.AddToggle("Disable Needs", TrainerBehaviour.LockNeeds,
+                a => TrainerBehaviour.LockNeeds = !TrainerBehaviour.LockNeeds, ref col1);
 
-            Toggle lockNeeds = WindowManager.SpawnCheckbox();
-            lockNeeds.GetComponentInChildren<Text>().text = "Disable Needs";
-            lockNeeds.isOn = TrainerBehaviour.LockNeeds;
-            lockNeeds.onValueChanged.AddListener(a => TrainerBehaviour.LockNeeds = !TrainerBehaviour.LockNeeds);
-            col1.Add(lockNeeds.gameObject);
+            Utils.AddToggle("Disable Stress", TrainerBehaviour.LockStress,
+                a => TrainerBehaviour.LockStress = !TrainerBehaviour.LockStress, ref col1);
+            
+            Utils.AddToggle("Free Employees", TrainerBehaviour.FreeEmployees,
+                a => TrainerBehaviour.FreeEmployees = !TrainerBehaviour.FreeEmployees, ref col1);
+            
+            Utils.AddToggle("Free Staff", TrainerBehaviour.FreeStaff,
+                a => TrainerBehaviour.FreeStaff = !TrainerBehaviour.FreeStaff, ref col1);
+            
+            Utils.AddToggle("Full Efficiency", TrainerBehaviour.LockEffSat,
+                a => TrainerBehaviour.LockEffSat = !TrainerBehaviour.LockEffSat, ref col1);
+            
+            Utils.AddToggle("Full Satisfaction", TrainerBehaviour.LockSat,
+                a => TrainerBehaviour.LockSat = !TrainerBehaviour.LockSat, ref col1);
+            
+            Utils.AddToggle("Lock Age of Employees", TrainerBehaviour.LockAge,
+                a => TrainerBehaviour.LockAge = !TrainerBehaviour.LockAge, ref col1);
+            
+            Utils.AddToggle("No Vacation", TrainerBehaviour.NoVacation,
+                a => TrainerBehaviour.NoVacation = !TrainerBehaviour.NoVacation, ref col1);
+            
+            Utils.AddToggle("No Sickness", TrainerBehaviour.NoSickness,
+                a => TrainerBehaviour.NoSickness = !TrainerBehaviour.NoSickness, ref col1);
+            
+            Utils.AddToggle("Ultra Efficiency (Tick Full Eff first)", TrainerBehaviour.MaxOutEff,
+                a => TrainerBehaviour.MaxOutEff = !TrainerBehaviour.MaxOutEff, ref col1);
+            
+            Utils.AddToggle("Full Environment", TrainerBehaviour.FullEnv,
+                a => TrainerBehaviour.FullEnv = !TrainerBehaviour.FullEnv, ref col2);
 
-            //CheckBox for LockEmployeeStress
-            Toggle lockStress = WindowManager.SpawnCheckbox();
-            lockStress.GetComponentInChildren<Text>().text = "Disable Stress";
-            lockStress.isOn = TrainerBehaviour.LockStress;
-            lockStress.onValueChanged.AddListener(a => TrainerBehaviour.LockStress = !TrainerBehaviour.LockStress);
-            col1.Add(lockStress.gameObject);
-
-            //CheckBox for Free Employees
-            Toggle lockEmpSal = WindowManager.SpawnCheckbox();
-            lockEmpSal.GetComponentInChildren<Text>().text = "Free Employees";
-            lockEmpSal.isOn = TrainerBehaviour.FreeEmployees;
-            lockEmpSal.onValueChanged.AddListener(a =>
-                TrainerBehaviour.FreeEmployees = !TrainerBehaviour.FreeEmployees);
-            col1.Add(lockEmpSal.gameObject);
-
-            //CheckBox for Free Staff
-            Toggle toggleFreeStaff = WindowManager.SpawnCheckbox();
-            toggleFreeStaff.GetComponentInChildren<Text>().text = "Free Staff";
-            toggleFreeStaff.isOn = TrainerBehaviour.FreeStaff;
-            toggleFreeStaff.onValueChanged.AddListener(a => TrainerBehaviour.FreeStaff = !TrainerBehaviour.FreeStaff);
-            col1.Add(toggleFreeStaff.gameObject);
-
-            //CheckBox for Efficiency
-            Toggle lockEffSat = WindowManager.SpawnCheckbox();
-            lockEffSat.GetComponentInChildren<Text>().text = "Full Efficiency";
-            lockEffSat.isOn = TrainerBehaviour.LockEffSat;
-            lockEffSat.onValueChanged.AddListener(a => TrainerBehaviour.LockEffSat = !TrainerBehaviour.LockEffSat);
-            col1.Add(lockEffSat.gameObject);
-
-            //CheckBox for Satisfaction
-            Toggle lockSat = WindowManager.SpawnCheckbox();
-            lockSat.GetComponentInChildren<Text>().text = "Full Satisfaction";
-            lockSat.isOn = TrainerBehaviour.LockSat;
-            lockSat.onValueChanged.AddListener(a => TrainerBehaviour.LockSat = !TrainerBehaviour.LockSat);
-            col1.Add(lockSat.gameObject);
-
-            //CheckBox for EmployeeAge
-            Toggle lockAge = WindowManager.SpawnCheckbox();
-            lockAge.GetComponentInChildren<Text>().text = "Lock age of employees";
-            lockAge.isOn = TrainerBehaviour.LockAge;
-            lockAge.onValueChanged.AddListener(a => TrainerBehaviour.LockAge = !TrainerBehaviour.LockAge);
-            col1.Add(lockAge.gameObject);
-
-            //CheckBox for No Vacation
-            Toggle toggleNoVacation = WindowManager.SpawnCheckbox();
-            toggleNoVacation.GetComponentInChildren<Text>().text = "No Vacation";
-            toggleNoVacation.isOn = TrainerBehaviour.NoVacation;
-            toggleNoVacation.onValueChanged.AddListener(a =>
-                TrainerBehaviour.NoVacation = !TrainerBehaviour.NoVacation);
-            col1.Add(toggleNoVacation.gameObject);
-
-            Toggle toggleNoSickness = WindowManager.SpawnCheckbox();
-            toggleNoSickness.GetComponentInChildren<Text>().text = "No Sickness";
-            toggleNoSickness.isOn = TrainerBehaviour.NoSickness;
-            toggleNoSickness.onValueChanged.AddListener(a =>
-                TrainerBehaviour.NoSickness = !TrainerBehaviour.NoSickness);
-            col1.Add(toggleNoSickness.gameObject);
-
-            //CheckBox for Efficiency & Satisfaction
-            Toggle toggMaxOutEff = WindowManager.SpawnCheckbox();
-            toggMaxOutEff.GetComponentInChildren<Text>().text = "Ultra Efficiency (Tick Full Eff first)";
-            toggMaxOutEff.isOn = TrainerBehaviour.MaxOutEff;
-            toggMaxOutEff.onValueChanged.AddListener(a => TrainerBehaviour.MaxOutEff = !TrainerBehaviour.MaxOutEff);
-            col1.Add(toggMaxOutEff.gameObject);
-
-            #endregion
-
-            #region Room Management
-
-            //CheckBox for Full Environment
-            Toggle toggleFullEnv = WindowManager.SpawnCheckbox();
-            toggleFullEnv.GetComponentInChildren<Text>().text = "Full Environment";
-            toggleFullEnv.isOn = TrainerBehaviour.FullEnv;
-            toggleFullEnv.onValueChanged.AddListener(a => TrainerBehaviour.FullEnv = !TrainerBehaviour.FullEnv);
-            col2.Add(toggleFullEnv.gameObject);
-
-            //CheckBox for Fullbright
-            Toggle toggleFullbright = WindowManager.SpawnCheckbox();
-            toggleFullbright.GetComponentInChildren<Text>().text = "Full Sun light";
-            toggleFullbright.isOn = TrainerBehaviour.Fullbright;
-            toggleFullbright.onValueChanged.AddListener(a =>
-                TrainerBehaviour.Fullbright = !TrainerBehaviour.Fullbright);
-            col2.Add(toggleFullbright.gameObject);
-
-            //CheckBox for Lock temperature to 21 degree
-            Toggle toggleTempLock = WindowManager.SpawnCheckbox();
-            toggleTempLock.GetComponentInChildren<Text>().text = "Lock temperature to 21";
-            toggleTempLock.isOn = TrainerBehaviour.TempLock;
-            toggleTempLock.onValueChanged.AddListener(a => TrainerBehaviour.TempLock = !TrainerBehaviour.TempLock);
-            col2.Add(toggleTempLock.gameObject);
-
-            Toggle toggleNoMaintenance = WindowManager.SpawnCheckbox();
-            toggleNoMaintenance.GetComponentInChildren<Text>().text = "No Maintenance";
-            toggleNoMaintenance.isOn = TrainerBehaviour.NoMaintenance;
-            toggleNoMaintenance.onValueChanged.AddListener(a =>
-                TrainerBehaviour.NoMaintenance = !TrainerBehaviour.NoMaintenance);
-            col2.Add(toggleNoMaintenance.gameObject);
-
-            //CheckBox for Noise Reduction
-            Toggle toggleNoiseRed = WindowManager.SpawnCheckbox();
-            toggleNoiseRed.GetComponentInChildren<Text>().text = "Noise Reduction";
-            toggleNoiseRed.isOn = TrainerBehaviour.NoiseRed;
-            toggleNoiseRed.onValueChanged.AddListener(a => TrainerBehaviour.NoiseRed = !TrainerBehaviour.NoiseRed);
-            col2.Add(toggleNoiseRed.gameObject);
-
-            //CheckBox for CleanRooms
-            Toggle toggleCleanRooms = WindowManager.SpawnCheckbox();
-            toggleCleanRooms.GetComponentInChildren<Text>().text = "Rooms are always clean";
-            toggleCleanRooms.isOn = TrainerBehaviour.CleanRooms;
-            toggleCleanRooms.onValueChanged.AddListener(a => TrainerBehaviour.CleanRooms = !TrainerBehaviour.NoiseRed);
-            col2.Add(toggleCleanRooms.gameObject);
-
-            #endregion
-
-            #region Company Management
-
-            Toggle toggleAutoDistDeal = WindowManager.SpawnCheckbox();
-            toggleAutoDistDeal.GetComponentInChildren<Text>().text = "Auto Distribution Deals";
-            toggleAutoDistDeal.isOn = TrainerBehaviour.dDeal;
-            toggleAutoDistDeal.onValueChanged.AddListener(a => TrainerBehaviour.dDeal = !TrainerBehaviour.dDeal);
-            col3.Add(toggleAutoDistDeal.gameObject);
-
-            Toggle toggleFreePrint = WindowManager.SpawnCheckbox();
-            toggleFreePrint.GetComponentInChildren<Text>().text = "Free Print";
-            toggleFreePrint.isOn = TrainerBehaviour.FreePrint;
-            toggleFreePrint.onValueChanged.AddListener(a => TrainerBehaviour.FreePrint = !TrainerBehaviour.FreePrint);
-            col3.Add(toggleFreePrint.gameObject);
-
-            //CheckBox for Free Water & Electricity
-            Toggle toggleNoWaterElect = WindowManager.SpawnCheckbox();
-            toggleNoWaterElect.GetComponentInChildren<Text>().text = "Free Water & Electricity";
-            toggleNoWaterElect.isOn = TrainerBehaviour.NoWaterElect;
-            toggleNoWaterElect.onValueChanged.AddListener(a =>
-                TrainerBehaviour.NoWaterElect = !TrainerBehaviour.NoWaterElect);
-            col3.Add(toggleNoWaterElect.gameObject);
-
-            Toggle toggleBookshelfSkill = WindowManager.SpawnCheckbox();
-            toggleBookshelfSkill.GetComponentInChildren<Text>().text = "Increase Bookshelf Skill";
-            toggleBookshelfSkill.isOn = TrainerBehaviour.IncBookshelfSkill;
-            toggleBookshelfSkill.onValueChanged.AddListener(a =>
-                TrainerBehaviour.IncBookshelfSkill = !TrainerBehaviour.IncBookshelfSkill);
-            col3.Add(toggleBookshelfSkill.gameObject);
-
-            Toggle toggleIncCourierCap = WindowManager.SpawnCheckbox();
-            toggleIncCourierCap.GetComponentInChildren<Text>().text = "Increase Courier Capacity";
-            toggleIncCourierCap.isOn = TrainerBehaviour.IncCourierCap;
-            toggleIncCourierCap.onValueChanged.AddListener(a =>
-                TrainerBehaviour.IncCourierCap = !TrainerBehaviour.IncCourierCap);
-            col3.Add(toggleIncCourierCap.gameObject);
-
-            Toggle togglePrintSpeed = WindowManager.SpawnCheckbox();
-            togglePrintSpeed.GetComponentInChildren<Text>().text = "Increase Print Speed";
-            togglePrintSpeed.isOn = TrainerBehaviour.IncPrintSpeed;
-            togglePrintSpeed.onValueChanged.AddListener(a =>
-                TrainerBehaviour.IncPrintSpeed = !TrainerBehaviour.IncPrintSpeed);
-            col3.Add(togglePrintSpeed.gameObject);
-
-            Toggle toggleMoreHosting = WindowManager.SpawnCheckbox();
-            toggleMoreHosting.GetComponentInChildren<Text>().text = "More Hosting Deals";
-            toggleMoreHosting.isOn = TrainerBehaviour.MoreHosting;
-            toggleMoreHosting.onValueChanged.AddListener(a =>
-                TrainerBehaviour.MoreHosting = !TrainerBehaviour.MoreHosting);
-            col3.Add(toggleMoreHosting.gameObject);
-
-            Toggle toggleRedISPCost = WindowManager.SpawnCheckbox();
-            toggleRedISPCost.GetComponentInChildren<Text>().text = "Reduce Internet Cost";
-            toggleRedISPCost.isOn = TrainerBehaviour.RedISPCost;
-            toggleRedISPCost.onValueChanged.AddListener(a =>
-                TrainerBehaviour.RedISPCost = !TrainerBehaviour.RedISPCost);
-            col3.Add(toggleRedISPCost.gameObject);
+            Utils.AddToggle("Full Sun Light", TrainerBehaviour.Fullbright,
+                a => TrainerBehaviour.Fullbright = !TrainerBehaviour.Fullbright, ref col2);
+            
+            Utils.AddToggle("Lock Temperature To 21", TrainerBehaviour.TempLock,
+                a => TrainerBehaviour.TempLock = !TrainerBehaviour.TempLock, ref col2);
+            
+            Utils.AddToggle("No Maintenance", TrainerBehaviour.NoMaintenance,
+                a => TrainerBehaviour.NoMaintenance = !TrainerBehaviour.NoMaintenance, ref col2);
+            
+            Utils.AddToggle("Noise Reduction", TrainerBehaviour.NoiseRed,
+                a => TrainerBehaviour.NoiseRed = !TrainerBehaviour.NoiseRed, ref col2);
+            
+            Utils.AddToggle("Rooms Never Dirty", TrainerBehaviour.CleanRooms,
+                a => TrainerBehaviour.CleanRooms = !TrainerBehaviour.CleanRooms, ref col2);
+            
+            Utils.AddToggle("Auto Distribution Deals", TrainerBehaviour.dDeal,
+                a => TrainerBehaviour.dDeal = !TrainerBehaviour.dDeal, ref col3);
+            
+            Utils.AddToggle("Free Print", TrainerBehaviour.FreePrint,
+                a => TrainerBehaviour.FreePrint = !TrainerBehaviour.FreePrint, ref col3);
+            
+            Utils.AddToggle("Free Water & Electricity", TrainerBehaviour.NoWaterElect,
+                a => TrainerBehaviour.NoWaterElect = !TrainerBehaviour.NoWaterElect, ref col3);
+            
+            Utils.AddToggle("Increase Bookshelf Skill", TrainerBehaviour.IncBookshelfSkill,
+                a => TrainerBehaviour.IncBookshelfSkill = !TrainerBehaviour.IncBookshelfSkill, ref col3);
+            
+            Utils.AddToggle("Increase Courier Capacity", TrainerBehaviour.IncCourierCap,
+                a => TrainerBehaviour.IncCourierCap = !TrainerBehaviour.IncCourierCap, ref col3);
+            
+            Utils.AddToggle("Increase Print Speed", TrainerBehaviour.IncPrintSpeed,
+                a => TrainerBehaviour.IncPrintSpeed = !TrainerBehaviour.IncPrintSpeed, ref col3);
+            
+            Utils.AddToggle("More Hosting Deals", TrainerBehaviour.MoreHosting,
+                a => TrainerBehaviour.MoreHosting = !TrainerBehaviour.MoreHosting, ref col3);
+            
+            Utils.AddToggle("Reduce Internet Cost", TrainerBehaviour.RedISPCost,
+                a => TrainerBehaviour.RedISPCost = !TrainerBehaviour.RedISPCost, ref col3);
 
             #endregion
 
