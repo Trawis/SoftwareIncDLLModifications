@@ -84,19 +84,18 @@ namespace Trainer
 
         private void Update()
         {
-            if (start && ModActive && GameSettings.Instance == null && HUD.Instance == null)
-                start = false;
+            if (start && ModActive && GameSettings.Instance == null && HUD.Instance == null) start = false;
 
             if (!ModActive || GameSettings.Instance == null || HUD.Instance == null) return;
 
-            if (Input.GetKey(KeyCode.F1))
-                Main.Window();
+            if (Input.GetKey(KeyCode.F1)) Main.Window();
 
             if (Input.GetKey(KeyCode.F2))
             {
                 Main.win.Close();
                 Main.opened = false;
             }
+            
             if (start == false)
             {
                 Main.Button();
@@ -104,10 +103,9 @@ namespace Trainer
                 start = true;
             }
 
-            if (FreeStaff)
-                GameSettings.Instance.StaffSalaryDue = 0f;
+            if (FreeStaff) GameSettings.Instance.StaffSalaryDue = 0f;
 
-            foreach (var item in GameSettings.Instance.sRoomManager.AllFurniture)
+            foreach (Furniture item in GameSettings.Instance.sRoomManager.AllFurniture)
             {
                 if (NoiseRed)
                 {
@@ -123,26 +121,22 @@ namespace Trainer
                 item.Wattage = 0;
             }
 
-            for (var i = 0; i < GameSettings.Instance.sRoomManager.Rooms.Count; i++)
+            for (int i = 0; i < GameSettings.Instance.sRoomManager.Rooms.Count; i++)
             {
-                var room = GameSettings.Instance.sRoomManager.Rooms[i];
+                Room room = GameSettings.Instance.sRoomManager.Rooms[i];
 
-                if (CleanRooms)
-                    room.ClearDirt();
+                if (CleanRooms) room.ClearDirt();
 
-                if (TempLock)
-                    room.Temperature = 21.4f;
+                if (TempLock) room.Temperature = 21.4f;
 
-                if (FullEnv)
-                    room.FurnEnvironment = 4;
+                if (FullEnv) room.FurnEnvironment = 4;
 
-                if (Fullbright)
-                    room.IndirectLighting = 8;
+                if (Fullbright) room.IndirectLighting = 8;
             }
 
-            for (var i = 0; i < GameSettings.Instance.sActorManager.Actors.Count; i++)
+            for (int i = 0; i < GameSettings.Instance.sActorManager.Actors.Count; i++)
             {
-                var act = GameSettings.Instance.sActorManager.Actors[i];
+                Actor act = GameSettings.Instance.sActorManager.Actors[i];
 
                 if (LockAge)
                 {
@@ -150,8 +144,7 @@ namespace Trainer
                     act.UpdateAgeLook();
                 }
 
-                if (LockStress)
-                    act.employee.Stress = 1;
+                if (LockStress) act.employee.Stress = 1;
 
                 if (LockEffSat)
                 {
@@ -178,11 +171,9 @@ namespace Trainer
                     act.IgnoreOffSalary = true;
                 }
 
-                if (NoiseRed)
-                    act.Noisiness = 0;
+                if (NoiseRed) act.Noisiness = 0;
 
-                if (NoVacation)
-                    act.VacationMonth = SDateTime.NextMonth(24);
+                if (NoVacation) act.VacationMonth = SDateTime.NextMonth(24);
             }
 
             LoanWindow.factor = 250000;
@@ -195,7 +186,8 @@ namespace Trainer
             {
                 foreach (var x in GameSettings.Instance.simulation.Companies)
                 {
-                    var m = x.Value.GetMoneyWithInsurance(true);
+                    float m = x.Value.GetMoneyWithInsurance(true);
+                    
                     if (m < 10000000f)
                         x.Value.DistributionDeal = 0.05f;
                     else if (m > 10000000f && m < 100000000f)
@@ -210,57 +202,42 @@ namespace Trainer
                         x.Value.DistributionDeal = 0.30f;
                 }
             }
+            
             if (MoreHosting)
             {
                 int hour = TimeOfDay.Instance.Hour;
-                if ((hour == 9 || hour == 15) && pushed == false)
-                    Deals();
-                else if (hour != 9 && hour != 15 && pushed)
-                    pushed = false;
-                if (reward == false && hour == 12)
-                    Reward();
-                else if (hour != 12 && reward)
-                    reward = false;
+                
+                if ((hour == 9 || hour == 15) && pushed == false) Deals();
+                else if (hour != 9 && hour != 15 && pushed) pushed = false;
+                if (reward == false && hour == 12) Reward();
+                else if (hour != 12 && reward) reward = false;
             }
+            
             if (IncPrintSpeed)
-            {
-                foreach (var x in GameSettings.Instance.ProductPrinters)
-                {
-                    x.PrintSpeed = 2f;
-                }
-            }
+                for (int i = 0; i < GameSettings.Instance.ProductPrinters.Count; i++)
+                    GameSettings.Instance.ProductPrinters[i].PrintSpeed = 2f;
+            
             //add printspeed and printprice when it's disabled (else) TODO
             if (FreePrint)
-            {
-                foreach (var x in GameSettings.Instance.ProductPrinters)
-                {
-                    x.PrintPrice = 0f;
-                }
-            }
+                for (int i = 0; i < GameSettings.Instance.ProductPrinters.Count; i++)
+                    GameSettings.Instance.ProductPrinters[i].PrintPrice = 0f;
+
             if (IncBookshelfSkill)
-            {
                 foreach (Furniture bookshelf in GameSettings.Instance.sRoomManager.AllFurniture)
-                {
                     if ("Bookshelf".Equals(bookshelf.Type))
-                    {
-                        foreach (var x in bookshelf.AuraValues)
-                        {
+                        foreach (float x in bookshelf.AuraValues)
                             bookshelf.AuraValues[1] = 0.75f;
-                        }
-                    }
-                }
-            }
+            
             //else 0.25 TODO
             if (NoMaintenance)
-            {
                 foreach (Furniture furniture in GameSettings.Instance.sRoomManager.AllFurniture)
-                {
-                    if ("Server".Equals(furniture.Type) || "Computer".Equals(furniture.Type) || "Product Printer".Equals(furniture.Type) || "Ventilation".Equals(furniture.Type) || "Radiator".Equals(furniture.Type) || "Lamp".Equals(furniture.Type) || "Toilet".Equals(furniture.Type))
+                    if ("Server".Equals(furniture.Type) || "Computer".Equals(furniture.Type) ||
+                        "Product Printer".Equals(furniture.Type) || "Ventilation".Equals(furniture.Type) ||
+                        "Radiator".Equals(furniture.Type) || "Lamp".Equals(furniture.Type) ||
+                        "Toilet".Equals(furniture.Type))
                         furniture.upg.Quality = 1f;
-                }
-            }
-            if (NoSickness)
-                GameSettings.Instance.Insurance.SickRatio = 0f;
+            
+            if (NoSickness) GameSettings.Instance.Insurance.SickRatio = 0f;
         }
 
         IEnumerator<WaitForSeconds> Spremi()
@@ -268,6 +245,7 @@ namespace Trainer
             while (true)
             {
                 yield return new WaitForSeconds(15.0f);
+                
                 SaveSetting("LockStress", LockStress.ToString());
                 SaveSetting("NoVacation", NoVacation.ToString());
                 SaveSetting("Fullbright", Fullbright.ToString());
@@ -298,10 +276,10 @@ namespace Trainer
         public static void ClearLoans()
         {
             GameSettings.Instance.Loans.Clear();
-            HUD.Instance.AddPopupMessage("Trainer: All loans are cleared!", "Cogs", "", 0, 0, 0, 0, 1);
+            HUD.Instance.AddPopupMessage("Trainer: All loans are cleared!", "Cogs", "", 0, 0, 0, 0);
         }
 
-        public static void Reward()
+        public void Reward()
         {
             Deal[] Deals = HUD.Instance.dealWindow.GetActiveDeals().Where(deal => deal.ToString() == "ServerDeal")
                 .ToArray();
@@ -315,7 +293,7 @@ namespace Trainer
             reward = true;
         }
 
-        public static void Deals()
+        public void Deals()
         {
             pushed = true;
 
@@ -326,28 +304,22 @@ namespace Trainer
                 !pr.ExternalHostingActive).ToArray();
 
             int index = rnd.Next(0, Products.Length);
+            
             SoftwareProduct prod =
                 GameSettings.Instance.simulation.GetProduct(Products.ElementAt(index).SoftwareID, false);
+            
+            
             ServerDeal deal = new ServerDeal(Products[index]) { Request = true };
             deal.StillValid(true);
             HUD.Instance.dealWindow.InsertDeal(deal);
         }
 
-        public static void ChangeCompanyName(string Name) => typeof(Company).GetField("Name", BindingFlags.Instance).SetValue(GameSettings.Instance.MyCompany, Name);
+        /* public static void ChangeCompanyName(string Name) => typeof(Company).GetField("Name",
+            BindingFlags.Instance | BindingFlags.Public).SetValue(GameSettings.Instance.MyCompany, Name); */
 
         public static void ChangeEducationDays()
         {
             
-        }
-        public static void MonthDaysAction(string input)
-        {
-            GameSettings.DaysPerMonth = int.Parse(input);
-            WindowManager.SpawnDialog("You have changed days per month. Best option is to restart the game to decrease bugs that may appear.", false, DialogWindow.DialogType.Warning);
-        }
-        public static void MonthDays()
-        {
-            Action<string> onFinish = MonthDaysAction;
-            WindowManager.SpawnInputDialog("How many days per month do you want?", "Days per month - IN TESTING", "2", onFinish, null);
         }
         
         public static void AIBankrupt()
@@ -372,81 +344,11 @@ namespace Trainer
             
             HUD.Instance.AddPopupMessage("Trainer: All leaders are now HRed!", "Cogs", "", 0, 0, 0, 0, 1);
         }
-        public static void MaxCodeAction(string input)
+        
+        public static void SellProductStock()
         {
-            WorkItem WorkItem = GameSettings.Instance.MyCompany.WorkItems
-                .Where(item => item.GetType() == typeof(SoftwareAlpha)).FirstOrDefault(item =>
-                    (item as SoftwareAlpha).Name == input && !(item as SoftwareAlpha).InBeta);
-
-            if (WorkItem == null) return;
-
-            ((SoftwareAlpha)WorkItem).CodeProgress = 0.98f;
-        }
-        public static void MaxCode()
-        {
-            Action<string> onFinish = MaxCodeAction;
-            WindowManager.SpawnInputDialog("Type product name:", "Max Code", "", onFinish, null);
-        }
-
-        public static void MaxArtAction(string input)
-        {
-            WorkItem WorkItem = GameSettings.Instance.MyCompany.WorkItems
-                .Where(item => item.GetType() == typeof(SoftwareAlpha)).FirstOrDefault(item =>
-                    (item as SoftwareAlpha).Name == input && !(item as SoftwareAlpha).InBeta);
-
-            if (WorkItem == null) return;
-
-            ((SoftwareAlpha) WorkItem).ArtProgress = 0.98f;
-        }
-
-        public static void MaxArt()
-        {
-            Action<string> onFinish = MaxArtAction;
-            WindowManager.SpawnInputDialog("Type product name:", "Max Art", "", onFinish, null);
-        }
-
-        public static void FixBugsAction(string input)
-        {
-            WorkItem WorkItem = GameSettings.Instance.MyCompany.WorkItems
-                .Where(item => item.GetType() == typeof(SoftwareAlpha)).FirstOrDefault(item =>
-                    (item as SoftwareAlpha).Name == input && (item as SoftwareAlpha).InBeta); //! removed
-
-            if (WorkItem == null) return;
-
-            ((SoftwareAlpha) WorkItem).FixedBugs = ((SoftwareAlpha) WorkItem).MaxBugs;
-        }
-
-        public static void FixBugs()
-        {
-            Action<string> onFinish = FixBugsAction;
-            WindowManager.SpawnInputDialog("Type product name:", "Fix Bugs", "", onFinish, null);
-        }
-
-        public static void MaxFollowersAction(string input)
-        {
-            WorkItem WorkItem = GameSettings.Instance.MyCompany.WorkItems
-                .Where(item => item.GetType() == typeof(SoftwareAlpha)).FirstOrDefault(item =>
-                    (item as SoftwareAlpha).Name == input && !(item as SoftwareAlpha).Paused);
-
-            if (WorkItem == null) return;
-
-            SoftwareAlpha alpha = (SoftwareAlpha) WorkItem;
-
-            alpha.MaxFollowers += 1000000000;
-            alpha.ReEvaluateMaxFollowers();
-            alpha.FollowerChange += 1000000000f;
-            alpha.Followers += 1000000000f;
-        }
-
-        public static void MaxFollowers()
-        {
-            Action<string> onFinish = MaxFollowersAction;
-            WindowManager.SpawnInputDialog("Type product name:", "Max Followers", "", onFinish, null);
-        }
-
-        public static void SellProductsStock()
-        {
-            WindowManager.SpawnDialog("Products stock with no active users have been sold in half a price.", false, DialogWindow.DialogType.Information);
+            WindowManager.SpawnDialog("Products stock with no active users have been sold in half a price.",
+                false, DialogWindow.DialogType.Information);
 
             SoftwareProduct[] Products =
                 GameSettings.Instance.MyCompany.Products.Where(product => product.Userbase == 0).ToArray();
@@ -456,65 +358,13 @@ namespace Trainer
             for (int i = 0; i < Products.Length; i++)
             {
                 SoftwareProduct product = Products[i];
-                var st = Convert.ToInt32(product.PhysicalCopies) * (Convert.ToInt32(product.Price) / 2);
+                int st = Convert.ToInt32(product.PhysicalCopies) * (Convert.ToInt32(product.Price) / 2);
                 
                 product.PhysicalCopies = 0;
                 GameSettings.Instance.MyCompany.MakeTransaction(st, Company.TransactionCategory.Sales);
             }
         }
-
-        public static void SetProductPriceAction(string input)
-        {
-            SoftwareProduct Product = GameSettings.Instance.MyCompany.Products.FirstOrDefault(product => product.Name == price_ProductName);
-
-            if (Product == null) return;
-
-            Product.Price = input.ConvertToFloatDef(50f);
-            HUD.Instance.AddPopupMessage("Trainer: Price for " + Product.Name + " has been setted up!", "Cogs", "", 0, 0, 0, 0, 1);
-        }
-
-        public static void SetProductPrice()
-        {
-            Action<string> onFinish = SetProductPriceAction;
-            WindowManager.SpawnInputDialog("Type product price:", "Product price", "50", onFinish, null);
-        }
-
-        public static void SetProductStockAction(string input)
-        {
-            SoftwareProduct Product =
-                GameSettings.Instance.MyCompany.Products.FirstOrDefault(product => product.Name == price_ProductName);
-
-            if (Product == null) return;
-            
-            Product.PhysicalCopies = (uint)input.ConvertToIntDef(100000);
-            HUD.Instance.AddPopupMessage("Trainer: Stock for " + Product.Name + " has been setted up!", "Cogs", "", 0, 0, 0, 0, 1);
-        }
-
-        public static void SetProductStock()
-        {
-            Action<string> onFinish = SetProductStockAction;
-            WindowManager.SpawnInputDialog("Type product stock:", "Product stock", "100000", onFinish, null);
-        }
-
-        public static void AddActiveUsersAction(string input)
-        {
-            SoftwareProduct Product =
-                GameSettings.Instance.MyCompany.Products.FirstOrDefault(product => product.Name == price_ProductName);
-
-            if (Product == null)
-                return;
-            
-            Product.Userbase = input.ConvertToIntDef(100000);
-            HUD.Instance.AddPopupMessage(
-                "Trainer: Active users for " + Product.Name + " has been setted up!", "Cogs", "", 0, 0, 0, 0, 1);
-        }
-
-        public static void AddActiveUsers()
-        {
-            Action<string> onFinish = AddActiveUsersAction;
-            WindowManager.SpawnInputDialog("Type product active users:", "Product active users", "100000", onFinish, null);
-        }
-
+        
         public static void RemoveSoft()
         {
             WindowManager.SpawnDialog("Products that you didn't invent are removed.", false, DialogWindow.DialogType.Information);
@@ -533,12 +383,216 @@ namespace Trainer
             for (int i = 0; i < Products.Length; i++)
             {
                 SoftwareProduct Product = Products[i];
+                
                 Product.Userbase = 0;
                 Product.PhysicalCopies = 0;
                 Product.Marketing = 0;
                 Product.Trade(simComp);
             }
         }
+        
+        public static void ResetAgeOfEmployees()
+        {
+            for (int i = 0; i < GameSettings.Instance.sActorManager.Actors.Count; i++)
+            {
+                Actor item = GameSettings.Instance.sActorManager.Actors[i];
+                
+                item.employee.AgeMonth = 240;
+                item.UpdateAgeLook();
+            }
+            
+            HUD.Instance.AddPopupMessage("Trainer: Age of employees has been reset!", "Cogs", "", 0, 0, 0, 0);
+        }
+
+        public static void EmployeesToMax()
+        {
+            if (!DoStuff || SelectorController.Instance == null) return;
+
+            for (int index1 = 0; index1 < GameSettings.Instance.sActorManager.Actors.Count; index1++)
+            {
+                Actor x = GameSettings.Instance.sActorManager.Actors[index1];
+                for (int index = 0; index < 5; index++)
+                {
+                    x.employee.ChangeSkill((Employee.EmployeeRole) index, 1f, false);
+                    for (int i = 0; i < GameSettings.Instance.Specializations.Length; i++)
+                    {
+                        string specialization = GameSettings.Instance.Specializations[i];
+                        
+                        x.employee.AddToSpecialization(Employee.EmployeeRole.Designer, specialization, 1f, 0, true);
+                        x.employee.AddToSpecialization(Employee.EmployeeRole.Artist, specialization, 1f, 0, true);
+                        x.employee.AddToSpecialization(Employee.EmployeeRole.Programmer, specialization, 1f, 0, true);
+                    }
+                }
+            }
+            
+            HUD.Instance.AddPopupMessage("Trainer: All employees are now max skilled!", "Cogs", "", 0, 0, 0, 0, 1);
+        }
+
+        public static void UnlockAllSpace()
+        {
+            if (!DoStuff) return;
+            
+            GameSettings.Instance.BuildableArea = new Rect(9f, 1f, 246f, 254f);
+            GameSettings.Instance.ExpandLand(0, 0);
+            HUD.Instance.AddPopupMessage("Trainer: All buildable area is now unlocked!", "Cogs", "", 0, 0, 0, 0);
+        }
+
+        public static void UnlockAll()
+        {
+            if (!DoStuff) return;
+            
+            Cheats.UnlockFurn = !Cheats.UnlockFurn;
+            HUD.Instance.UpdateFurnitureButtons();
+            HUD.Instance.AddPopupMessage("Trainer: All furniture has been unlocked!", "Cogs", "", 0, 0, 0, 0);
+        }
+        
+        #region MonthDays
+        
+        public static void MonthDaysAction(string input)
+        {
+            if (!int.TryParse(input, out int Input))
+                return;
+            
+            GameSettings.DaysPerMonth = Input;
+            WindowManager.SpawnDialog("You have changed days per month. Best option is to restart the game to decrease bugs that may appear.", false, DialogWindow.DialogType.Warning);
+        }
+        
+        public static void MonthDays() =>
+            WindowManager.SpawnInputDialog("How many days per month do you want?", "Days per month - IN TESTING", "2", MonthDaysAction);
+        
+        #endregion
+        
+        #region Max Code
+        
+        public static void MaxCodeAction(string input)
+        {
+            WorkItem WorkItem = GameSettings.Instance.MyCompany.WorkItems
+                .Where(item => item.GetType() == typeof(SoftwareAlpha)).FirstOrDefault(item =>
+                    (item as SoftwareAlpha).Name == input && !(item as SoftwareAlpha).InBeta);
+
+            if (WorkItem == null) return;
+
+            ((SoftwareAlpha)WorkItem).CodeProgress = 0.98f;
+        }
+        
+        public static void MaxCode() => WindowManager.SpawnInputDialog("Type product name:", "Max Code", "", MaxCodeAction);
+        
+        #endregion
+        
+        #region Max Art
+
+        public static void MaxArtAction(string input)
+        {
+            WorkItem WorkItem = GameSettings.Instance.MyCompany.WorkItems
+                .Where(item => item.GetType() == typeof(SoftwareAlpha)).FirstOrDefault(item =>
+                    (item as SoftwareAlpha).Name == input && !(item as SoftwareAlpha).InBeta);
+
+            if (WorkItem == null) return;
+
+            ((SoftwareAlpha) WorkItem).ArtProgress = 0.98f;
+        }
+
+        public static void MaxArt() => WindowManager.SpawnInputDialog("Type product name:", "Max Art", "", MaxArtAction);
+        
+        #endregion
+        
+        #region Fix Bugs
+
+        public static void FixBugsAction(string input)
+        {
+            WorkItem WorkItem = GameSettings.Instance.MyCompany.WorkItems
+                .Where(item => item.GetType() == typeof(SoftwareAlpha)).FirstOrDefault(item =>
+                    (item as SoftwareAlpha).Name == input && (item as SoftwareAlpha).InBeta); //! removed
+
+            if (WorkItem == null) return;
+
+            ((SoftwareAlpha) WorkItem).FixedBugs = ((SoftwareAlpha) WorkItem).MaxBugs;
+        }
+
+        public static void FixBugs() => WindowManager.SpawnInputDialog("Type product name:", "Fix Bugs", "", FixBugsAction);
+        
+        #endregion
+        
+        #region Max Followers
+
+        public static void MaxFollowersAction(string input)
+        {
+            WorkItem WorkItem = GameSettings.Instance.MyCompany.WorkItems
+                .Where(item => item.GetType() == typeof(SoftwareAlpha)).FirstOrDefault(item =>
+                    (item as SoftwareAlpha).Name == input && !(item as SoftwareAlpha).Paused);
+
+            if (WorkItem == null) return;
+
+            SoftwareAlpha alpha = (SoftwareAlpha) WorkItem;
+
+            alpha.MaxFollowers += 1000000000;
+            alpha.ReEvaluateMaxFollowers();
+            
+            alpha.FollowerChange += 1000000000f;
+            alpha.Followers += 1000000000f;
+        }
+
+        public static void MaxFollowers() =>
+            WindowManager.SpawnInputDialog("Type product name:", "Max Followers", "", MaxFollowersAction);
+
+        #endregion
+        
+        #region Set Product Price
+
+        public static void SetProductPriceAction(string input)
+        {
+            SoftwareProduct Product =
+                GameSettings.Instance.MyCompany.Products.FirstOrDefault(product => product.Name == price_ProductName);
+
+            if (Product == null) return;
+
+            Product.Price = input.ConvertToFloatDef(50f);
+            HUD.Instance.AddPopupMessage($"Trainer: Price for {Product.Name} has been setted up!", "Cogs", "", 0, 0, 0, 0);
+        }
+        
+        public static void SetProductPrice() =>
+            WindowManager.SpawnInputDialog("Type product price:", "Product price", "50", SetProductPriceAction);
+
+        #endregion
+        
+        #region Set Product Stock
+        
+        public static void SetProductStockAction(string input)
+        {
+            SoftwareProduct Product =
+                GameSettings.Instance.MyCompany.Products.FirstOrDefault(product => product.Name == price_ProductName);
+
+            if (Product == null) return;
+            
+            Product.PhysicalCopies = (uint)input.ConvertToIntDef(100000);
+            HUD.Instance.AddPopupMessage($"Trainer: Stock for {Product.Name} has been setted up!", "Cogs", "", 0, 0, 0, 0);
+        }
+        
+        public static void SetProductStock() =>
+            WindowManager.SpawnInputDialog("Type product stock:", "Product stock", "100000", SetProductStockAction);
+
+        #endregion
+        
+        #region Add Active Users
+        
+        public static void AddActiveUsersAction(string input)
+        {
+            SoftwareProduct Product =
+                GameSettings.Instance.MyCompany.Products.FirstOrDefault(product => product.Name == price_ProductName);
+
+            if (Product == null) return;
+            
+            Product.Userbase = input.ConvertToIntDef(100000);
+            HUD.Instance.AddPopupMessage(
+                $"Trainer: Active users for {Product.Name} has been setted up!", "Cogs", "", 0, 0, 0, 0);
+        }
+
+        public static void AddActiveUsers() => WindowManager.SpawnInputDialog("Type product active users:",
+            "Product active users", "100000", AddActiveUsersAction);
+
+        #endregion
+        
+        #region Takeover Company
         
         public static void TakeoverCompanyAction(string input)
         {
@@ -548,13 +602,15 @@ namespace Trainer
             if (Company == null) return;
 
             Company.BuyOut(GameSettings.Instance.MyCompany, true);
-            HUD.Instance.AddPopupMessage("Trainer: Company " + Company.Name + " has been takovered by you!", "Cogs", "", 0, 0, 0, 0, 1);
+            HUD.Instance.AddPopupMessage("Trainer: Company " + Company.Name + " has been takovered by you!", "Cogs", "", 0, 0, 0, 0);
         }
-        public static void TakeoverCompany()
-        {
-            Action<string> onFinish = TakeoverCompanyAction;
-            WindowManager.SpawnInputDialog("Type company name:", "Takeover Company", "", onFinish, null);
-        }
+        
+        public static void TakeoverCompany() =>
+            WindowManager.SpawnInputDialog("Type company name:", "Takeover Company", "", TakeoverCompanyAction);
+        
+        #endregion
+        
+        #region Subsidiary Company
         
         public static void SubDCompanyAction(string input)
         {
@@ -565,44 +621,46 @@ namespace Trainer
             
             Company.MakeSubsidiary(GameSettings.Instance.MyCompany);
             Company.IsSubsidiary();
-            HUD.Instance.AddPopupMessage("Trainer: Company " + Company.Name + " is now your subsidiary!", "Cogs", "", 0, 0, 0, 0, 1);
+            HUD.Instance.AddPopupMessage("Trainer: Company " + Company.Name + " is now your subsidiary!", "Cogs", "", 0, 0, 0, 0);
         }
 
-        public static void SubDCompany()
-        {
-            Action<string> onFinish = SubDCompanyAction;
-            WindowManager.SpawnInputDialog("Type company name:", "Subsidiary Company", "", onFinish, null);
-        }
+        public static void SubDCompany() =>
+            WindowManager.SpawnInputDialog("Type company name:", "Subsidiary Company", "", SubDCompanyAction);
 
+        #endregion
+        
+        #region Force Bankrupt
+        
         public static void ForceBankruptAction(string input)
         {
             SimulatedCompany Company =
                 GameSettings.Instance.simulation.Companies.FirstOrDefault(company => company.Value.Name == input).Value;
 
-            if (Company == null)
-                return;
+            if (Company == null) return;
 
             Company.Bankrupt = !Company.Bankrupt;
         }
 
-        public static void ForceBankrupt()
-        {
-            Action<string> onFinish = ForceBankruptAction;
-            WindowManager.SpawnInputDialog("Type company name:", "Force Bankrupt", "", onFinish, null);
-        }
+        public static void ForceBankrupt() =>
+            WindowManager.SpawnInputDialog("Type company name:", "Force Bankrupt", "", ForceBankruptAction);
 
+        #endregion
+        
+        #region Increase Money
+        
         public static void IncreaseMoneyAction(string input)
         {
             GameSettings.Instance.MyCompany.MakeTransaction(input.ConvertToIntDef(100000), Company.TransactionCategory.Deals);
-            HUD.Instance.AddPopupMessage("Trainer: Money has been added in category Deals!", "Cogs", "", 0, 0, 0, 0, 1);
+            HUD.Instance.AddPopupMessage("Trainer: Money has been added in category Deals!", "Cogs", "", 0, 0, 0, 0);
         }
 
-        public static void IncreaseMoney()
-        {
-            Action<string> onFinish = IncreaseMoneyAction;
-            WindowManager.SpawnInputDialog("How much money do you want to add?", "Add Money", "100000", onFinish, null);
-        }
+        public static void IncreaseMoney() =>
+            WindowManager.SpawnInputDialog("How much money do you want to add?", "Add Money", "100000", IncreaseMoneyAction);
 
+        #endregion
+        
+        #region Add Rep
+        
         public static void AddRepAction(string input)
         {
             GameSettings.Instance.MyCompany.BusinessReputation = 1f;
@@ -612,77 +670,27 @@ namespace Trainer
             HUD.Instance.AddPopupMessage("Trainer: Reputation has been added for SoftwareType: " + random1.Name + ", Category: " + random2, "Cogs", "", 0, 0, 0, 0, 1);
         }
 
-        public static void AddRep()
-        {
-            Action<string> onFinish = AddRepAction;
-            WindowManager.SpawnInputDialog("How much reputation do you want to add?", "Add Reputation", "10000", onFinish, null);
-        }
+        public static void AddRep() =>
+            WindowManager.SpawnInputDialog("How much reputation do you want to add?", "Add Reputation", "10000", AddRepAction);
 
-        public static void ResetAgeOfEmployees()
-        {
-            for (var i = 0; i < GameSettings.Instance.sActorManager.Actors.Count; i++)
-            {
-                var item = GameSettings.Instance.sActorManager.Actors[i];
-                item.employee.AgeMonth = 240;
-                item.UpdateAgeLook();
-            }
-            
-            HUD.Instance.AddPopupMessage("Trainer: Age of employees has been reset!", "Cogs", "", 0, 0, 0, 0, 1);
-        }
-
-        public static void EmployeesToMax()
-        {
-            if (!DoStuff || SelectorController.Instance == null) return;
-
-            for (var index1 = 0; index1 < GameSettings.Instance.sActorManager.Actors.Count; index1++)
-            {
-                var x = GameSettings.Instance.sActorManager.Actors[index1];
-                for (int index = 0; index < 5; index++)
-                {
-                    x.employee.ChangeSkill((Employee.EmployeeRole) index, 1f, false);
-                    for (var i = 0; i < GameSettings.Instance.Specializations.Length; i++)
-                    {
-                        string specialization = GameSettings.Instance.Specializations[i];
-                        x.employee.AddToSpecialization(Employee.EmployeeRole.Designer, specialization, 1f, 0, true);
-                        x.employee.AddToSpecialization(Employee.EmployeeRole.Artist, specialization, 1f, 0, true);
-                        x.employee.AddToSpecialization(Employee.EmployeeRole.Programmer, specialization, 1f, 0, true);
-                    }
-                }
-            }
-            HUD.Instance.AddPopupMessage("Trainer: All employees are now max skilled!", "Cogs", "", 0, 0, 0, 0, 1);
-        }
-
-        public static void UnlockAllSpace()
-        {
-            if (!DoStuff) return;
-            
-            GameSettings.Instance.BuildableArea = new Rect(9f, 1f, 246f, 254f);
-            GameSettings.Instance.ExpandLand(0, 0);
-            HUD.Instance.AddPopupMessage("Trainer: All buildable area is now unlocked!", "Cogs", "", 0, 0, 0, 0, 1);
-        }
-
-        public static void UnlockAll()
-        {
-            if (!DoStuff) return;
-            
-            Cheats.UnlockFurn = !Cheats.UnlockFurn;
-            HUD.Instance.UpdateFurnitureButtons();
-            HUD.Instance.AddPopupMessage("Trainer: All furniture has been unlocked!", "Cogs", "", 0, 0, 0, 0, 1);
-        }
+        #endregion
+        
+        #region Overrides
 
         public override void OnActivate()
         {
             ModActive = true;
 
-            if (DoStuff)
-                HUD.Instance.AddPopupMessage("Trainer v2 has been activated!", "Cogs", "", 0, 0, 0, 0, 1);
+            if (DoStuff) HUD.Instance.AddPopupMessage("Trainer v2 has been activated!", "Cogs", "", 0, 0, 0, 0);
         }
+        
         public override void OnDeactivate()
         {
             ModActive = false;
 
-            if (!DoStuff)
-                HUD.Instance.AddPopupMessage("Trainer v2 has been deactivated!", "Cogs", "", 0, 0, 0, 0, 1);
+            if (!DoStuff) HUD.Instance.AddPopupMessage("Trainer v2 has been deactivated!", "Cogs", "", 0, 0, 0, 0, 1);
         }
+        
+        #endregion
     }
 }

@@ -102,7 +102,7 @@ namespace Trainer
 
             Utils.AddButton("Reset age of employees", TrainerBehaviour.ResetAgeOfEmployees, ref Buttons);
 
-            Utils.AddButton("Sell products stock", TrainerBehaviour.SellProductsStock, ref Buttons);
+            Utils.AddButton("Sell products stock", TrainerBehaviour.SellProductStock, ref Buttons);
 
             Utils.AddButton("Unlock all furniture", TrainerBehaviour.UnlockAll, ref Buttons);
 
