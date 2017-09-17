@@ -1,7 +1,5 @@
-This Trainer is for Software Inc game. It's based on https://github.com/hrkrx/SoftwareIncDLLModifications by hrkrx
-*NOTE: I can't guarantee that some features integrated in this trainer will work with old saves. If you want to test it out, please backup your data first.
+## Changelog
 
-Currently working features:
 01.09.2017. for Alpha 9.10.13 (v2.12)
 - Added trainer version on the button and window
 
@@ -126,7 +124,4 @@ Currently working features:
 - Reset age of employees
 - Max skill of employees
 - Lock age of employees
-- Happy Workers = Reduced stress factor, Reduced social factor, Effectiveness is 1000, Satisfaction is 100
-
-Download Trainer.dll and put in the DLLMods folder in your Software Inc directory.
-Report bugs and give me suggestions which should I add in the next update.
+- Happy Workers = Reduced stress factor, Reduced social factor, Effectiveness is 1000, Satisfaction is 
