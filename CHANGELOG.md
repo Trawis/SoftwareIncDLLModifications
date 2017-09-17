@@ -1,9 +1,18 @@
-## Changelog
+# Changelog
+Release notes for changes to the trainer
 
-01.09.2017. for Alpha 9.10.13 (v2.12)
+---
+
+**2.12**
+
+01.09.2017. for Alpha 9.10.13
 - Added trainer version on the button and window
 
-13.08.2017. for Alpha 9.10.4 (v2.11)
+---
+
+**2.11**
+
+13.08.2017. for Alpha 9.10.4
 - Reworked Product Price option
 - Reworked Product Stock option
 - Reworked Product Active Users option
@@ -15,23 +24,43 @@
 - Reworked Max Code option
 - Reworked Max Art option
 
-12.08.2017. for Alpha 9.10.4 (v2.10)
+---
+
+**2.10**
+
+12.08.2017. for Alpha 9.10.4
 - Reworked Add Money button
 - Reworked Add Reputation button
 - Added button for changing days per month
 
-10.08.2017. for Alpha 9.10.4 (v2.9)
+---
+
+**2.9**
+
+10.08.2017. for Alpha 9.10.4
 - Splitted efficiency and satisfaction option
 - Increased efficiency for leaders to 2000% with "Ultra efficiency"
 - Small other fixes
 
-01.07.2017. for Alpha 9.9.7 (v2.8.2)
+---
+
+**2.8.2**
+
+01.07.2017. for Alpha 9.9.7
 - Fix for Max Followers, Max Code, Max Art
 
-30.06.2017. for Alpha 9.9.4 (v2.8.1)
+---
+
+**2.8.1**
+
+30.06.2017. for Alpha 9.9.4
 - Possible bug fix for Max Followers, Max Code, Max Art
 
-29.06.2017. for Alpha 9.9.4 (v2.8)
+---
+
+**2.8**
+
+29.06.2017. for Alpha 9.9.4
 - Increased max floors to 75
 - Added option to max out followers in alpha & beta
 	(For some reason it can only be a specific number of followers)
@@ -41,10 +70,18 @@
 - Added option to increase efficiency to 1000% for employees and 1200% for leaders
 	(You need to have both option activated; Full & Ultra efficiency)
 
-17.06.2017. for Alpha 9.9.1 (v2.7.1)
+---
+
+**2.7.1**
+
+17.06.2017. for Alpha 9.9.1
 - Fixed trainer button x position when different resolution or UI scale is selected
 
-16.06.2017. for Alpha 9.9.1 (v2.7)
+---
+
+**2.7**
+
+16.06.2017. for Alpha 9.9.1
 - Option to increase bookshelf skill gain
 - Option to increase print speed
 - Option for free printing
@@ -56,7 +93,11 @@
 - Button for specific AI company go bankrupt (Press again to recover from bankrupt)
 - F1 button opens the trainer, F2 closes it
 
-01.06.2017. for Alpha 9.7.6 (v2.6)
+---
+
+**2.6**
+
+01.06.2017. for Alpha 9.7.6
 - Fixed a bug when you enable lock age option it resets age to 20
 - Added button for software remove (if you not invented it)
 - Added option to reduce internet cost (from 50 to 20)
@@ -73,10 +114,18 @@
 - *if company has more than 500 million $ but less than 1 billion $, deal is 25%
 - *if company has more than 1 billion $, deal is 30%
 
-24.05.2017. for Alpha 9.7.4 (v2.5.1)
+---
+
+**2.5.1**
+
+24.05.2017. for Alpha 9.7.4
 - Fixed "Trainer" button that shown in wrong place with other resolutions
 
-22.05.2017. for Alpha 9.7.4 (v2.5)
+---
+
+**2.5**
+
+22.05.2017. for Alpha 9.7.4
 - Separate GUI for Trainer, buttons are not anymore in Options>Mods>Trainer_v2
 - Set stock for your product (replace Sell stock option)
 - Set active users for your product
@@ -85,16 +134,28 @@
 - Increased Max Floors to 25
 - Some minor fixes
 
-08.05.2017. for Alpha 9.6.6 (v2.4)
+---
+
+**2.4**
+
+08.05.2017. for Alpha 9.6.6
 - Added product price adjuster
 - Sell stocks of your product in half of price if you have userbase less than 1000
 
-28.04.2017. for Alpha v9.6.6 (v2.3)
+---
+
+**2.3**
+
+28.04.2017. for Alpha v9.6.6
 - Increased Max Floors to 20
 - Added option to takeover a simulated company for free
 - Fixed bug in No Vacation option
 
-27.04.2017. for Alpha v9.6.6 (v2.2)
+---
+
+**2.2**
+
+27.04.2017. for Alpha v9.6.6
 - Settings are now saved so you don't need to enable it every time you load game
 - Added option to disable salary for staff
 - Added option to disable bills for Water and Electricity
@@ -106,7 +167,11 @@
 - No Vacation option
 - Option to remove any loans without payout or some fee (Will be removed at the midnight)
 
-26.04.2017. for Alpha v9.6.6 (v2.1)
+---
+
+**2.1**
+
+26.04.2017. for Alpha v9.6.6
 - Money can now be manually entered, default value is 100000
 - Reputation now can be manually entered, default value is 10000
 - Reworked "Happy Workers" option, it's now divided to few others*
@@ -118,7 +183,11 @@
 - Full Efficiency and Satisfaction
 - Free Employees (No salary for them)
 
-25.04.2017. for Alpha v9.6.6 (v2.0)
+---
+
+**2.0**
+
+25.04.2017. for Alpha v9.6.6
 - Add money (1000000)
 - Add reputation/fans (1000000)
 - Reset age of employees

@@ -7,3 +7,6 @@ This Trainer is for Software Inc game. It's based on https://github.com/hrkrx/So
 Download Trainer.dll and put in the DLLMods folder in your Software Inc directory. If the directory does not exist, create it.
 
 Report bugs and suggestions through Github Issues.
+
+[Features](FEATURES.md)
+[Changelog](CHANGELOG.md)
