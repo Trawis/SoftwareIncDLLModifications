@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-namespace Trainer
+namespace Trainer_v2
 {
     public class Utilities
     {

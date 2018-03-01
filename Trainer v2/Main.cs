@@ -2,9 +2,9 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-using Utils = Trainer.Utilities;
+using Utils = Trainer_v2.Utilities;
 
-namespace Trainer
+namespace Trainer_v2
 {
     //Your mod should have exactly one class that implements the ModMeta interface
     public class Main : ModMeta
@@ -17,7 +17,7 @@ namespace Trainer
         public static bool opened;
         public static GUIWindow win;
 
-        static string version = "(v2.12)";
+        static string version = "(v2.13)";
 
         #endregion
 

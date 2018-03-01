@@ -7,8 +7,8 @@
     <ProjectGuid>{16878A0D-CD88-4206-AC25-3B057DA8F18D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Trainer</RootNamespace>
-    <AssemblyName>Trainer</AssemblyName>
+    <RootNamespace>Trainer_v2</RootNamespace>
+    <AssemblyName>Trainer_v2</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile>
