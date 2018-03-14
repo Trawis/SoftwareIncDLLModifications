@@ -21,7 +21,7 @@ namespace Trainer_v3
             Button x = WindowManager.SpawnButton();
             x.GetComponentInChildren<UnityEngine.UI.Text>().text = Text;
             x.onClick.AddListener(Action);
-            WindowManager.AddElementToWindow(x.gameObject, Main.win, Button, new Rect(0, 0, 0, 0));
+            WindowManager.AddElementToWindow(x.gameObject, SettingsWindow.Window, Button, new Rect(0, 0, 0, 0));
         }
 
         public static void AddInputBox(String Text, Rect InputBox, UnityAction<string> Action)
@@ -29,14 +29,14 @@ namespace Trainer_v3
             InputField x = WindowManager.SpawnInputbox();
             x.text = Text;
             x.onValueChanged.AddListener(Action);
-            WindowManager.AddElementToWindow(x.gameObject, Main.win, InputBox, new Rect(0, 0, 0, 0));
+            WindowManager.AddElementToWindow(x.gameObject, SettingsWindow.Window, InputBox, new Rect(0, 0, 0, 0));
         }
 
         public static void AddLabel(String Text, Rect Label)
         {
             Text x = WindowManager.SpawnLabel();
             x.text = "<= This cell is universal for\nwinice, Stock, Active Users";
-            WindowManager.AddElementToWindow(x.gameObject, Main.win, Label, new Rect(0, 0, 0, 0));
+            WindowManager.AddElementToWindow(x.gameObject, SettingsWindow.Window, Label, new Rect(0, 0, 0, 0));
         }
 
         public static void AddToggle(String Text, bool isOn, UnityAction<bool> Action, ref List<GameObject> Toggles)
@@ -54,7 +54,7 @@ namespace Trainer_v3
             {
                 GameObject item = Buttons[i];
 
-                WindowManager.AddElementToWindow(item, Main.win, new Rect(1, (i + 7) * 32, 150, 32),
+                WindowManager.AddElementToWindow(item, SettingsWindow.Window, new Rect(1, (i + 7) * 32, 150, 32),
                     new Rect(0, 0, 0, 0));
             }
 
@@ -62,7 +62,7 @@ namespace Trainer_v3
             {
                 GameObject item = Col1[i];
 
-                WindowManager.AddElementToWindow(item, Main.win, new Rect(161, (i + 7) * 32, 150, 32),
+                WindowManager.AddElementToWindow(item, SettingsWindow.Window, new Rect(161, (i + 7) * 32, 150, 32),
                     new Rect(0, 0, 0, 0));
             }
 
@@ -70,7 +70,7 @@ namespace Trainer_v3
             {
                 GameObject item = Col2[i];
 
-                WindowManager.AddElementToWindow(item, Main.win, new Rect(322, (i + 7) * 32, 150, 32),
+                WindowManager.AddElementToWindow(item, SettingsWindow.Window, new Rect(322, (i + 7) * 32, 150, 32),
                     new Rect(0, 0, 0, 0));
             }
 
@@ -78,7 +78,7 @@ namespace Trainer_v3
             {
                 GameObject item = Col3[i];
 
-                WindowManager.AddElementToWindow(item, Main.win, new Rect(483, (i + 7) * 32, 150, 32),
+                WindowManager.AddElementToWindow(item, SettingsWindow.Window, new Rect(483, (i + 7) * 32, 150, 32),
                     new Rect(0, 0, 0, 0));
             }
         }
