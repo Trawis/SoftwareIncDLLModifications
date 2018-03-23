@@ -557,12 +557,11 @@ namespace Trainer_v3
                         x.employee.AddToSpecialization(Employee.EmployeeRole.Designer, specialization, 1f, 0, true);
                         x.employee.AddToSpecialization(Employee.EmployeeRole.Artist, specialization, 1f, 0, true);
                         x.employee.AddToSpecialization(Employee.EmployeeRole.Programmer, specialization, 1f, 0, true);
-                        x.employee.AddToSpecialization(Employee.EmployeeRole.Marketer, specialization, 1f, 0, true);
-                        x.employee.AddToSpecialization(Employee.EmployeeRole.Lead, specialization, 1f, 0, true);
+                        //x.employee.AddToSpecialization(Employee.EmployeeRole.Marketer, specialization, 1f, 0, true);
+                        //x.employee.AddToSpecialization(Employee.EmployeeRole.Lead, specialization, 1f, 0, true);
                     }
                 }
             }
-
             HUD.Instance.AddPopupMessage("Trainer: All employees are now max skilled!", "Cogs", PopupManager.PopUpAction.None, 0, 0, 0, 0, 1);
         }
 
@@ -592,7 +591,6 @@ namespace Trainer_v3
             //HUD.Instance.UpdateFurnitureButtons();
             //HUD.Instance.AddPopupMessage("Trainer: All furniture has been unlocked!", "Cogs", PopupManager.PopUpAction.None, 0, 0, 0, 0);
             HUD.Instance.AddPopupMessage("Trainer: This option currently doesn't work!", "Cogs", PopupManager.PopUpAction.None, 0, 0, 0, 0, 1);
-
         }
 
         #region MonthDays
