@@ -14,38 +14,16 @@ namespace Trainer_v3
         public static Random rnd;
         public static bool DoStuff => ModActive && GameSettings.Instance != null && HUD.Instance != null;
 
-        public static bool ModActive;
-        public static bool LockAge;
-        public static bool LockStress;
-        public static bool LockNeeds;
-        public static bool LockEffSat;
-        public static bool FreeEmployees;
-        public static bool FreeStaff;
-        public static bool TempLock;
-        public static bool NoWaterElect;
-        public static bool NoiseRed;
-        public static bool FullEnv;
-        public static bool CleanRooms;
-        public static bool Fullbright;
-        public static bool NoVacation;
-        public static bool dDeal;
-        public static bool MoreHosting;
-        public static bool IncCourierCap;
-        public static bool RedISPCost;
-        public static bool IncPrintSpeed;
-        public static bool FreePrint;
-        public static bool IncBookshelfSkill;
-        public static bool NoMaintenance;
-        public static bool NoSickness;
-        public static bool MaxOutEff;
-        public static bool LockSat;
+        public static bool ModActive, LockAge, LockStress, LockNeeds, LockEffSat, FreeEmployees, FreeStaff, TempLock;
+        public static bool NoWaterElect, NoiseRed, FullEnv, CleanRooms, Fullbright, NoVacation, dDeal, MoreHosting;
+        public static bool IncCourierCap, RedISPCost, IncPrintSpeed, FreePrint, IncBookshelfSkill, NoMaintenance;
+        public static bool NoSickness, MaxOutEff, LockSat;
 
-        public bool reward;
-        public bool pushed;
+        public bool reward, pushed, start;
 
         public static string price_ProductName;
 
-        public bool start;
+        public Dictionary<String, bool> Settings;
 
         #endregion
 
@@ -54,58 +32,66 @@ namespace Trainer_v3
             rnd = new Random(); // Random is time based, this makes it more random
 
             if (!ModActive)
-            {
                 return;
-            }
+            
+            Settings = new Dictionary<String, bool>
+            {
+                {"LockStress", LockStress},
+                {"NoVacation", NoVacation},
+                {"Fullbright", Fullbright},
+                {"CleanRooms", CleanRooms},
+                {"FullEnv", FullEnv},
+                {"NoiseRed", NoiseRed},
+                {"FreeStaff", FreeStaff},
+                {"TempLock", TempLock},
+                {"NoWaterElect", NoWaterElect},
+                {"LockNeeds", LockNeeds},
+                {"LockEffSat", LockEffSat},
+                {"FreeEmployees", FreeEmployees},
+                {"LockAge", LockAge},
+                {"AutoDistDeal", dDeal},
+                {"MoreHosting", MoreHosting},
+                {"IncreaseCourierCapacity", IncCourierCap},
+                {"ReduceISPCost", RedISPCost},
+                {"IncPrintSpeed", IncPrintSpeed},
+                {"FreePrint", FreePrint},
+                {"IncBookshelfSkill", IncBookshelfSkill},
+                {"NoMaintenance", NoMaintenance},
+                {"NoSickness", NoSickness},
+                {"MaxOutEff", MaxOutEff},
+                {"LockSat", LockSat}
+            };
 
             StartCoroutine(SaveSettings());
-            LockAge = LoadSetting("LockAge", false);
-            LockStress = LoadSetting("LockStress", false);
-            LockNeeds = LoadSetting("LockNeeds", false);
-            FreeEmployees = LoadSetting("FreeEmployees", false);
-            LockEffSat = LoadSetting("LockEffSat", false);
-            FreeStaff = LoadSetting("FreeStaff", false);
-            TempLock = LoadSetting("TempLock", false);
-            NoWaterElect = LoadSetting("NoWaterElect", false);
-            NoiseRed = LoadSetting("NoiseRed", false);
-            FullEnv = LoadSetting("FullEnv", false);
-            CleanRooms = LoadSetting("CleanRooms", false);
-            Fullbright = LoadSetting("Fullbright", false);
-            NoVacation = LoadSetting("NoVacation", false);
-            dDeal = LoadSetting("AutoDistDeal", false);
-            MoreHosting = LoadSetting("MoreHosting", false);
-            IncCourierCap = LoadSetting("IncreaseCourierCapacity", false);
-            RedISPCost = LoadSetting("ReduceISPCost", false);
-            IncPrintSpeed = LoadSetting("IncPrintSpeed", false);
-            FreePrint = LoadSetting("FreePrint", false);
-            IncBookshelfSkill = LoadSetting("IncBookshelfSkill", false);
-            NoMaintenance = LoadSetting("NoMaintenance", false);
-            NoSickness = LoadSetting("NoSickness", false);
-            MaxOutEff = LoadSetting("MaxOutEff", false);
-            LockSat = LoadSetting("LockSat", false);
+
+            foreach (var Pair in Settings)
+                LoadSetting(Pair.Key, false);
+        }
+        
+        IEnumerator<WaitForSeconds> SaveSettings()
+        {
+            while (true)
+            {
+                yield return new WaitForSeconds(15.0f);
+                
+                foreach(var Pair in Settings)
+                    SaveSetting(Pair.Key, Pair.Value.ToString());
+            }
         }
 
         private void Update()
         {
             if (start && ModActive && GameSettings.Instance == null && HUD.Instance == null)
-            {
                 start = false;
-            }
 
             if (!ModActive || GameSettings.Instance == null || HUD.Instance == null)
-            {
                 return;
-            }
 
             if (Input.GetKey(KeyCode.F1) && !Main.IsShowed)
-            {
                 Main.Window();
-            }
 
             if (Input.GetKey(KeyCode.F2) && Main.IsShowed)
-            {
                 Main.Window();
-            }
 
             if (start == false)
             {
@@ -114,9 +100,7 @@ namespace Trainer_v3
             }
 
             if (FreeStaff)
-            {
                 GameSettings.Instance.StaffSalaryDue = 0f;
-            }
 
             foreach (Furniture item in GameSettings.Instance.sRoomManager.AllFurniture)
             {
@@ -128,11 +112,10 @@ namespace Trainer_v3
                     item.Noisiness = 0;
                 }
 
-                if (NoWaterElect)
-                {
-                    item.Water = 0;
-                    item.Wattage = 0;
-                }
+                if (!NoWaterElect) continue;
+                
+                item.Water = 0;
+                item.Wattage = 0;
             }
 
             for (int i = 0; i < GameSettings.Instance.sRoomManager.Rooms.Count; i++)
@@ -140,24 +123,16 @@ namespace Trainer_v3
                 Room room = GameSettings.Instance.sRoomManager.Rooms[i];
 
                 if (CleanRooms)
-                {
                     room.ClearDirt();
-                }
 
                 if (TempLock)
-                {
                     room.Temperature = 21.4f;
-                }
 
                 if (FullEnv)
-                {
                     room.FurnEnvironment = 4;
-                }
 
                 if (Fullbright)
-                {
                     room.IndirectLighting = 8;
-                }
             }
 
             for (int i = 0; i < GameSettings.Instance.sActorManager.Actors.Count; i++)
@@ -172,21 +147,14 @@ namespace Trainer_v3
                 }
 
                 if (LockStress)
-                {
                     act.employee.Stress = 1;
-                }
 
                 if (LockEffSat)
                 {
-
                     if (act.employee.RoleString.Contains("Lead"))
-                    {
                         act.Effectiveness = MaxOutEff ? 20 : 4;
-                    }
                     else
-                    {
                         act.Effectiveness = MaxOutEff ? 10 : 2;
-                    }
                 }
                 if (LockSat)
                 {
@@ -211,14 +179,10 @@ namespace Trainer_v3
                 }
 
                 if (NoiseRed)
-                {
                     act.Noisiness = 0;
-                }
 
                 if (NoVacation)
-                {
                     act.VacationMonth = SDateTime.NextMonth(24);
-                }
             }
 
             LoanWindow.factor = 250000;
@@ -234,29 +198,17 @@ namespace Trainer_v3
                     float m = x.Value.GetMoneyWithInsurance(true);
 
                     if (m < 10000000f)
-                    {
                         x.Value.DistributionDeal = 0.05f;
-                    }
                     else if (m > 10000000f && m < 100000000f)
-                    {
                         x.Value.DistributionDeal = 0.10f;
-                    }
                     else if (m > 100000000f && m < 250000000f)
-                    {
                         x.Value.DistributionDeal = 0.15f;
-                    }
                     else if (m > 250000000f && m < 500000000f)
-                    {
                         x.Value.DistributionDeal = 0.20f;
-                    }
                     else if (m > 500000000f && m < 1000000000f)
-                    {
                         x.Value.DistributionDeal = 0.25f;
-                    }
                     else if (m > 1000000000f)
-                    {
                         x.Value.DistributionDeal = 0.30f;
-                    }
                 }
             }
 
@@ -265,53 +217,30 @@ namespace Trainer_v3
                 int hour = TimeOfDay.Instance.Hour;
 
                 if ((hour == 9 || hour == 15) && pushed == false)
-                {
                     Deals();
-                }
                 else if (hour != 9 && hour != 15 && pushed)
-                {
                     pushed = false;
-                }
+
                 if (reward == false && hour == 12)
-                {
                     Reward();
-                }
                 else if (hour != 12 && reward)
-                {
                     reward = false;
-                }
             }
 
             if (IncPrintSpeed)
-            {
                 for (int i = 0; i < GameSettings.Instance.ProductPrinters.Count; i++)
-                {
                     GameSettings.Instance.ProductPrinters[i].PrintSpeed = 2f;
-                }
-            }
 
             //add printspeed and printprice when it's disabled (else) TODO
             if (FreePrint)
-            {
                 for (int i = 0; i < GameSettings.Instance.ProductPrinters.Count; i++)
-                {
                     GameSettings.Instance.ProductPrinters[i].PrintPrice = 0f;
-                }
-            }
 
             if (IncBookshelfSkill)
-            {
                 foreach (Furniture bookshelf in GameSettings.Instance.sRoomManager.AllFurniture)
-                {
                     if ("Bookshelf".Equals(bookshelf.Type))
-                    {
                         foreach (float x in bookshelf.AuraValues)
-                        {
                             bookshelf.AuraValues[1] = 0.75f;
-                        }
-                    }
-                }
-            }
 
             //else 0.25 TODO
             if (NoMaintenance)
@@ -337,39 +266,6 @@ namespace Trainer_v3
             }
         }
 
-        IEnumerator<WaitForSeconds> SaveSettings()
-        {
-            while (true)
-            {
-                yield return new WaitForSeconds(15.0f);
-
-                SaveSetting("LockStress", LockStress.ToString());
-                SaveSetting("NoVacation", NoVacation.ToString());
-                SaveSetting("Fullbright", Fullbright.ToString());
-                SaveSetting("CleanRooms", CleanRooms.ToString());
-                SaveSetting("FullEnv", FullEnv.ToString());
-                SaveSetting("NoiseRed", NoiseRed.ToString());
-                SaveSetting("FreeStaff", FreeStaff.ToString());
-                SaveSetting("TempLock", TempLock.ToString());
-                SaveSetting("NoWaterElect", NoWaterElect.ToString());
-                SaveSetting("LockNeeds", LockNeeds.ToString());
-                SaveSetting("LockEffSat", LockEffSat.ToString());
-                SaveSetting("FreeEmployees", FreeEmployees.ToString());
-                SaveSetting("LockAge", LockAge.ToString());
-                SaveSetting("AutoDistDeal", dDeal.ToString());
-                SaveSetting("MoreHosting", MoreHosting.ToString());
-                SaveSetting("IncreaseCourierCapacity", IncCourierCap.ToString());
-                SaveSetting("ReduceISPCost", RedISPCost.ToString());
-                SaveSetting("IncPrintSpeed", IncPrintSpeed.ToString());
-                SaveSetting("FreePrint", FreePrint.ToString());
-                SaveSetting("IncBookshelfSkill", IncBookshelfSkill.ToString());
-                SaveSetting("NoMaintenance", NoMaintenance.ToString());
-                SaveSetting("NoSickness", NoSickness.ToString());
-                SaveSetting("MaxOutEff", MaxOutEff.ToString());
-                SaveSetting("LockSat", LockSat.ToString());
-            }
-        }
-
         public static void ClearLoans()
         {
             GameSettings.Instance.Loans.Clear();
@@ -381,10 +277,8 @@ namespace Trainer_v3
             Deal[] Deals = HUD.Instance.dealWindow.GetActiveDeals().Where(deal => deal.ToString() == "ServerDeal")
                 .ToArray();
 
-            if (Deals.Length == 0)
-            {
+            if (!Deals.Any())
                 return;
-            }
 
             for (int i = 0; i < Deals.Length; i++)
             {
@@ -624,7 +518,8 @@ namespace Trainer_v3
                 return;
             }
 
-            ((SoftwareAlpha)WorkItem).CodeProgress = 0.98f;
+            /*typeof(SoftwareAlpha).GetField("DevTime", BindingFlags.Public | BindingFlags.Instance).
+                SetValue((SoftwareAlpha)WorkItem, 10f);*/
         }
 
         public static void MaxCode() => WindowManager.SpawnInputDialog("Type product name:", "Max Code", "", MaxCodeAction);
@@ -644,7 +539,10 @@ namespace Trainer_v3
                 return;
             }
 
-            ((SoftwareAlpha)WorkItem).ArtProgress = 0.98f;
+            typeof(SoftwareAlpha).GetField("DevTime", BindingFlags.Public | BindingFlags.Instance).
+                SetValue((SoftwareAlpha)WorkItem, 10f);
+            ((SoftwareAlpha) WorkItem).ArtDevTime = 10f;
+            ((SoftwareAlpha) WorkItem).ArtProgress = 10f;
         }
 
         public static void MaxArt() => WindowManager.SpawnInputDialog("Type product name:", "Max Art", "", MaxArtAction);
