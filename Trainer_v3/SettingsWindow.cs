@@ -52,7 +52,6 @@ namespace Trainer_v3
                 Window.GetComponentsInChildren<Button>()
                   .SingleOrDefault(x => x.name == "CloseButton")
                   .onClick.AddListener(() => shown = false);
-
             }
 
             List<GameObject> Buttons = new List<GameObject>();
@@ -109,6 +108,7 @@ namespace Trainer_v3
 
             Utils.AddButton("Unlock all space", TrainerBehaviour.UnlockAllSpace, ref Buttons);
 
+            //Utils.AddButton("Test", TrainerBehaviour.Test, ref Buttons);
 
 
             Utils.AddToggle("Disable Needs", TrainerBehaviour.LockNeeds,

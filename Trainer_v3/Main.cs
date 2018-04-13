@@ -13,7 +13,7 @@ namespace Trainer_v3
         //This function is used to generate the content in the "Mods" section of the options window
         //The behaviors array contains all behaviours that have been spawned for this mod, one for each implementation
 
-        public static string version = "(v3.0)";
+        public static string version = "(v3.2)";
         public static bool IsShowed => SettingsWindow.shown;
 
         public static void Button()

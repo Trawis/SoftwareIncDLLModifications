@@ -438,7 +438,9 @@ namespace Trainer_v3
 
         public static void Test()
         {
-
+            GUIListView listView;
+            listView = WindowManager.SpawnList();
+            listView.Initialize();
         }
 
         public static void AIBankrupt()
@@ -500,7 +502,6 @@ namespace Trainer_v3
 
         public static void RemoveSoft()
         {
-            WindowManager.SpawnDialog("Products that you didn't invent are removed.", false, DialogWindow.DialogType.Information);
             SDateTime time = new SDateTime(1, 70);
             CompanyType type = new CompanyType();
             Dictionary<string, string[]> dict = new Dictionary<string, string[]>();
@@ -525,6 +526,7 @@ namespace Trainer_v3
                 Product.Marketing = 0;
                 Product.Trade(simComp);
             }
+            WindowManager.SpawnDialog("Products that you didn't invent are removed.", false, DialogWindow.DialogType.Information);
         }
 
         public static void ResetAgeOfEmployees()
@@ -577,7 +579,7 @@ namespace Trainer_v3
             GameSettings.Instance.ExpandLand(0, 0);
             HUD.Instance.AddPopupMessage("Trainer: All buildable area is now unlocked!", "Cogs", PopupManager.PopUpAction.None, 0, 0, 0, 0);
         */
-            HUD.Instance.AddPopupMessage("Trainer: This option currently doesn't work!", "Cogs", PopupManager.PopUpAction.None, 0, 0, 0, 0, 1);
+            WindowManager.SpawnDialog("Not working!", false, DialogWindow.DialogType.Information);
         }
 
         public static void UnlockAll()
@@ -590,7 +592,7 @@ namespace Trainer_v3
             //Cheats.UnlockFurn = !Cheats.UnlockFurn;
             //HUD.Instance.UpdateFurnitureButtons();
             //HUD.Instance.AddPopupMessage("Trainer: All furniture has been unlocked!", "Cogs", PopupManager.PopUpAction.None, 0, 0, 0, 0);
-            HUD.Instance.AddPopupMessage("Trainer: This option currently doesn't work!", "Cogs", PopupManager.PopUpAction.None, 0, 0, 0, 0, 1);
+            WindowManager.SpawnDialog("Not working!", false, DialogWindow.DialogType.Information);
         }
 
         #region MonthDays
@@ -780,8 +782,7 @@ namespace Trainer_v3
 
         public static void TakeoverCompany()
         {
-            //WindowManager.SpawnInputDialog("Type company name:", "Takeover Company", "", TakeoverCompanyAction);
-            WindowManager.SpawnDialog("Not working!", false, DialogWindow.DialogType.Information);
+            WindowManager.SpawnInputDialog("Type company name:", "Takeover Company", "", TakeoverCompanyAction);
         }
 
         #endregion
@@ -805,8 +806,7 @@ namespace Trainer_v3
 
         public static void SubDCompany()
         {
-            //WindowManager.SpawnInputDialog("Type company name:", "Subsidiary Company", "", SubDCompanyAction);
-            WindowManager.SpawnDialog("Not working!", false, DialogWindow.DialogType.Information);
+            WindowManager.SpawnInputDialog("Type company name:", "Subsidiary Company", "", SubDCompanyAction);
         }
 
         #endregion
@@ -818,6 +818,8 @@ namespace Trainer_v3
             SimulatedCompany Company =
                 GameSettings.Instance.simulation.Companies.FirstOrDefault(company => company.Value.Name == input).Value;
 
+            DevConsole.Console.Log("input => " + input + " Company: " + Company);
+
             if (Company == null)
             {
                 return;
@@ -828,8 +830,7 @@ namespace Trainer_v3
 
         public static void ForceBankrupt()
         {
-            //WindowManager.SpawnInputDialog("Type company name:", "Force Bankrupt", "", ForceBankruptAction);
-            WindowManager.SpawnDialog("Not working!", false, DialogWindow.DialogType.Information);
+            WindowManager.SpawnInputDialog("Type company name:", "Force Bankrupt", "", ForceBankruptAction);
         }
 
         #endregion
@@ -868,21 +869,11 @@ namespace Trainer_v3
         public override void OnActivate()
         {
             ModActive = true;
-
-            if (DoStuff)
-            {
-                HUD.Instance.AddPopupMessage("Trainer v2 has been activated!", "Cogs", PopupManager.PopUpAction.None, 0, 0, 0, 0);
-            }
         }
 
         public override void OnDeactivate()
         {
             ModActive = false;
-
-            if (!DoStuff)
-            {
-                HUD.Instance.AddPopupMessage("Trainer v2 has been deactivated!", "Cogs", PopupManager.PopUpAction.None, 0, 0, 0, 0, 1);
-            }
         }
 
         #endregion
