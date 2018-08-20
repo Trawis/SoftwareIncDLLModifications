@@ -33,7 +33,7 @@ namespace Trainer_v3
 
             if (!ModActive)
                 return;
-            
+
             Settings = new Dictionary<String, bool>
             {
                 {"LockStress", LockStress},
@@ -67,14 +67,14 @@ namespace Trainer_v3
             foreach (var Pair in Settings)
                 LoadSetting(Pair.Key, false);
         }
-        
+
         IEnumerator<WaitForSeconds> SaveSettings()
         {
             while (true)
             {
                 yield return new WaitForSeconds(15.0f);
-                
-                foreach(var Pair in Settings)
+
+                foreach (var Pair in Settings)
                     SaveSetting(Pair.Key, Pair.Value.ToString());
             }
         }
@@ -113,7 +113,7 @@ namespace Trainer_v3
                 }
 
                 if (!NoWaterElect) continue;
-                
+
                 item.Water = 0;
                 item.Wattage = 0;
             }
@@ -522,6 +522,14 @@ namespace Trainer_v3
 
             /*typeof(SoftwareAlpha).GetField("DevTime", BindingFlags.Public | BindingFlags.Instance).
                 SetValue((SoftwareAlpha)WorkItem, 10f);*/
+
+            var code = ((SoftwareAlpha)WorkItem);
+
+            code.CodeProgress = 0.98f;
+            //code.FinalSpecQuality = new float[,] { { 1f } };
+            //code.SpecQuality = new float[] { 1f };
+            //code.MaxQual = 1f;
+            //code.MaxDevDt = 10f;
         }
 
         public static void MaxCode() => WindowManager.SpawnInputDialog("Type product name:", "Max Code", "", MaxCodeAction);
@@ -541,10 +549,13 @@ namespace Trainer_v3
                 return;
             }
 
-            typeof(SoftwareAlpha).GetField("DevTime", BindingFlags.Public | BindingFlags.Instance).
-                SetValue((SoftwareAlpha)WorkItem, 10f);
-            ((SoftwareAlpha) WorkItem).ArtDevTime = 10f;
-            ((SoftwareAlpha) WorkItem).ArtProgress = 10f;
+            var art = ((SoftwareAlpha)WorkItem);
+            //var artDevTime = typeof(SoftwareAlpha).GetField("DevTime", BindingFlags.Public | BindingFlags.Instance).GetValue(art);
+            //DevConsole.Console.Log($"{art.ArtProgressLim}, {art.DevTime}, {art.ArtProgress}, {art.ArtDTMult}, {art.MaxArtDt}");
+            //DevConsole.Console.Log($"{artDevTime}");
+            //typeof(SoftwareAlpha).GetField("DevTime", BindingFlags.Public | BindingFlags.Instance).SetValue((SoftwareAlpha)WorkItem, 10f);
+            //art.ArtDevTime = (float)artDevTime;
+            art.ArtProgress = 0.98f;
         }
 
         public static void MaxArt() => WindowManager.SpawnInputDialog("Type product name:", "Max Art", "", MaxArtAction);
