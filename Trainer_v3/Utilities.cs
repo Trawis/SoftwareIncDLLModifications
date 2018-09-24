@@ -8,6 +8,7 @@ namespace Trainer_v3
 {
     public class Utilities
     {
+
         public static void AddButton(String Text, UnityAction Action, ref List<GameObject> Buttons)
         {
             Button x = WindowManager.SpawnButton();
@@ -35,16 +36,19 @@ namespace Trainer_v3
         public static void AddLabel(String Text, Rect Label)
         {
             Text x = WindowManager.SpawnLabel();
-            x.text = "<= This cell is universal for\nwinice, Stock, Active Users";
+            x.text = "<= This cell is universal for\nPrice, Stock & Active Users";
             WindowManager.AddElementToWindow(x.gameObject, SettingsWindow.Window, Label, new Rect(0, 0, 0, 0));
         }
 
         public static void AddToggle(String Text, bool isOn, UnityAction<bool> Action, ref List<GameObject> Toggles)
         {
+            SettingsManager settingsManager = new SettingsManager();
+
             Toggle Toggle = WindowManager.SpawnCheckbox();
             Toggle.GetComponentInChildren<UnityEngine.UI.Text>().text = Text;
             Toggle.isOn = isOn;
             Toggle.onValueChanged.AddListener(Action);
+            Toggle.onValueChanged.AddListener((e) => settingsManager.Save());
             Toggles.Add(Toggle.gameObject);
         }
 

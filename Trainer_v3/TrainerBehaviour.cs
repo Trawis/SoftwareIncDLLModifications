@@ -7,23 +7,19 @@ using Random = System.Random;
 
 namespace Trainer_v3
 {
-    public class TrainerBehaviour : ModBehaviour
+    public class TrainerBehaviour : Behaviour
     {
         #region Fields
 
         public static Random rnd;
-        public static bool DoStuff => ModActive && GameSettings.Instance != null && HUD.Instance != null;
 
-        public static bool ModActive, LockAge, LockStress, LockNeeds, LockEffSat, FreeEmployees, FreeStaff, TempLock;
-        public static bool NoWaterElect, NoiseRed, FullEnv, CleanRooms, Fullbright, NoVacation, dDeal, MoreHosting;
-        public static bool IncCourierCap, RedISPCost, IncPrintSpeed, FreePrint, IncBookshelfSkill, NoMaintenance;
-        public static bool NoSickness, MaxOutEff, LockSat;
+        public static bool DoStuff => ModActive && GameSettings.Instance != null && HUD.Instance != null;
 
         public bool reward, pushed, start;
 
         public static string price_ProductName;
 
-        public Dictionary<String, bool> Settings;
+        SettingsManager settingsManager = new SettingsManager();
 
         #endregion
 
@@ -34,50 +30,21 @@ namespace Trainer_v3
             if (!ModActive)
                 return;
 
-            Settings = new Dictionary<String, bool>
-            {
-                {"LockStress", LockStress},
-                {"NoVacation", NoVacation},
-                {"Fullbright", Fullbright},
-                {"CleanRooms", CleanRooms},
-                {"FullEnv", FullEnv},
-                {"NoiseRed", NoiseRed},
-                {"FreeStaff", FreeStaff},
-                {"TempLock", TempLock},
-                {"NoWaterElect", NoWaterElect},
-                {"LockNeeds", LockNeeds},
-                {"LockEffSat", LockEffSat},
-                {"FreeEmployees", FreeEmployees},
-                {"LockAge", LockAge},
-                {"AutoDistDeal", dDeal},
-                {"MoreHosting", MoreHosting},
-                {"IncreaseCourierCapacity", IncCourierCap},
-                {"ReduceISPCost", RedISPCost},
-                {"IncPrintSpeed", IncPrintSpeed},
-                {"FreePrint", FreePrint},
-                {"IncBookshelfSkill", IncBookshelfSkill},
-                {"NoMaintenance", NoMaintenance},
-                {"NoSickness", NoSickness},
-                {"MaxOutEff", MaxOutEff},
-                {"LockSat", LockSat}
-            };
+            settingsManager.Load();
 
-            StartCoroutine(SaveSettings());
-
-            foreach (var Pair in Settings)
-                LoadSetting(Pair.Key, false);
+            DontDestroyOnLoad(Main.btn);
         }
 
-        IEnumerator<WaitForSeconds> SaveSettings()
-        {
-            while (true)
-            {
-                yield return new WaitForSeconds(15.0f);
+        //IEnumerator<WaitForSeconds> SaveSettings()
+        //{
+        //    while (true)
+        //    {
+        //        yield return new WaitForSeconds(15.0f);
 
-                foreach (var Pair in Settings)
-                    SaveSetting(Pair.Key, Pair.Value.ToString());
-            }
-        }
+        //        foreach (var Pair in SettingsManager.Settings)
+        //            SaveSetting(Pair.Key, Pair.Value.ToString());
+        //    }
+        //}
 
         private void Update()
         {
@@ -99,12 +66,12 @@ namespace Trainer_v3
                 start = true;
             }
 
-            if (FreeStaff)
+            if (SettingsManager.FreeStaff)
                 GameSettings.Instance.StaffSalaryDue = 0f;
 
             foreach (Furniture item in GameSettings.Instance.sRoomManager.AllFurniture)
             {
-                if (NoiseRed)
+                if (SettingsManager.NoiseRed)
                 {
                     item.ActorNoise = 0f;
                     item.EnvironmentNoise = 0f;
@@ -112,7 +79,7 @@ namespace Trainer_v3
                     item.Noisiness = 0;
                 }
 
-                if (!NoWaterElect) continue;
+                if (!SettingsManager.NoWaterElect) continue;
 
                 item.Water = 0;
                 item.Wattage = 0;
@@ -122,16 +89,16 @@ namespace Trainer_v3
             {
                 Room room = GameSettings.Instance.sRoomManager.Rooms[i];
 
-                if (CleanRooms)
+                if (SettingsManager.CleanRooms)
                     room.ClearDirt();
 
-                if (TempLock)
+                if (SettingsManager.TempLock)
                     room.Temperature = 21.4f;
 
-                if (FullEnv)
+                if (SettingsManager.FullEnv)
                     room.FurnEnvironment = 4;
 
-                if (Fullbright)
+                if (SettingsManager.Fullbright)
                     room.IndirectLighting = 8;
             }
 
@@ -140,30 +107,30 @@ namespace Trainer_v3
                 Actor act = GameSettings.Instance.sActorManager.Actors[i];
                 Employee employee = GameSettings.Instance.sActorManager.Actors[i].employee;
 
-                if (LockAge)
+                if (SettingsManager.LockAge)
                 {
                     act.employee.AgeMonth = Convert.ToInt32(act.employee.Age) * 12; //20*12
                     act.UpdateAgeLook();
                 }
 
-                if (LockStress)
+                if (SettingsManager.LockStress)
                     act.employee.Stress = 1;
 
-                if (LockEffSat)
+                if (SettingsManager.LockEffSat)
                 {
                     if (act.employee.RoleString.Contains("Lead"))
-                        act.Effectiveness = MaxOutEff ? 20 : 4;
+                        act.Effectiveness = SettingsManager.MaxOutEff ? 20 : 4;
                     else
-                        act.Effectiveness = MaxOutEff ? 10 : 2;
+                        act.Effectiveness = SettingsManager.MaxOutEff ? 10 : 2;
                 }
-                if (LockSat)
+                if (SettingsManager.LockSat)
                 {
                     //act.ChangeSatisfaction(10, 10, Employee.Thought.LoveWork, Employee.Thought.LikeTeamWork, 0);
                     employee.JobSatisfaction = 2f;
                     act.employee.JobSatisfaction = 2f;
                 }
 
-                if (LockNeeds)
+                if (SettingsManager.LockNeeds)
                 {
                     act.employee.Bladder = 1;
                     act.employee.Hunger = 1;
@@ -171,27 +138,27 @@ namespace Trainer_v3
                     act.employee.Social = 1;
                 }
 
-                if (FreeEmployees)
+                if (SettingsManager.FreeEmployees)
                 {
                     act.employee.Salary = 0;
                     act.NegotiateSalary = false;
                     act.IgnoreOffSalary = true;
                 }
 
-                if (NoiseRed)
+                if (SettingsManager.NoiseRed)
                     act.Noisiness = 0;
 
-                if (NoVacation)
+                if (SettingsManager.NoVacation)
                     act.VacationMonth = SDateTime.NextMonth(24);
             }
 
             LoanWindow.factor = 250000;
             GameSettings.MaxFloor = 75; //10 default
             //GameSettings.Instance.scenario.MaxFloor = 75;
-            CourierAI.MaxBoxes = IncCourierCap ? 108 : 54;
-            Server.ISPCost = RedISPCost ? 25f : 50f;
+            CourierAI.MaxBoxes = SettingsManager.IncCourierCap ? 108 : 54;
+            Server.ISPCost = SettingsManager.RedISPCost ? 25f : 50f;
 
-            if (dDeal)
+            if (SettingsManager.dDeal)
             {
                 foreach (var x in GameSettings.Instance.simulation.Companies)
                 {
@@ -212,7 +179,7 @@ namespace Trainer_v3
                 }
             }
 
-            if (MoreHosting)
+            if (SettingsManager.MoreHosting)
             {
                 int hour = TimeOfDay.Instance.Hour;
 
@@ -227,23 +194,23 @@ namespace Trainer_v3
                     reward = false;
             }
 
-            if (IncPrintSpeed)
+            if (SettingsManager.IncPrintSpeed)
                 for (int i = 0; i < GameSettings.Instance.ProductPrinters.Count; i++)
                     GameSettings.Instance.ProductPrinters[i].PrintSpeed = 2f;
 
             //add printspeed and printprice when it's disabled (else) TODO
-            if (FreePrint)
+            if (SettingsManager.FreePrint)
                 for (int i = 0; i < GameSettings.Instance.ProductPrinters.Count; i++)
                     GameSettings.Instance.ProductPrinters[i].PrintPrice = 0f;
 
-            if (IncBookshelfSkill)
+            if (SettingsManager.IncBookshelfSkill)
                 foreach (Furniture bookshelf in GameSettings.Instance.sRoomManager.AllFurniture)
                     if ("Bookshelf".Equals(bookshelf.Type))
                         foreach (float x in bookshelf.AuraValues)
                             bookshelf.AuraValues[1] = 0.75f;
 
             //else 0.25 TODO
-            if (NoMaintenance)
+            if (SettingsManager.NoMaintenance)
             {
                 foreach (Furniture furniture in GameSettings.Instance.sRoomManager.AllFurniture)
                 {
@@ -260,8 +227,9 @@ namespace Trainer_v3
                 }
             }
 
-            if (NoSickness)
+            if (SettingsManager.NoSickness)
             {
+                //TODO: Check this
                 //GameSettings.Instance.Insurance.SickRatio = 0f;
             }
         }
@@ -463,30 +431,31 @@ namespace Trainer_v3
 
         public static void UnlockAllSpace()
         {
-
             if (!DoStuff)
             {
                 return;
             }
-            /*
-            GameSettings.Instance.BuildableArea = new Rect(9f, 1f, 246f, 254f);
-            GameSettings.Instance.ExpandLand(0, 0);
-            HUD.Instance.AddPopupMessage("Trainer: All buildable area is now unlocked!", "Cogs", PopupManager.PopUpAction.None, 0, 0, 0, 0);
-        */
-            WindowManager.SpawnDialog("Not working!", false, DialogWindow.DialogType.Information);
+
+            int count = GameSettings.Instance.Plots.Count;
+            for (int index = 0; index < count; ++index)
+            {
+                GameSettings.Instance.BuyPlot(GameSettings.Instance.Plots[0]);
+            }
+            HUD.Instance.AddPopupMessage("Trainer: All plots are now unlocked!", "Cogs", PopupManager.PopUpAction.None, 0, 0, 0, 0);
+            //WindowManager.SpawnDialog("Not working!", false, DialogWindow.DialogType.Information);
         }
 
-        public static void UnlockAll()
+        public static void UnlockFurniture()
         {
             if (!DoStuff)
             {
                 return;
             }
 
-            //Cheats.UnlockFurn = !Cheats.UnlockFurn;
-            //HUD.Instance.UpdateFurnitureButtons();
-            //HUD.Instance.AddPopupMessage("Trainer: All furniture has been unlocked!", "Cogs", PopupManager.PopUpAction.None, 0, 0, 0, 0);
-            WindowManager.SpawnDialog("Not working!", false, DialogWindow.DialogType.Information);
+            Cheats.UnlockFurn = !Cheats.UnlockFurn;
+            HUD.Instance.UpdateFurnitureButtons();
+            HUD.Instance.AddPopupMessage("Trainer: All furniture has been unlocked!", "Cogs", PopupManager.PopUpAction.None, 0, 0, 0, 0);
+            //WindowManager.SpawnDialog("Not working!", false, DialogWindow.DialogType.Information);
         }
 
         #region MonthDays
@@ -775,15 +744,7 @@ namespace Trainer_v3
 
         #region Overrides
 
-        public override void OnActivate()
-        {
-            ModActive = true;
-        }
-
-        public override void OnDeactivate()
-        {
-            ModActive = false;
-        }
+        
 
         #endregion
     }

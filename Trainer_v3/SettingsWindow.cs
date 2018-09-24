@@ -104,84 +104,84 @@ namespace Trainer_v3
 
             Utils.AddButton("Sell products stock", TrainerBehaviour.SellProductStock, ref Buttons);
 
-            Utils.AddButton("Unlock all furniture", TrainerBehaviour.UnlockAll, ref Buttons);
+            Utils.AddButton("Unlock all furniture", TrainerBehaviour.UnlockFurniture, ref Buttons);
 
             Utils.AddButton("Unlock all space", TrainerBehaviour.UnlockAllSpace, ref Buttons);
 
             //Utils.AddButton("Test", TrainerBehaviour.Test, ref Buttons);
 
 
-            Utils.AddToggle("Disable Needs", TrainerBehaviour.LockNeeds,
-                a => TrainerBehaviour.LockNeeds = !TrainerBehaviour.LockNeeds, ref col1);
+            Utils.AddToggle("Disable Needs", SettingsManager.LockNeeds,
+                a => SettingsManager.LockNeeds = !SettingsManager.LockNeeds, ref col1);
 
-            Utils.AddToggle("Disable Stress", TrainerBehaviour.LockStress,
-                a => TrainerBehaviour.LockStress = !TrainerBehaviour.LockStress, ref col1);
+            Utils.AddToggle("Disable Stress", SettingsManager.LockStress,
+                a => SettingsManager.LockStress = !SettingsManager.LockStress, ref col1);
 
-            Utils.AddToggle("Free Employees", TrainerBehaviour.FreeEmployees,
-                a => TrainerBehaviour.FreeEmployees = !TrainerBehaviour.FreeEmployees, ref col1);
+            Utils.AddToggle("Free Employees", SettingsManager.FreeEmployees,
+                a => SettingsManager.FreeEmployees = !SettingsManager.FreeEmployees, ref col1);
 
-            Utils.AddToggle("Free Staff", TrainerBehaviour.FreeStaff,
-                a => TrainerBehaviour.FreeStaff = !TrainerBehaviour.FreeStaff, ref col1);
+            Utils.AddToggle("Free Staff", SettingsManager.FreeStaff,
+                a => SettingsManager.FreeStaff = !SettingsManager.FreeStaff, ref col1);
 
-            Utils.AddToggle("Full Efficiency", TrainerBehaviour.LockEffSat,
-                a => TrainerBehaviour.LockEffSat = !TrainerBehaviour.LockEffSat, ref col1);
+            Utils.AddToggle("Full Efficiency", SettingsManager.LockEffSat,
+                a => SettingsManager.LockEffSat = !SettingsManager.LockEffSat, ref col1);
 
-            Utils.AddToggle("Full Satisfaction", TrainerBehaviour.LockSat,
-                a => TrainerBehaviour.LockSat = !TrainerBehaviour.LockSat, ref col1);
+            Utils.AddToggle("Full Satisfaction", SettingsManager.LockSat,
+                a => SettingsManager.LockSat = !SettingsManager.LockSat, ref col1);
 
-            Utils.AddToggle("Lock Age of Employees", TrainerBehaviour.LockAge,
-                a => TrainerBehaviour.LockAge = !TrainerBehaviour.LockAge, ref col1);
+            Utils.AddToggle("Lock Age of Employees", SettingsManager.LockAge,
+                a => SettingsManager.LockAge = !SettingsManager.LockAge, ref col1);
 
-            Utils.AddToggle("No Vacation", TrainerBehaviour.NoVacation,
-                a => TrainerBehaviour.NoVacation = !TrainerBehaviour.NoVacation, ref col1);
+            Utils.AddToggle("No Vacation", SettingsManager.NoVacation,
+                a => SettingsManager.NoVacation = !SettingsManager.NoVacation, ref col1);
 
-            Utils.AddToggle("No Sickness", TrainerBehaviour.NoSickness,
-                a => TrainerBehaviour.NoSickness = !TrainerBehaviour.NoSickness, ref col1);
+            Utils.AddToggle("No Sickness", SettingsManager.NoSickness,
+                a => SettingsManager.NoSickness = !SettingsManager.NoSickness, ref col1);
 
-            Utils.AddToggle("Ultra Efficiency (Tick Full Eff first)", TrainerBehaviour.MaxOutEff,
-                a => TrainerBehaviour.MaxOutEff = !TrainerBehaviour.MaxOutEff, ref col1);
+            Utils.AddToggle("Ultra Efficiency (Tick Full Eff first)", SettingsManager.MaxOutEff,
+                a => SettingsManager.MaxOutEff = !SettingsManager.MaxOutEff, ref col1);
 
-            Utils.AddToggle("Full Environment", TrainerBehaviour.FullEnv,
-                a => TrainerBehaviour.FullEnv = !TrainerBehaviour.FullEnv, ref col2);
+            Utils.AddToggle("Full Environment", SettingsManager.FullEnv,
+                a => SettingsManager.FullEnv = !SettingsManager.FullEnv, ref col2);
 
-            Utils.AddToggle("Full Sun Light", TrainerBehaviour.Fullbright,
-                a => TrainerBehaviour.Fullbright = !TrainerBehaviour.Fullbright, ref col2);
+            Utils.AddToggle("Full Sun Light", SettingsManager.Fullbright,
+                a => SettingsManager.Fullbright = !SettingsManager.Fullbright, ref col2);
 
-            Utils.AddToggle("Lock Temperature To 21", TrainerBehaviour.TempLock,
-                a => TrainerBehaviour.TempLock = !TrainerBehaviour.TempLock, ref col2);
+            Utils.AddToggle("Lock Temperature To 21", SettingsManager.TempLock,
+                a => SettingsManager.TempLock = !SettingsManager.TempLock, ref col2);
 
-            Utils.AddToggle("No Maintenance", TrainerBehaviour.NoMaintenance,
-                a => TrainerBehaviour.NoMaintenance = !TrainerBehaviour.NoMaintenance, ref col2);
+            Utils.AddToggle("No Maintenance", SettingsManager.NoMaintenance,
+                a => SettingsManager.NoMaintenance = !SettingsManager.NoMaintenance, ref col2);
 
-            Utils.AddToggle("Noise Reduction", TrainerBehaviour.NoiseRed,
-                a => TrainerBehaviour.NoiseRed = !TrainerBehaviour.NoiseRed, ref col2);
+            Utils.AddToggle("Noise Reduction", SettingsManager.NoiseRed,
+                a => SettingsManager.NoiseRed = !SettingsManager.NoiseRed, ref col2);
 
-            Utils.AddToggle("Rooms Never Dirty", TrainerBehaviour.CleanRooms,
-                a => TrainerBehaviour.CleanRooms = !TrainerBehaviour.CleanRooms, ref col2);
+            Utils.AddToggle("Rooms Never Dirty", SettingsManager.CleanRooms,
+                a => SettingsManager.CleanRooms = !SettingsManager.CleanRooms, ref col2);
 
-            Utils.AddToggle("Auto Distribution Deals", TrainerBehaviour.dDeal,
-                a => TrainerBehaviour.dDeal = !TrainerBehaviour.dDeal, ref col3);
+            Utils.AddToggle("Auto Distribution Deals", SettingsManager.dDeal,
+                a => SettingsManager.dDeal = !SettingsManager.dDeal, ref col3);
 
-            Utils.AddToggle("Free Print", TrainerBehaviour.FreePrint,
-                a => TrainerBehaviour.FreePrint = !TrainerBehaviour.FreePrint, ref col3);
+            Utils.AddToggle("Free Print", SettingsManager.FreePrint,
+                a => SettingsManager.FreePrint = !SettingsManager.FreePrint, ref col3);
 
-            Utils.AddToggle("Free Water & Electricity", TrainerBehaviour.NoWaterElect,
-                a => TrainerBehaviour.NoWaterElect = !TrainerBehaviour.NoWaterElect, ref col3);
+            Utils.AddToggle("Free Water & Electricity", SettingsManager.NoWaterElect,
+                a => SettingsManager.NoWaterElect = !SettingsManager.NoWaterElect, ref col3);
 
-            Utils.AddToggle("Increase Bookshelf Skill", TrainerBehaviour.IncBookshelfSkill,
-                a => TrainerBehaviour.IncBookshelfSkill = !TrainerBehaviour.IncBookshelfSkill, ref col3);
+            Utils.AddToggle("Increase Bookshelf Skill", SettingsManager.IncBookshelfSkill,
+                a => SettingsManager.IncBookshelfSkill = !SettingsManager.IncBookshelfSkill, ref col3);
 
-            Utils.AddToggle("Increase Courier Capacity", TrainerBehaviour.IncCourierCap,
-                a => TrainerBehaviour.IncCourierCap = !TrainerBehaviour.IncCourierCap, ref col3);
+            Utils.AddToggle("Increase Courier Capacity", SettingsManager.IncCourierCap,
+                a => SettingsManager.IncCourierCap = !SettingsManager.IncCourierCap, ref col3);
 
-            Utils.AddToggle("Increase Print Speed", TrainerBehaviour.IncPrintSpeed,
-                a => TrainerBehaviour.IncPrintSpeed = !TrainerBehaviour.IncPrintSpeed, ref col3);
+            Utils.AddToggle("Increase Print Speed", SettingsManager.IncPrintSpeed,
+                a => SettingsManager.IncPrintSpeed = !SettingsManager.IncPrintSpeed, ref col3);
 
-            Utils.AddToggle("More Hosting Deals", TrainerBehaviour.MoreHosting,
-                a => TrainerBehaviour.MoreHosting = !TrainerBehaviour.MoreHosting, ref col3);
+            Utils.AddToggle("More Hosting Deals", SettingsManager.MoreHosting,
+                a => SettingsManager.MoreHosting = !SettingsManager.MoreHosting, ref col3);
 
-            Utils.AddToggle("Reduce Internet Cost", TrainerBehaviour.RedISPCost,
-                a => TrainerBehaviour.RedISPCost = !TrainerBehaviour.RedISPCost, ref col3);
+            Utils.AddToggle("Reduce Internet Cost", SettingsManager.RedISPCost,
+                a => SettingsManager.RedISPCost = !SettingsManager.RedISPCost, ref col3);
 
 
             Utils.DoLoops(Buttons.ToArray(), col1.ToArray(), col2.ToArray(), col3.ToArray());

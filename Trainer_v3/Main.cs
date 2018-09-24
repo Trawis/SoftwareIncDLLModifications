@@ -13,14 +13,16 @@ namespace Trainer_v3
         //This function is used to generate the content in the "Mods" section of the options window
         //The behaviors array contains all behaviours that have been spawned for this mod, one for each implementation
 
-        public static string version = "(v3.3)";
+        public static string version = "(v3.4)";
         public static bool IsShowed => SettingsWindow.shown;
+        public static Button btn;
 
         public static void Button()
         {
-            Button btn = WindowManager.SpawnButton();
+            btn = WindowManager.SpawnButton();
             btn.GetComponentInChildren<Text>().text = $"Trainer {version}";
             btn.onClick.AddListener(() => SettingsWindow.Show());
+            btn.name = "TrainerButton";
 
             WindowManager.AddElementToElement(btn.gameObject,
                 WindowManager.FindElementPath("MainPanel/Holder/FanPanel").gameObject, new Rect(164, 0, 100, 32),
