@@ -189,7 +189,7 @@ namespace Trainer_v2
             Utils.DoLoops(Buttons.ToArray(), col1.ToArray(), col2.ToArray(), col3.ToArray());
         }
 
-        public void ConstructOptionsScreen(RectTransform parent, ModBehaviour[] behaviours)
+        private void ConstructOptionsScreen(RectTransform parent, ModBehaviour[] behaviours)
         {
             Text label = WindowManager.SpawnLabel();
             label.text = "Created by LtPain, edit by Trawis\n\n" +
@@ -200,6 +200,6 @@ namespace Trainer_v2
                 new Rect(0, 0, 0, 0));
         }
 
-        public string Name => "Trainer v2";
+        private string Name => "Trainer v2";
     }
 }

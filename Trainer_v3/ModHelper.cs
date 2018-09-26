@@ -2,17 +2,31 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using UnityEngine;
 
 namespace Trainer_v3
 {
-    public class SettingsManager : Behaviour
+    public class ModHelper : ModBehaviour
     {
+        public static bool ModActive;
+        public static bool DoStuff => ModActive && GameSettings.Instance != null && HUD.Instance != null;
+        public bool reward, pushed, start;
+        public static string price_ProductName;
+        public static System.Random rnd;
+        public static Dictionary<string, bool> Settings;
         public static bool LockAge, LockStress, LockNeeds, LockEffSat, FreeEmployees, FreeStaff, TempLock;
         public static bool NoWaterElect, NoiseRed, FullEnv, CleanRooms, Fullbright, NoVacation, dDeal, MoreHosting;
         public static bool IncCourierCap, RedISPCost, IncPrintSpeed, FreePrint, IncBookshelfSkill, NoMaintenance;
         public static bool NoSickness, MaxOutEff, LockSat;
 
-        public static Dictionary<String, bool> Settings = new Dictionary<String, bool>
+        private void Start()
+        {
+            rnd = new System.Random(); // Random is time based, this makes it more random
+
+            if (!ModActive)
+                return;
+
+            Settings = new Dictionary<string, bool>
             {
                 {"LockStress", LockStress},
                 {"NoVacation", NoVacation},
@@ -40,12 +54,12 @@ namespace Trainer_v3
                 {"LockSat", LockSat}
             };
 
-        public void Load()
-        {
             foreach (var Pair in Settings)
             {
                 LoadSetting(Pair.Key, false);
             }
+
+            StartCoroutine(DebugHelper());
         }
 
         public void Save()
@@ -54,6 +68,25 @@ namespace Trainer_v3
             {
                 SaveSetting(Pair.Key, Pair.Value.ToString());
             }
+        }
+
+        IEnumerator<WaitForSeconds> DebugHelper()
+        {
+            while (true)
+            {
+                yield return new WaitForSeconds(5.0f);
+                DevConsole.Console.Log(start);
+            }
+        }
+
+        public override void OnActivate()
+        {
+            ModActive = true;
+        }
+
+        public override void OnDeactivate()
+        {
+            ModActive = false;
         }
     }
 }

@@ -49,13 +49,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Behaviour.cs" />
+    <Compile Include="ModHelper.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SettingsManager.cs" />
     <Compile Include="SettingsWindow.cs" />
-    <Compile Include="TrainerBehaviour.cs" />
+    <Compile Include="Trainer.cs" />
     <Compile Include="Utilities.cs" />
   </ItemGroup>
   <ItemGroup>

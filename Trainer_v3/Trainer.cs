@@ -7,45 +7,8 @@ using Random = System.Random;
 
 namespace Trainer_v3
 {
-    public class TrainerBehaviour : Behaviour
+    public class Trainer : ModHelper
     {
-        #region Fields
-
-        public static Random rnd;
-
-        public static bool DoStuff => ModActive && GameSettings.Instance != null && HUD.Instance != null;
-
-        public bool reward, pushed, start;
-
-        public static string price_ProductName;
-
-        SettingsManager settingsManager = new SettingsManager();
-
-        #endregion
-
-        private void Start()
-        {
-            rnd = new Random(); // Random is time based, this makes it more random
-
-            if (!ModActive)
-                return;
-
-            settingsManager.Load();
-
-            DontDestroyOnLoad(Main.btn);
-        }
-
-        //IEnumerator<WaitForSeconds> SaveSettings()
-        //{
-        //    while (true)
-        //    {
-        //        yield return new WaitForSeconds(15.0f);
-
-        //        foreach (var Pair in SettingsManager.Settings)
-        //            SaveSetting(Pair.Key, Pair.Value.ToString());
-        //    }
-        //}
-
         private void Update()
         {
             if (start && ModActive && GameSettings.Instance == null && HUD.Instance == null)
@@ -53,6 +16,11 @@ namespace Trainer_v3
 
             if (!ModActive || GameSettings.Instance == null || HUD.Instance == null)
                 return;
+
+            if (start && WindowManager.FindElementPath("BlockPanel").gameObject)
+            {
+                start = false;
+            }
 
             if (Input.GetKey(KeyCode.F1) && !Main.IsShowed)
                 Main.Window();
@@ -66,12 +34,12 @@ namespace Trainer_v3
                 start = true;
             }
 
-            if (SettingsManager.FreeStaff)
+            if (FreeStaff)
                 GameSettings.Instance.StaffSalaryDue = 0f;
 
             foreach (Furniture item in GameSettings.Instance.sRoomManager.AllFurniture)
             {
-                if (SettingsManager.NoiseRed)
+                if (NoiseRed)
                 {
                     item.ActorNoise = 0f;
                     item.EnvironmentNoise = 0f;
@@ -79,7 +47,7 @@ namespace Trainer_v3
                     item.Noisiness = 0;
                 }
 
-                if (!SettingsManager.NoWaterElect) continue;
+                if (!NoWaterElect) continue;
 
                 item.Water = 0;
                 item.Wattage = 0;
@@ -89,16 +57,16 @@ namespace Trainer_v3
             {
                 Room room = GameSettings.Instance.sRoomManager.Rooms[i];
 
-                if (SettingsManager.CleanRooms)
+                if (CleanRooms)
                     room.ClearDirt();
 
-                if (SettingsManager.TempLock)
+                if (TempLock)
                     room.Temperature = 21.4f;
 
-                if (SettingsManager.FullEnv)
+                if (FullEnv)
                     room.FurnEnvironment = 4;
 
-                if (SettingsManager.Fullbright)
+                if (Fullbright)
                     room.IndirectLighting = 8;
             }
 
@@ -107,30 +75,30 @@ namespace Trainer_v3
                 Actor act = GameSettings.Instance.sActorManager.Actors[i];
                 Employee employee = GameSettings.Instance.sActorManager.Actors[i].employee;
 
-                if (SettingsManager.LockAge)
+                if (LockAge)
                 {
                     act.employee.AgeMonth = Convert.ToInt32(act.employee.Age) * 12; //20*12
                     act.UpdateAgeLook();
                 }
 
-                if (SettingsManager.LockStress)
+                if (LockStress)
                     act.employee.Stress = 1;
 
-                if (SettingsManager.LockEffSat)
+                if (LockEffSat)
                 {
                     if (act.employee.RoleString.Contains("Lead"))
-                        act.Effectiveness = SettingsManager.MaxOutEff ? 20 : 4;
+                        act.Effectiveness = MaxOutEff ? 20 : 4;
                     else
-                        act.Effectiveness = SettingsManager.MaxOutEff ? 10 : 2;
+                        act.Effectiveness = MaxOutEff ? 10 : 2;
                 }
-                if (SettingsManager.LockSat)
+                if (LockSat)
                 {
                     //act.ChangeSatisfaction(10, 10, Employee.Thought.LoveWork, Employee.Thought.LikeTeamWork, 0);
                     employee.JobSatisfaction = 2f;
                     act.employee.JobSatisfaction = 2f;
                 }
 
-                if (SettingsManager.LockNeeds)
+                if (LockNeeds)
                 {
                     act.employee.Bladder = 1;
                     act.employee.Hunger = 1;
@@ -138,27 +106,27 @@ namespace Trainer_v3
                     act.employee.Social = 1;
                 }
 
-                if (SettingsManager.FreeEmployees)
+                if (FreeEmployees)
                 {
                     act.employee.Salary = 0;
                     act.NegotiateSalary = false;
                     act.IgnoreOffSalary = true;
                 }
 
-                if (SettingsManager.NoiseRed)
+                if (NoiseRed)
                     act.Noisiness = 0;
 
-                if (SettingsManager.NoVacation)
+                if (NoVacation)
                     act.VacationMonth = SDateTime.NextMonth(24);
             }
 
             LoanWindow.factor = 250000;
             GameSettings.MaxFloor = 75; //10 default
             //GameSettings.Instance.scenario.MaxFloor = 75;
-            CourierAI.MaxBoxes = SettingsManager.IncCourierCap ? 108 : 54;
-            Server.ISPCost = SettingsManager.RedISPCost ? 25f : 50f;
+            CourierAI.MaxBoxes = IncCourierCap ? 108 : 54;
+            Server.ISPCost = RedISPCost ? 25f : 50f;
 
-            if (SettingsManager.dDeal)
+            if (dDeal)
             {
                 foreach (var x in GameSettings.Instance.simulation.Companies)
                 {
@@ -179,7 +147,7 @@ namespace Trainer_v3
                 }
             }
 
-            if (SettingsManager.MoreHosting)
+            if (MoreHosting)
             {
                 int hour = TimeOfDay.Instance.Hour;
 
@@ -194,23 +162,23 @@ namespace Trainer_v3
                     reward = false;
             }
 
-            if (SettingsManager.IncPrintSpeed)
+            if (IncPrintSpeed)
                 for (int i = 0; i < GameSettings.Instance.ProductPrinters.Count; i++)
                     GameSettings.Instance.ProductPrinters[i].PrintSpeed = 2f;
 
             //add printspeed and printprice when it's disabled (else) TODO
-            if (SettingsManager.FreePrint)
+            if (FreePrint)
                 for (int i = 0; i < GameSettings.Instance.ProductPrinters.Count; i++)
                     GameSettings.Instance.ProductPrinters[i].PrintPrice = 0f;
 
-            if (SettingsManager.IncBookshelfSkill)
+            if (IncBookshelfSkill)
                 foreach (Furniture bookshelf in GameSettings.Instance.sRoomManager.AllFurniture)
                     if ("Bookshelf".Equals(bookshelf.Type))
                         foreach (float x in bookshelf.AuraValues)
                             bookshelf.AuraValues[1] = 0.75f;
 
             //else 0.25 TODO
-            if (SettingsManager.NoMaintenance)
+            if (NoMaintenance)
             {
                 foreach (Furniture furniture in GameSettings.Instance.sRoomManager.AllFurniture)
                 {
@@ -227,7 +195,7 @@ namespace Trainer_v3
                 }
             }
 
-            if (SettingsManager.NoSickness)
+            if (NoSickness)
             {
                 //TODO: Check this
                 //GameSettings.Instance.Insurance.SickRatio = 0f;
