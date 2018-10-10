@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
 using Utils = Trainer_v3.Utilities;
-
 
 namespace Trainer_v3
 {
@@ -21,7 +18,6 @@ namespace Trainer_v3
             {
                 Window.Close();
                 shown = false;
-                WindowManager.ActiveWindows.Remove(Window);
                 return;
             }
             Init();
@@ -45,7 +41,7 @@ namespace Trainer_v3
             //    z = 0f
             //};
 
-            WindowManager.ActiveWindows.Add(Window);
+            //WindowManager.ActiveWindows.Add(Window);
 
             if (Window.name == "TrainerSettings")
             {
@@ -61,127 +57,127 @@ namespace Trainer_v3
 
 
             Utils.AddInputBox("Product Name Here", new Rect(1, 96, 150, 32),
-                boxText => Trainer.price_ProductName = boxText);
+                boxText => PropertyHelper.price_ProductName = boxText);
 
 
-            Utils.AddButton("Add Money", new Rect(1, 0, 150, 32), Trainer.IncreaseMoney);
+            Utils.AddButton("Add Money", new Rect(1, 0, 150, 32), TrainerBehaviour.IncreaseMoney);
 
-            Utils.AddButton("Add Reputation", new Rect(161, 0, 150, 32), Trainer.AddRep);
+            Utils.AddButton("Add Reputation", new Rect(161, 0, 150, 32), TrainerBehaviour.AddRep);
 
-            Utils.AddButton("Set Product Price", new Rect(161, 96, 150, 32), Trainer.SetProductPrice);
+            Utils.AddButton("Set Product Price", new Rect(161, 96, 150, 32), TrainerBehaviour.SetProductPrice);
 
-            Utils.AddButton("Set Product Stock", new Rect(322, 96, 150, 32), Trainer.SetProductStock);
+            Utils.AddButton("Set Product Stock", new Rect(322, 96, 150, 32), TrainerBehaviour.SetProductStock);
 
-            Utils.AddButton("Set Active Users", new Rect(483, 96, 150, 32), Trainer.AddActiveUsers);
+            Utils.AddButton("Set Active Users", new Rect(483, 96, 150, 32), TrainerBehaviour.AddActiveUsers);
 
-            Utils.AddButton("Max Followers", new Rect(1, 32, 150, 32), Trainer.MaxFollowers);
+            Utils.AddButton("Max Followers", new Rect(1, 32, 150, 32), TrainerBehaviour.MaxFollowers);
 
-            Utils.AddButton("Fix Bugs", new Rect(161, 32, 150, 32), Trainer.FixBugs);
+            Utils.AddButton("Fix Bugs", new Rect(161, 32, 150, 32), TrainerBehaviour.FixBugs);
 
-            Utils.AddButton("Max Code", new Rect(322, 32, 150, 32), Trainer.MaxCode);
+            Utils.AddButton("Max Code", new Rect(322, 32, 150, 32), TrainerBehaviour.MaxCode);
 
-            Utils.AddButton("Max Art", new Rect(483, 32, 150, 32), Trainer.MaxArt);
+            Utils.AddButton("Max Art", new Rect(483, 32, 150, 32), TrainerBehaviour.MaxArt);
 
-            Utils.AddButton("Takeover Company", new Rect(1, 160, 150, 32), Trainer.TakeoverCompany);
+            Utils.AddButton("Takeover Company", new Rect(1, 160, 150, 32), TrainerBehaviour.TakeoverCompany);
 
-            Utils.AddButton("Subsidiary Company", new Rect(161, 160, 150, 32), Trainer.SubDCompany);
+            Utils.AddButton("Subsidiary Company", new Rect(161, 160, 150, 32), TrainerBehaviour.SubDCompany);
 
-            Utils.AddButton("Bankrupt", new Rect(322, 160, 150, 32), Trainer.ForceBankrupt);
+            Utils.AddButton("Bankrupt", new Rect(322, 160, 150, 32), TrainerBehaviour.ForceBankrupt);
 
-            Utils.AddButton("AI Bankrupt All", Trainer.AIBankrupt, ref Buttons);
+            Utils.AddButton("AI Bankrupt All", TrainerBehaviour.AIBankrupt, ref Buttons);
 
-            Utils.AddButton("Days per month", Trainer.MonthDays, ref Buttons);
+            Utils.AddButton("Days per month", TrainerBehaviour.MonthDays, ref Buttons);
 
-            Utils.AddButton("Clear all loans", Trainer.ClearLoans, ref Buttons);
+            Utils.AddButton("Clear all loans", TrainerBehaviour.ClearLoans, ref Buttons);
 
-            Utils.AddButton("HR Leaders", Trainer.HREmployees, ref Buttons);
+            Utils.AddButton("HR Leaders", TrainerBehaviour.HREmployees, ref Buttons);
 
-            Utils.AddButton("Max Skill of employees", Trainer.EmployeesToMax, ref Buttons);
+            Utils.AddButton("Max Skill of employees", TrainerBehaviour.EmployeesToMax, ref Buttons);
 
-            Utils.AddButton("Remove Products", Trainer.RemoveSoft, ref Buttons);
+            Utils.AddButton("Remove Products", TrainerBehaviour.RemoveSoft, ref Buttons);
 
-            Utils.AddButton("Reset age of employees", Trainer.ResetAgeOfEmployees, ref Buttons);
+            Utils.AddButton("Reset age of employees", TrainerBehaviour.ResetAgeOfEmployees, ref Buttons);
 
-            Utils.AddButton("Sell products stock", Trainer.SellProductStock, ref Buttons);
+            Utils.AddButton("Sell products stock", TrainerBehaviour.SellProductStock, ref Buttons);
 
-            Utils.AddButton("Unlock all furniture", Trainer.UnlockFurniture, ref Buttons);
+            Utils.AddButton("Unlock all furniture", TrainerBehaviour.UnlockFurniture, ref Buttons);
 
-            Utils.AddButton("Unlock all space", Trainer.UnlockAllSpace, ref Buttons);
+            Utils.AddButton("Unlock all space", TrainerBehaviour.UnlockAllSpace, ref Buttons);
 
             //Utils.AddButton("Test", TrainerBehaviour.Test, ref Buttons);
 
 
-            Utils.AddToggle("Disable Needs", ModHelper.LockNeeds,
-                a => ModHelper.LockNeeds = !ModHelper.LockNeeds, ref col1);
+            Utils.AddToggle("Disable Needs", PropertyHelper.LockNeeds,
+                a => PropertyHelper.LockNeeds = !PropertyHelper.LockNeeds, ref col1);
 
-            Utils.AddToggle("Disable Stress", ModHelper.LockStress,
-                a => ModHelper.LockStress = !ModHelper.LockStress, ref col1);
+            Utils.AddToggle("Disable Stress", PropertyHelper.LockStress,
+                a => PropertyHelper.LockStress = !PropertyHelper.LockStress, ref col1);
 
-            Utils.AddToggle("Free Employees", ModHelper.FreeEmployees,
-                a => ModHelper.FreeEmployees = !ModHelper.FreeEmployees, ref col1);
+            Utils.AddToggle("Free Employees", PropertyHelper.FreeEmployees,
+                a => PropertyHelper.FreeEmployees = !PropertyHelper.FreeEmployees, ref col1);
 
-            Utils.AddToggle("Free Staff", ModHelper.FreeStaff,
-                a => ModHelper.FreeStaff = !ModHelper.FreeStaff, ref col1);
+            Utils.AddToggle("Free Staff", PropertyHelper.FreeStaff,
+                a => PropertyHelper.FreeStaff = !PropertyHelper.FreeStaff, ref col1);
 
-            Utils.AddToggle("Full Efficiency", ModHelper.LockEffSat,
-                a => ModHelper.LockEffSat = !ModHelper.LockEffSat, ref col1);
+            Utils.AddToggle("Full Efficiency", PropertyHelper.LockEffSat,
+                a => PropertyHelper.LockEffSat = !PropertyHelper.LockEffSat, ref col1);
 
-            Utils.AddToggle("Full Satisfaction", ModHelper.LockSat,
-                a => ModHelper.LockSat = !ModHelper.LockSat, ref col1);
+            Utils.AddToggle("Full Satisfaction", PropertyHelper.LockSat,
+                a => PropertyHelper.LockSat = !PropertyHelper.LockSat, ref col1);
 
-            Utils.AddToggle("Lock Age of Employees", ModHelper.LockAge,
-                a => ModHelper.LockAge = !ModHelper.LockAge, ref col1);
+            Utils.AddToggle("Lock Age of Employees", PropertyHelper.LockAge,
+                a => PropertyHelper.LockAge = !PropertyHelper.LockAge, ref col1);
 
-            Utils.AddToggle("No Vacation", ModHelper.NoVacation,
-                a => ModHelper.NoVacation = !ModHelper.NoVacation, ref col1);
+            Utils.AddToggle("No Vacation", PropertyHelper.NoVacation,
+                a => PropertyHelper.NoVacation = !PropertyHelper.NoVacation, ref col1);
 
-            Utils.AddToggle("No Sickness", ModHelper.NoSickness,
-                a => ModHelper.NoSickness = !ModHelper.NoSickness, ref col1);
+            Utils.AddToggle("No Sickness", PropertyHelper.NoSickness,
+                a => PropertyHelper.NoSickness = !PropertyHelper.NoSickness, ref col1);
 
-            Utils.AddToggle("Ultra Efficiency (Tick Full Eff first)", ModHelper.MaxOutEff,
-                a => ModHelper.MaxOutEff = !ModHelper.MaxOutEff, ref col1);
+            Utils.AddToggle("Ultra Efficiency (Tick Full Eff first)", PropertyHelper.MaxOutEff,
+                a => PropertyHelper.MaxOutEff = !PropertyHelper.MaxOutEff, ref col1);
 
-            Utils.AddToggle("Full Environment", ModHelper.FullEnv,
-                a => ModHelper.FullEnv = !ModHelper.FullEnv, ref col2);
+            Utils.AddToggle("Full Environment", PropertyHelper.FullEnv,
+                a => PropertyHelper.FullEnv = !PropertyHelper.FullEnv, ref col2);
 
-            Utils.AddToggle("Full Sun Light", ModHelper.Fullbright,
-                a => ModHelper.Fullbright = !ModHelper.Fullbright, ref col2);
+            Utils.AddToggle("Full Sun Light", PropertyHelper.Fullbright,
+                a => PropertyHelper.Fullbright = !PropertyHelper.Fullbright, ref col2);
 
-            Utils.AddToggle("Lock Temperature To 21", ModHelper.TempLock,
-                a => ModHelper.TempLock = !ModHelper.TempLock, ref col2);
+            Utils.AddToggle("Lock Temperature To 21", PropertyHelper.TempLock,
+                a => PropertyHelper.TempLock = !PropertyHelper.TempLock, ref col2);
 
-            Utils.AddToggle("No Maintenance", ModHelper.NoMaintenance,
-                a => ModHelper.NoMaintenance = !ModHelper.NoMaintenance, ref col2);
+            Utils.AddToggle("No Maintenance", PropertyHelper.NoMaintenance,
+                a => PropertyHelper.NoMaintenance = !PropertyHelper.NoMaintenance, ref col2);
 
-            Utils.AddToggle("Noise Reduction", ModHelper.NoiseRed,
-                a => ModHelper.NoiseRed = !ModHelper.NoiseRed, ref col2);
+            Utils.AddToggle("Noise Reduction", PropertyHelper.NoiseRed,
+                a => PropertyHelper.NoiseRed = !PropertyHelper.NoiseRed, ref col2);
 
-            Utils.AddToggle("Rooms Never Dirty", ModHelper.CleanRooms,
-                a => ModHelper.CleanRooms = !ModHelper.CleanRooms, ref col2);
+            Utils.AddToggle("Rooms Never Dirty", PropertyHelper.CleanRooms,
+                a => PropertyHelper.CleanRooms = !PropertyHelper.CleanRooms, ref col2);
 
-            Utils.AddToggle("Auto Distribution Deals", ModHelper.dDeal,
-                a => ModHelper.dDeal = !ModHelper.dDeal, ref col3);
+            Utils.AddToggle("Auto Distribution Deals", PropertyHelper.dDeal,
+                a => PropertyHelper.dDeal = !PropertyHelper.dDeal, ref col3);
 
-            Utils.AddToggle("Free Print", ModHelper.FreePrint,
-                a => ModHelper.FreePrint = !ModHelper.FreePrint, ref col3);
+            Utils.AddToggle("Free Print", PropertyHelper.FreePrint,
+                a => PropertyHelper.FreePrint = !PropertyHelper.FreePrint, ref col3);
 
-            Utils.AddToggle("Free Water & Electricity", ModHelper.NoWaterElect,
-                a => ModHelper.NoWaterElect = !ModHelper.NoWaterElect, ref col3);
+            Utils.AddToggle("Free Water & Electricity", PropertyHelper.NoWaterElect,
+                a => PropertyHelper.NoWaterElect = !PropertyHelper.NoWaterElect, ref col3);
 
-            Utils.AddToggle("Increase Bookshelf Skill", ModHelper.IncBookshelfSkill,
-                a => ModHelper.IncBookshelfSkill = !ModHelper.IncBookshelfSkill, ref col3);
+            Utils.AddToggle("Increase Bookshelf Skill", PropertyHelper.IncBookshelfSkill,
+                a => PropertyHelper.IncBookshelfSkill = !PropertyHelper.IncBookshelfSkill, ref col3);
 
-            Utils.AddToggle("Increase Courier Capacity", ModHelper.IncCourierCap,
-                a => ModHelper.IncCourierCap = !ModHelper.IncCourierCap, ref col3);
+            Utils.AddToggle("Increase Courier Capacity", PropertyHelper.IncCourierCap,
+                a => PropertyHelper.IncCourierCap = !PropertyHelper.IncCourierCap, ref col3);
 
-            Utils.AddToggle("Increase Print Speed", ModHelper.IncPrintSpeed,
-                a => ModHelper.IncPrintSpeed = !ModHelper.IncPrintSpeed, ref col3);
+            Utils.AddToggle("Increase Print Speed", PropertyHelper.IncPrintSpeed,
+                a => PropertyHelper.IncPrintSpeed = !PropertyHelper.IncPrintSpeed, ref col3);
 
-            Utils.AddToggle("More Hosting Deals", ModHelper.MoreHosting,
-                a => ModHelper.MoreHosting = !ModHelper.MoreHosting, ref col3);
+            Utils.AddToggle("More Hosting Deals", PropertyHelper.MoreHosting,
+                a => PropertyHelper.MoreHosting = !PropertyHelper.MoreHosting, ref col3);
 
-            Utils.AddToggle("Reduce Internet Cost", ModHelper.RedISPCost,
-                a => ModHelper.RedISPCost = !ModHelper.RedISPCost, ref col3);
+            Utils.AddToggle("Reduce Internet Cost", PropertyHelper.RedISPCost,
+                a => PropertyHelper.RedISPCost = !PropertyHelper.RedISPCost, ref col3);
 
 
             Utils.DoLoops(Buttons.ToArray(), col1.ToArray(), col2.ToArray(), col3.ToArray());

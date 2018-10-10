@@ -36,7 +36,6 @@
       <HintPath>Libraries\Assembly-CSharp.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="System" />
     <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Libraries\UnityEngine.dll</HintPath>
@@ -49,18 +48,19 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ModHelper.cs" />
-    <Compile Include="Constants.cs" />
     <Compile Include="Main.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PropertyHelper.cs" />
     <Compile Include="SettingsWindow.cs" />
-    <Compile Include="Trainer.cs" />
+    <Compile Include="TrainerBehaviour.cs" />
     <Compile Include="Utilities.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Libraries\Assembly-CSharp.dll" />
     <Content Include="Libraries\UnityEngine.dll" />
     <Content Include="Libraries\UnityEngine.UI.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

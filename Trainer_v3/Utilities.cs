@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -8,7 +7,6 @@ namespace Trainer_v3
 {
     public class Utilities
     {
-
         public static void AddButton(string Text, UnityAction Action, ref List<GameObject> Buttons)
         {
             Button x = WindowManager.SpawnButton();
@@ -16,7 +14,7 @@ namespace Trainer_v3
             x.onClick.AddListener(Action);
             Buttons.Add(x.gameObject);
         }
-
+        
         public static void AddButton(string Text, Rect Button, UnityAction Action)
         {
             Button x = WindowManager.SpawnButton();
@@ -36,7 +34,7 @@ namespace Trainer_v3
         public static void AddLabel(string Text, Rect Label)
         {
             Text x = WindowManager.SpawnLabel();
-            x.text = "<= This cell is universal for\nPrice, Stock & Active Users";
+            x.text = "<= This cell is universal for\nwinice, Stock, Active Users";
             WindowManager.AddElementToWindow(x.gameObject, SettingsWindow.Window, Label, new Rect(0, 0, 0, 0));
         }
 
@@ -46,7 +44,6 @@ namespace Trainer_v3
             Toggle.GetComponentInChildren<UnityEngine.UI.Text>().text = Text;
             Toggle.isOn = isOn;
             Toggle.onValueChanged.AddListener(Action);
-            Toggle.onValueChanged.AddListener(delegate { new ModHelper().Save(); });
             Toggles.Add(Toggle.gameObject);
         }
 
