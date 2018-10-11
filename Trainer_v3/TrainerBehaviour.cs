@@ -49,7 +49,7 @@ namespace Trainer_v3
                 LoadSetting(Pair.Key, false);
             }
         }
-        
+
         IEnumerator<WaitForSeconds> SaveSettings()
         {
             while (true)
@@ -97,7 +97,7 @@ namespace Trainer_v3
                 }
 
                 if (!PropertyHelper.NoWaterElect) continue;
-                
+
                 item.Water = 0;
                 item.Wattage = 0;
             }
@@ -477,8 +477,10 @@ namespace Trainer_v3
             WindowManager.SpawnDialog("You have changed days per month. Please restart the game.", false, DialogWindow.DialogType.Warning);
         }
 
-        public static void MonthDays() =>
+        public static void MonthDays()
+        {
             WindowManager.SpawnInputDialog("How many days per month do you want?", "Days per month", "2", MonthDaysAction);
+        }
 
         #endregion
 
@@ -496,10 +498,13 @@ namespace Trainer_v3
             }
 
             var code = ((SoftwareAlpha)WorkItem);
-                 code.CodeProgress = 0.98f;
+            code.CodeProgress = 0.98f;
         }
 
-        public static void MaxCode() => WindowManager.SpawnInputDialog("Type product name:", "Max Code", "", MaxCodeAction);
+        public static void MaxCode()
+        {
+            WindowManager.SpawnInputDialog("Type product name:", "Max Code", "", MaxCodeAction);
+        }
 
         #endregion
 
@@ -520,7 +525,10 @@ namespace Trainer_v3
             art.ArtProgress = 0.98f;
         }
 
-        public static void MaxArt() => WindowManager.SpawnInputDialog("Type product name:", "Max Art", "", MaxArtAction);
+        public static void MaxArt()
+        {
+            WindowManager.SpawnInputDialog("Type product name:", "Max Art", "", MaxArtAction);
+        }
 
         #endregion
 
@@ -540,7 +548,10 @@ namespace Trainer_v3
             ((SoftwareAlpha)WorkItem).FixedBugs = ((SoftwareAlpha)WorkItem).MaxBugs;
         }
 
-        public static void FixBugs() => WindowManager.SpawnInputDialog("Type product name:", "Fix Bugs", "", FixBugsAction);
+        public static void FixBugs()
+        {
+            WindowManager.SpawnInputDialog("Type product name:", "Fix Bugs", "", FixBugsAction);
+        }
 
         #endregion
 
@@ -566,8 +577,10 @@ namespace Trainer_v3
             alpha.Followers += 1000000000f;
         }
 
-        public static void MaxFollowers() =>
+        public static void MaxFollowers()
+        {
             WindowManager.SpawnInputDialog("Type product name:", "Max Followers", "", MaxFollowersAction);
+        }
 
         #endregion
 
@@ -587,8 +600,10 @@ namespace Trainer_v3
             HUD.Instance.AddPopupMessage($"Trainer: Price for {Product.Name} has been setted up!", "Cogs", PopupManager.PopUpAction.None, 0, 0, 0, 0);
         }
 
-        public static void SetProductPrice() =>
+        public static void SetProductPrice()
+        {
             WindowManager.SpawnInputDialog("Type product price:", "Product price", "50", SetProductPriceAction);
+        }
 
         #endregion
 
@@ -608,8 +623,10 @@ namespace Trainer_v3
             HUD.Instance.AddPopupMessage($"Trainer: Stock for {Product.Name} has been setted up!", "Cogs", PopupManager.PopUpAction.None, 0, 0, 0, 0);
         }
 
-        public static void SetProductStock() =>
+        public static void SetProductStock()
+        {
             WindowManager.SpawnInputDialog("Type product stock:", "Product stock", "100000", SetProductStockAction);
+        }
 
         #endregion
 
@@ -630,8 +647,10 @@ namespace Trainer_v3
                 $"Trainer: Active users for {Product.Name} has been setted up!", "Cogs", PopupManager.PopUpAction.None, 0, 0, 0, 0);
         }
 
-        public static void AddActiveUsers() => WindowManager.SpawnInputDialog("Type product active users:",
-            "Product active users", "100000", AddActiveUsersAction);
+        public static void AddActiveUsers()
+        {
+            WindowManager.SpawnInputDialog("Type product active users:", "Product active users", "100000", AddActiveUsersAction);
+        }
 
         #endregion
 
@@ -714,8 +733,10 @@ namespace Trainer_v3
             HUD.Instance.AddPopupMessage("Trainer: Money has been added in category Deals!", "Cogs", PopupManager.PopUpAction.None, 0, 0, 0, 0);
         }
 
-        public static void IncreaseMoney() =>
+        public static void IncreaseMoney()
+        {
             WindowManager.SpawnInputDialog("How much money do you want to add?", "Add Money", "100000", IncreaseMoneyAction);
+        }
 
         #endregion
 
@@ -730,8 +751,10 @@ namespace Trainer_v3
             HUD.Instance.AddPopupMessage("Trainer: Reputation has been added for SoftwareType: " + random1.Name + ", Category: " + random2, "Cogs", PopupManager.PopUpAction.None, 0, 0, 0, 0, 1);
         }
 
-        public static void AddRep() =>
+        public static void AddRep()
+        {
             WindowManager.SpawnInputDialog("How much reputation do you want to add?", "Add Reputation", "10000", AddRepAction);
+        }
 
         #endregion
 

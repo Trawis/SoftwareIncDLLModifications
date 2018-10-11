@@ -11,7 +11,13 @@ namespace Trainer_v3
         //The behaviors array contains all behaviours that have been spawned for this mod, one for each implementation
 
         public static string version = "(v3.4)";
-        public static bool IsShowed => SettingsWindow.shown;
+        public static bool IsShowed
+        {
+            get
+            {
+                return SettingsWindow.shown;
+            }
+        }
 
         private TrainerBehaviour _trainerBehaviour;
 
@@ -77,6 +83,12 @@ namespace Trainer_v3
             //This way the player can have a default value for all new games, and a value for specific saves
         }
 
-        public override string Name => "Trainer v3";
+        public override string Name
+        {
+            get
+            {
+                return "Trainer v3";
+            }
+        }
     }
 }

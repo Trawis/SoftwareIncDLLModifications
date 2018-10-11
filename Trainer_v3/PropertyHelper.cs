@@ -6,7 +6,7 @@ namespace Trainer_v3
     public class PropertyHelper
     {
         public static Random rnd { get; set; }
-        public static bool DoStuff => ModActive && GameSettings.Instance != null && HUD.Instance != null;
+        public static bool DoStuff { get { return ModActive && GameSettings.Instance != null && HUD.Instance != null; } }
 
         public static bool ModActive { get; set; }
         public static bool LockAge { get; set; }
