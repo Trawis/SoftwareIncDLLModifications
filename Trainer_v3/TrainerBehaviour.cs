@@ -468,12 +468,13 @@ namespace Trainer_v3
 
         public static void MonthDaysAction(string input)
         {
-            if (!int.TryParse(input, out int Input))
+            int i;
+            if (!int.TryParse(input, out i))
             {
                 return;
             }
 
-            GameSettings.DaysPerMonth = Input;
+            GameSettings.DaysPerMonth = i;
             WindowManager.SpawnDialog("You have changed days per month. Please restart the game.", false, DialogWindow.DialogType.Warning);
         }
 

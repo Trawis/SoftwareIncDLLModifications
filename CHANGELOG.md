@@ -5,7 +5,7 @@ Release notes for changes to the trainer
 
 **3.4**
 
-10.10.2018. for Alpha 10.8.2
+11.10.2018. for Alpha 10.8.3
 - Fixed unlock all plots/space bug
 - Fixed unlock furniture bug
 - Other improvements
