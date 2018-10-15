@@ -598,7 +598,7 @@ namespace Trainer_v3
             }
 
             Product.Price = input.ConvertToFloatDef(50f);
-            HUD.Instance.AddPopupMessage($"Trainer: Price for {Product.Name} has been setted up!", "Cogs", PopupManager.PopUpAction.None, 0, 0, 0, 0);
+            HUD.Instance.AddPopupMessage("Trainer: Price for " + Product.Name + " has been setted up!", "Cogs", PopupManager.PopUpAction.None, 0, 0, 0, 0);
         }
 
         public static void SetProductPrice()
@@ -621,7 +621,7 @@ namespace Trainer_v3
             }
 
             Product.PhysicalCopies = (uint)input.ConvertToIntDef(100000);
-            HUD.Instance.AddPopupMessage($"Trainer: Stock for {Product.Name} has been setted up!", "Cogs", PopupManager.PopUpAction.None, 0, 0, 0, 0);
+            HUD.Instance.AddPopupMessage("Trainer: Stock for " + Product.Name + " has been setted up!", "Cogs", PopupManager.PopUpAction.None, 0, 0, 0, 0);
         }
 
         public static void SetProductStock()
@@ -644,8 +644,7 @@ namespace Trainer_v3
             }
 
             Product.Userbase = input.ConvertToIntDef(100000);
-            HUD.Instance.AddPopupMessage(
-                $"Trainer: Active users for {Product.Name} has been setted up!", "Cogs", PopupManager.PopUpAction.None, 0, 0, 0, 0);
+            HUD.Instance.AddPopupMessage("Trainer: Active users for " + Product.Name + " has been setted up!", "Cogs", PopupManager.PopUpAction.None, 0, 0, 0, 0);
         }
 
         public static void AddActiveUsers()

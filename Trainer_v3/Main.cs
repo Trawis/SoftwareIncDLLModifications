@@ -30,7 +30,7 @@ namespace Trainer_v3
         public static void Button()
         {
             Button btn = WindowManager.SpawnButton();
-            btn.GetComponentInChildren<Text>().text = $"Trainer {version}";
+            btn.GetComponentInChildren<Text>().text = "Trainer " + version;
             btn.onClick.AddListener(() => SettingsWindow.Show());
 
             WindowManager.AddElementToElement(btn.gameObject,
