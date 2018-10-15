@@ -62,12 +62,10 @@ namespace Trainer_v3
             //In this case we are saving a 32 bit integer, which is a value type
 
             var data = new WriteDictionary();
-            //foreach (var Pair in PropertyHelper.Settings)
-            //{
-            //    data[Pair.Key] = PropertyHelper
-            //}
-            //    LoadSetting(Pair.Key, false);
-            //data["Floor"] = _floorBehaviour.MaxFloor;
+            foreach (var Pair in PropertyHelper.Settings)
+            {
+                data[Pair.Key] = Pair.Value;
+            }
             return data;
         }
 
@@ -78,7 +76,11 @@ namespace Trainer_v3
             //The WriteDictionary Get function tries to fetch a value from the dictionary
             //but will return a default value if the key is not present
             //In this case MaxFloor is returned if the "Floor" key is not present
-            //_floorBehaviour.MaxFloor = data.Get("Floor", _floorBehaviour.MaxFloor);
+            var keys = PropertyHelper.Settings.Keys.ToList();
+            foreach (var key in keys)
+            {
+                PropertyHelper.Settings[key] = data.Get(key, PropertyHelper.Settings[key]);
+            }
             //Note that we are not saving this value to the settings file, as this is save file specific
             //This way the player can have a default value for all new games, and a value for specific saves
         }

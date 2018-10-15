@@ -16,38 +16,38 @@ namespace Trainer_v3
 
             PropertyHelper.Settings = new Dictionary<string, bool>
             {
-                {"LockStress", PropertyHelper.LockStress},
+                {"NoStress", PropertyHelper.NoStress},
                 {"NoVacation", PropertyHelper.NoVacation},
-                {"Fullbright", PropertyHelper.Fullbright},
+                {"FullRoomBrightness", PropertyHelper.FullRoomBrightness},
                 {"CleanRooms", PropertyHelper.CleanRooms},
-                {"FullEnv", PropertyHelper.FullEnv},
-                {"NoiseRed", PropertyHelper.NoiseRed},
+                {"FullEnvironment", PropertyHelper.FullEnvironment},
+                {"NoiseReduction", PropertyHelper.NoiseReduction},
                 {"FreeStaff", PropertyHelper.FreeStaff},
-                {"TempLock", PropertyHelper.TempLock},
-                {"NoWaterElect", PropertyHelper.NoWaterElect},
-                {"LockNeeds", PropertyHelper.LockNeeds},
-                {"LockEffSat", PropertyHelper.LockEffSat},
+                {"TemperatureLock", PropertyHelper.TemperatureLock},
+                {"NoWaterElectricity", PropertyHelper.NoWaterElectricity},
+                {"NoNeeds", PropertyHelper.NoNeeds},
+                {"FullEfficiency", PropertyHelper.FullEfficiency},
                 {"FreeEmployees", PropertyHelper.FreeEmployees},
                 {"LockAge", PropertyHelper.LockAge},
-                {"AutoDistDeal", PropertyHelper.dDeal},
-                {"MoreHosting", PropertyHelper.MoreHosting},
-                {"IncreaseCourierCapacity", PropertyHelper.IncCourierCap},
-                {"ReduceISPCost", PropertyHelper.RedISPCost},
-                {"IncPrintSpeed", PropertyHelper.IncPrintSpeed},
+                {"AutoDistributionDeals", PropertyHelper.AutoDistributionDeals},
+                {"MoreHostingDeals", PropertyHelper.MoreHostingDeals},
+                {"IncreaseCourierCapacity", PropertyHelper.IncreaseCourierCapacity},
+                {"ReduceISPCost", PropertyHelper.ReduceISPCost},
+                {"IncreasePrintSpeed", PropertyHelper.IncreasePrintSpeed},
                 {"FreePrint", PropertyHelper.FreePrint},
-                {"IncBookshelfSkill", PropertyHelper.IncBookshelfSkill},
+                {"IncreaseBookshelfSkill", PropertyHelper.IncreaseBookshelfSkill},
                 {"NoMaintenance", PropertyHelper.NoMaintenance},
                 {"NoSickness", PropertyHelper.NoSickness},
-                {"MaxOutEff", PropertyHelper.MaxOutEff},
-                {"LockSat", PropertyHelper.LockSat}
+                {"UltraEfficiency", PropertyHelper.UltraEfficiency},
+                {"FullSatisfaction", PropertyHelper.FullSatisfaction}
             };
 
-            StartCoroutine(SaveSettings());
+            //StartCoroutine(SaveSettings());
 
-            foreach (var Pair in PropertyHelper.Settings)
-            {
-                LoadSetting(Pair.Key, false);
-            }
+            //foreach (var Pair in PropertyHelper.Settings)
+            //{
+            //    LoadSetting(Pair.Key, false);
+            //}
         }
 
         IEnumerator<WaitForSeconds> SaveSettings()
@@ -65,8 +65,8 @@ namespace Trainer_v3
 
         private void Update()
         {
-            if (PropertyHelper.start && PropertyHelper.ModActive && GameSettings.Instance == null && HUD.Instance == null)
-                PropertyHelper.start = false;
+            if (PropertyHelper.ModStarted && PropertyHelper.ModActive && GameSettings.Instance == null && HUD.Instance == null)
+                PropertyHelper.ModStarted = false;
 
             if (!PropertyHelper.ModActive || GameSettings.Instance == null || HUD.Instance == null)
                 return;
@@ -77,10 +77,10 @@ namespace Trainer_v3
             if (Input.GetKey(KeyCode.F2) && Main.IsShowed)
                 Main.Window();
 
-            if (PropertyHelper.start == false)
+            if (PropertyHelper.ModStarted == false)
             {
                 Main.Button();
-                PropertyHelper.start = true;
+                PropertyHelper.ModStarted = true;
             }
 
             if (PropertyHelper.FreeStaff)
@@ -88,7 +88,7 @@ namespace Trainer_v3
 
             foreach (Furniture item in GameSettings.Instance.sRoomManager.AllFurniture)
             {
-                if (PropertyHelper.NoiseRed)
+                if (PropertyHelper.NoiseReduction)
                 {
                     item.ActorNoise = 0f;
                     item.EnvironmentNoise = 0f;
@@ -96,7 +96,7 @@ namespace Trainer_v3
                     item.Noisiness = 0;
                 }
 
-                if (!PropertyHelper.NoWaterElect) continue;
+                if (!PropertyHelper.NoWaterElectricity) continue;
 
                 item.Water = 0;
                 item.Wattage = 0;
@@ -109,13 +109,13 @@ namespace Trainer_v3
                 if (PropertyHelper.CleanRooms)
                     room.ClearDirt();
 
-                if (PropertyHelper.TempLock)
+                if (PropertyHelper.TemperatureLock)
                     room.Temperature = 21.4f;
 
-                if (PropertyHelper.FullEnv)
+                if (PropertyHelper.FullEnvironment)
                     room.FurnEnvironment = 4;
 
-                if (PropertyHelper.Fullbright)
+                if (PropertyHelper.FullRoomBrightness)
                     room.IndirectLighting = 8;
             }
 
@@ -130,24 +130,24 @@ namespace Trainer_v3
                     act.UpdateAgeLook();
                 }
 
-                if (PropertyHelper.LockStress)
+                if (PropertyHelper.NoStress)
                     act.employee.Stress = 1;
 
-                if (PropertyHelper.LockEffSat)
+                if (PropertyHelper.FullEfficiency)
                 {
                     if (act.employee.RoleString.Contains("Lead"))
-                        act.Effectiveness = PropertyHelper.MaxOutEff ? 20 : 4;
+                        act.Effectiveness = PropertyHelper.UltraEfficiency ? 20 : 4;
                     else
-                        act.Effectiveness = PropertyHelper.MaxOutEff ? 10 : 2;
+                        act.Effectiveness = PropertyHelper.UltraEfficiency ? 10 : 2;
                 }
-                if (PropertyHelper.LockSat)
+                if (PropertyHelper.FullSatisfaction)
                 {
                     //act.ChangeSatisfaction(10, 10, Employee.Thought.LoveWork, Employee.Thought.LikeTeamWork, 0);
                     employee.JobSatisfaction = 2f;
                     act.employee.JobSatisfaction = 2f;
                 }
 
-                if (PropertyHelper.LockNeeds)
+                if (PropertyHelper.NoNeeds)
                 {
                     act.employee.Bladder = 1;
                     act.employee.Hunger = 1;
@@ -162,7 +162,7 @@ namespace Trainer_v3
                     act.IgnoreOffSalary = true;
                 }
 
-                if (PropertyHelper.NoiseRed)
+                if (PropertyHelper.NoiseReduction)
                     act.Noisiness = 0;
 
                 if (PropertyHelper.NoVacation)
@@ -172,10 +172,10 @@ namespace Trainer_v3
             LoanWindow.factor = 250000;
             GameSettings.MaxFloor = 75; //10 default
             //GameSettings.Instance.scenario.MaxFloor = 75;
-            CourierAI.MaxBoxes = PropertyHelper.IncCourierCap ? 108 : 54;
-            Server.ISPCost = PropertyHelper.RedISPCost ? 25f : 50f;
+            CourierAI.MaxBoxes = PropertyHelper.IncreaseCourierCapacity ? 108 : 54;
+            Server.ISPCost = PropertyHelper.ReduceISPCost ? 25f : 50f;
 
-            if (PropertyHelper.dDeal)
+            if (PropertyHelper.AutoDistributionDeals)
             {
                 foreach (var x in GameSettings.Instance.simulation.Companies)
                 {
@@ -196,22 +196,22 @@ namespace Trainer_v3
                 }
             }
 
-            if (PropertyHelper.MoreHosting)
+            if (PropertyHelper.MoreHostingDeals)
             {
-                int hour = TimeOfDay.Instance.Hour;
+                int inGameHour = TimeOfDay.Instance.Hour;
 
-                if ((hour == 9 || hour == 15) && PropertyHelper.pushed == false)
+                if ((inGameHour == 9 || inGameHour == 15) && PropertyHelper.DealIsPushed == false)
                     Deals();
-                else if (hour != 9 && hour != 15 && PropertyHelper.pushed)
-                    PropertyHelper.pushed = false;
+                else if (inGameHour != 9 && inGameHour != 15 && PropertyHelper.DealIsPushed)
+                    PropertyHelper.DealIsPushed = false;
 
-                if (PropertyHelper.reward == false && hour == 12)
+                if (PropertyHelper.RewardIsGained == false && inGameHour == 12)
                     Reward();
-                else if (hour != 12 && PropertyHelper.reward)
-                    PropertyHelper.reward = false;
+                else if (inGameHour != 12 && PropertyHelper.RewardIsGained)
+                    PropertyHelper.RewardIsGained = false;
             }
 
-            if (PropertyHelper.IncPrintSpeed)
+            if (PropertyHelper.IncreasePrintSpeed)
                 for (int i = 0; i < GameSettings.Instance.ProductPrinters.Count; i++)
                     GameSettings.Instance.ProductPrinters[i].PrintSpeed = 2f;
 
@@ -220,7 +220,7 @@ namespace Trainer_v3
                 for (int i = 0; i < GameSettings.Instance.ProductPrinters.Count; i++)
                     GameSettings.Instance.ProductPrinters[i].PrintPrice = 0f;
 
-            if (PropertyHelper.IncBookshelfSkill)
+            if (PropertyHelper.IncreaseBookshelfSkill)
                 foreach (Furniture bookshelf in GameSettings.Instance.sRoomManager.AllFurniture)
                     if ("Bookshelf".Equals(bookshelf.Type))
                         foreach (float x in bookshelf.AuraValues)
@@ -270,12 +270,12 @@ namespace Trainer_v3
                        Company.TransactionCategory.Deals);
             }
 
-            PropertyHelper.reward = true;
+            PropertyHelper.RewardIsGained = true;
         }
 
         public void Deals()
         {
-            PropertyHelper.pushed = true;
+            PropertyHelper.DealIsPushed = true;
 
             SoftwareProduct[] Products = GameSettings.Instance.simulation.GetAllProducts().Where(pr =>
                   (pr.Type.ToString() == "CMS"
