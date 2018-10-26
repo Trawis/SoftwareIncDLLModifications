@@ -33,16 +33,6 @@ namespace Trainer_v3
             Window.name = "TrainerSettings";
             Window.MainPanel.name = "TrainerSettingsPanel";
 
-            //Window.rectTransform = new RectTransform();
-            //Window.rectTransform.position = new Vector3
-            //{
-            //    x = 50f,
-            //    y = 50f,
-            //    z = 0f
-            //};
-
-            //WindowManager.ActiveWindows.Add(Window);
-
             if (Window.name == "TrainerSettings")
             {
                 Window.GetComponentsInChildren<Button>()

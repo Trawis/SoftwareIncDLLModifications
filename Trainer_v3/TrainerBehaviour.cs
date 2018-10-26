@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Random = System.Random;
 
 namespace Trainer_v3
@@ -42,12 +43,30 @@ namespace Trainer_v3
                 {"FullSatisfaction", PropertyHelper.FullSatisfaction}
             };
 
-            //StartCoroutine(SaveSettings());
+            SceneManager.sceneLoaded += OnLevelFinishedLoading;
+        }
 
-            //foreach (var Pair in PropertyHelper.Settings)
-            //{
-            //    LoadSetting(Pair.Key, false);
-            //}
+        private void OnLevelFinishedLoading(Scene scene, LoadSceneMode mode)
+        {
+            //Other scenes include MainScene and Customization
+            if (scene.name.Equals("MainMenu"))
+            {
+                foreach (var Pair in PropertyHelper.Settings)
+                {
+                    LoadSetting(Pair.Key, false);
+                }
+
+                if (!Main.btn.IsDestroyed())
+                {
+                    DevConsole.Console.Log(Main.btn.name);
+                    Destroy(Main.btn);
+                }
+            }
+            else
+            {
+                DevConsole.Console.Log("Button loaded");
+                Main.SpawnButton();
+            }
         }
 
         IEnumerator<WaitForSeconds> SaveSettings()
@@ -65,23 +84,14 @@ namespace Trainer_v3
 
         private void Update()
         {
-            if (PropertyHelper.ModStarted && PropertyHelper.ModActive && GameSettings.Instance == null && HUD.Instance == null)
-                PropertyHelper.ModStarted = false;
-
-            if (!PropertyHelper.ModActive || GameSettings.Instance == null || HUD.Instance == null)
+            if (!PropertyHelper.ModActive && !isActiveAndEnabled)
                 return;
 
             if (Input.GetKey(KeyCode.F1) && !Main.IsShowed)
-                Main.Window();
+                Main.SpawnWindow();
 
             if (Input.GetKey(KeyCode.F2) && Main.IsShowed)
-                Main.Window();
-
-            if (PropertyHelper.ModStarted == false)
-            {
-                Main.Button();
-                PropertyHelper.ModStarted = true;
-            }
+                Main.SpawnWindow();
 
             if (PropertyHelper.FreeStaff)
                 GameSettings.Instance.StaffSalaryDue = 0f;

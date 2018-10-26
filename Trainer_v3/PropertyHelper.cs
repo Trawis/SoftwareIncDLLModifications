@@ -36,7 +36,6 @@ namespace Trainer_v3
         public static string price_ProductName { get; set; }
         public static bool RewardIsGained { get; set; }
         public static bool DealIsPushed { get; set; }
-        public static bool ModStarted { get; set; }
         public static Dictionary<string, bool> Settings { get; set; }
     }
 }

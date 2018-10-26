@@ -19,6 +19,8 @@ namespace Trainer_v3
             }
         }
 
+        public static Button btn;
+
         private TrainerBehaviour _trainerBehaviour;
 
         //This method is called once when the mod is first loaded
@@ -27,18 +29,19 @@ namespace Trainer_v3
             _trainerBehaviour = parentMod.Behaviors.OfType<TrainerBehaviour>().First();
         }
 
-        public static void Button()
+        public static void SpawnButton()
         {
-            Button btn = WindowManager.SpawnButton();
+            btn = WindowManager.SpawnButton();
             btn.GetComponentInChildren<Text>().text = "Trainer " + version;
             btn.onClick.AddListener(() => SettingsWindow.Show());
+            btn.name = "TrainerButton";
 
             WindowManager.AddElementToElement(btn.gameObject,
                 WindowManager.FindElementPath("MainPanel/Holder/FanPanel").gameObject, new Rect(164, 0, 100, 32),
                 new Rect(0, 0, 0, 0));
         }
 
-        public static void Window()
+        public static void SpawnWindow()
         {
             SettingsWindow.Show();
         }
