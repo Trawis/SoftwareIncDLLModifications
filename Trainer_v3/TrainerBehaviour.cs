@@ -12,7 +12,7 @@ namespace Trainer_v3
         {
             PropertyHelper.rnd = new Random(); // Random is time based, this makes it more random
 
-            if (!PropertyHelper.ModActive)
+            if (!PropertyHelper.ModActive || !isActiveAndEnabled)
                 return;
 
             PropertyHelper.Settings = new Dictionary<string, bool>
@@ -49,22 +49,12 @@ namespace Trainer_v3
         private void OnLevelFinishedLoading(Scene scene, LoadSceneMode mode)
         {
             //Other scenes include MainScene and Customization
-            if (scene.name.Equals("MainMenu"))
+            if (scene.name.Equals("MainMenu") && Main.btn != null)
             {
-                foreach (var Pair in PropertyHelper.Settings)
-                {
-                    LoadSetting(Pair.Key, false);
-                }
-
-                if (!Main.btn.IsDestroyed())
-                {
-                    DevConsole.Console.Log(Main.btn.name);
-                    Destroy(Main.btn);
-                }
+                Destroy(Main.btn.gameObject);
             }
-            else
+            else if (scene.name.Equals("MainScene") && isActiveAndEnabled)
             {
-                DevConsole.Console.Log("Button loaded");
                 Main.SpawnButton();
             }
         }
@@ -84,7 +74,7 @@ namespace Trainer_v3
 
         private void Update()
         {
-            if (!PropertyHelper.ModActive && !isActiveAndEnabled)
+            if (!PropertyHelper.ModActive || !isActiveAndEnabled || !PropertyHelper.DoStuff)
                 return;
 
             if (Input.GetKey(KeyCode.F1) && !Main.IsShowed)
@@ -340,7 +330,6 @@ namespace Trainer_v3
 
         public static void HREmployees()
         {
-
             if (!PropertyHelper.DoStuff || SelectorController.Instance == null)
             {
                 return;
@@ -411,6 +400,7 @@ namespace Trainer_v3
                 Product.Marketing = 0;
                 Product.Trade(simComp);
             }
+
             WindowManager.SpawnDialog("Products that you didn't invent are removed.", false, DialogWindow.DialogType.Information);
         }
 
@@ -447,12 +437,12 @@ namespace Trainer_v3
                     }
                 }
             }
+
             HUD.Instance.AddPopupMessage("Trainer: All employees are now max skilled!", "Cogs", PopupManager.PopUpAction.None, 0, 0, 0, 0, 1);
         }
 
         public static void UnlockAllSpace()
         {
-
             if (!PropertyHelper.DoStuff)
             {
                 return;
@@ -470,6 +460,7 @@ namespace Trainer_v3
             }
 
             Example.UnlockFurniture();
+            Cheats.UnlockFurn = true;
             HUD.Instance.UpdateFurnitureButtons();
             HUD.Instance.AddPopupMessage("Trainer: All furniture has been unlocked!", "Cogs", PopupManager.PopUpAction.None, 0, 0, 0, 0);
         }
