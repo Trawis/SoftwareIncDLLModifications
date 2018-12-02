@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Trainer_v3
 {
-    public class DefaultValues
+    public static class DefaultValues
     {
     }
 }

@@ -13,7 +13,9 @@ namespace Trainer_v3
             PropertyHelper.rnd = new Random(); // Random is time based, this makes it more random
 
             if (!PropertyHelper.ModActive || !isActiveAndEnabled)
+            {
                 return;
+            }
 
             PropertyHelper.Settings = new Dictionary<string, bool>
             {
@@ -44,6 +46,7 @@ namespace Trainer_v3
             };
 
             SceneManager.sceneLoaded += OnLevelFinishedLoading;
+            //StartCoroutine(SaveSettings());
         }
 
         private void OnLevelFinishedLoading(Scene scene, LoadSceneMode mode)
@@ -75,16 +78,24 @@ namespace Trainer_v3
         private void Update()
         {
             if (!PropertyHelper.ModActive || !isActiveAndEnabled || !PropertyHelper.DoStuff)
+            {
                 return;
+            }
 
             if (Input.GetKey(KeyCode.F1) && !Main.IsShowed)
+            {
                 Main.SpawnWindow();
+            }
 
             if (Input.GetKey(KeyCode.F2) && Main.IsShowed)
+            {
                 Main.SpawnWindow();
+            }
 
             if (PropertyHelper.FreeStaff)
+            {
                 GameSettings.Instance.StaffSalaryDue = 0f;
+            }
 
             foreach (Furniture item in GameSettings.Instance.sRoomManager.AllFurniture)
             {
@@ -96,10 +107,11 @@ namespace Trainer_v3
                     item.Noisiness = 0;
                 }
 
-                if (!PropertyHelper.NoWaterElectricity) continue;
-
-                item.Water = 0;
-                item.Wattage = 0;
+                if (!PropertyHelper.NoWaterElectricity)
+                {
+                    item.Water = 0;
+                    item.Wattage = 0;
+                }
             }
 
             for (int i = 0; i < GameSettings.Instance.sRoomManager.Rooms.Count; i++)
@@ -107,16 +119,24 @@ namespace Trainer_v3
                 Room room = GameSettings.Instance.sRoomManager.Rooms[i];
 
                 if (PropertyHelper.CleanRooms)
+                {
                     room.ClearDirt();
+                }
 
                 if (PropertyHelper.TemperatureLock)
+                {
                     room.Temperature = 21.4f;
+                }
 
                 if (PropertyHelper.FullEnvironment)
+                {
                     room.FurnEnvironment = 4;
+                }
 
                 if (PropertyHelper.FullRoomBrightness)
+                {
                     room.IndirectLighting = 8;
+                }
             }
 
             for (int i = 0; i < GameSettings.Instance.sActorManager.Actors.Count; i++)
@@ -131,15 +151,22 @@ namespace Trainer_v3
                 }
 
                 if (PropertyHelper.NoStress)
+                {
                     act.employee.Stress = 1;
+                }
 
                 if (PropertyHelper.FullEfficiency)
                 {
                     if (act.employee.RoleString.Contains("Lead"))
+                    {
                         act.Effectiveness = PropertyHelper.UltraEfficiency ? 20 : 4;
+                    }
                     else
+                    {
                         act.Effectiveness = PropertyHelper.UltraEfficiency ? 10 : 2;
+                    }
                 }
+
                 if (PropertyHelper.FullSatisfaction)
                 {
                     //act.ChangeSatisfaction(10, 10, Employee.Thought.LoveWork, Employee.Thought.LikeTeamWork, 0);
@@ -163,10 +190,14 @@ namespace Trainer_v3
                 }
 
                 if (PropertyHelper.NoiseReduction)
+                {
                     act.Noisiness = 0;
+                }
 
                 if (PropertyHelper.NoVacation)
+                {
                     act.VacationMonth = SDateTime.NextMonth(24);
+                }
             }
 
             LoanWindow.factor = 250000;
@@ -201,30 +232,54 @@ namespace Trainer_v3
                 int inGameHour = TimeOfDay.Instance.Hour;
 
                 if ((inGameHour == 9 || inGameHour == 15) && PropertyHelper.DealIsPushed == false)
-                    Deals();
+                {
+                    PushDeal();
+                }
                 else if (inGameHour != 9 && inGameHour != 15 && PropertyHelper.DealIsPushed)
+                {
                     PropertyHelper.DealIsPushed = false;
+                }
 
                 if (PropertyHelper.RewardIsGained == false && inGameHour == 12)
-                    Reward();
+                {
+                    PushReward();
+                }
                 else if (inGameHour != 12 && PropertyHelper.RewardIsGained)
+                {
                     PropertyHelper.RewardIsGained = false;
+                }
             }
 
             if (PropertyHelper.IncreasePrintSpeed)
+            {
                 for (int i = 0; i < GameSettings.Instance.ProductPrinters.Count; i++)
+                {
                     GameSettings.Instance.ProductPrinters[i].PrintSpeed = 2f;
+                }
+            }
 
             //add printspeed and printprice when it's disabled (else) TODO
             if (PropertyHelper.FreePrint)
+            {
                 for (int i = 0; i < GameSettings.Instance.ProductPrinters.Count; i++)
+                {
                     GameSettings.Instance.ProductPrinters[i].PrintPrice = 0f;
+                }
+            }
 
             if (PropertyHelper.IncreaseBookshelfSkill)
+            {
                 foreach (Furniture bookshelf in GameSettings.Instance.sRoomManager.AllFurniture)
+                {
                     if ("Bookshelf".Equals(bookshelf.Type))
+                    {
                         foreach (float x in bookshelf.AuraValues)
+                        {
                             bookshelf.AuraValues[1] = 0.75f;
+                        }
+                    }
+                }
+            }
 
             //else 0.25 TODO
             if (PropertyHelper.NoMaintenance)
@@ -256,13 +311,15 @@ namespace Trainer_v3
             HUD.Instance.AddPopupMessage("Trainer: All loans are cleared!", "Cogs", PopupManager.PopUpAction.None, 0, 0, 0, 0);
         }
 
-        public void Reward()
+        public void PushReward()
         {
             Deal[] Deals = HUD.Instance.dealWindow.GetActiveDeals().Where(deal => deal.ToString() == "ServerDeal")
                 .ToArray();
 
             if (!Deals.Any())
+            {
                 return;
+            }
 
             for (int i = 0; i < Deals.Length; i++)
             {
@@ -273,7 +330,7 @@ namespace Trainer_v3
             PropertyHelper.RewardIsGained = true;
         }
 
-        public void Deals()
+        public void PushDeal()
         {
             PropertyHelper.DealIsPushed = true;
 
@@ -419,7 +476,10 @@ namespace Trainer_v3
 
         public static void EmployeesToMax()
         {
-            if (!PropertyHelper.DoStuff || SelectorController.Instance == null) return;
+            if (!PropertyHelper.DoStuff || SelectorController.Instance == null)
+            {
+                return;
+            }
 
             for (int index1 = 0; index1 < GameSettings.Instance.sActorManager.Actors.Count; index1++)
             {
@@ -591,7 +651,7 @@ namespace Trainer_v3
         public static void SetProductPriceAction(string input)
         {
             SoftwareProduct Product =
-                GameSettings.Instance.MyCompany.Products.FirstOrDefault(product => product.Name == PropertyHelper.price_ProductName);
+                GameSettings.Instance.MyCompany.Products.FirstOrDefault(product => product.Name == PropertyHelper.Product_PriceName);
 
             if (Product == null)
             {
@@ -614,7 +674,7 @@ namespace Trainer_v3
         public static void SetProductStockAction(string input)
         {
             SoftwareProduct Product =
-                GameSettings.Instance.MyCompany.Products.FirstOrDefault(product => product.Name == PropertyHelper.price_ProductName);
+                GameSettings.Instance.MyCompany.Products.FirstOrDefault(product => product.Name == PropertyHelper.Product_PriceName);
 
             if (Product == null)
             {
@@ -637,7 +697,7 @@ namespace Trainer_v3
         public static void AddActiveUsersAction(string input)
         {
             SoftwareProduct Product =
-                GameSettings.Instance.MyCompany.Products.FirstOrDefault(product => product.Name == PropertyHelper.price_ProductName);
+                GameSettings.Instance.MyCompany.Products.FirstOrDefault(product => product.Name == PropertyHelper.Product_PriceName);
 
             if (Product == null)
             {

@@ -47,7 +47,7 @@ namespace Trainer_v3
 
 
             Utils.AddInputBox("Product Name Here", new Rect(1, 96, 150, 32),
-                boxText => PropertyHelper.price_ProductName = boxText);
+                boxText => PropertyHelper.Product_PriceName = boxText);
 
 
             Utils.AddButton("Add Money", new Rect(1, 0, 150, 32), TrainerBehaviour.IncreaseMoney);
