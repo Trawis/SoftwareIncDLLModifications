@@ -3,6 +3,14 @@ Release notes for changes to the trainer
 
 ---
 
+**3.5**
+
+01.01.2019. for Alpha 10.9.9
+- Fixed window dissapear bug
+- Other improvements
+
+---
+
 **3.4**
 
 11.10.2018. for Alpha 10.8.3
