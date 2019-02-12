@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -560,7 +561,22 @@ namespace Trainer_v3
             }
 
             var code = ((SoftwareAlpha)WorkItem);
-            code.CodeProgress = 0.98f;
+
+            float optimalProgress = 0;
+
+            for (int i = 1; i < 5; i++)
+            {
+                float p = SoftwareAlpha.FinalQualityCalc(
+                    (Mathf.Pow(10, i) - 1f) / Mathf.Pow(10, i),
+                    SoftwareAlpha.GetMaxCodeQuality(code.CodeProgress)
+                );
+
+                if (p > optimalProgress) {
+                    optimalProgress = p;
+                }
+            }
+
+            code.CodeProgress = optimalProgress;
         }
 
         public static void MaxCode()
@@ -584,7 +600,22 @@ namespace Trainer_v3
             }
 
             var art = ((SoftwareAlpha)WorkItem);
-            art.ArtProgress = 0.98f;
+
+            float optimalProgress = 0;
+
+            for (int i = 1; i < 5; i++)
+            {
+                float p = SoftwareAlpha.FinalQualityCalc(
+                    (Mathf.Pow(10, i) - 1f) / Mathf.Pow(10, i),
+                    SoftwareAlpha.GetMaxCodeQuality(art.ArtProgress)
+                );
+
+                if (p > optimalProgress) {
+                    optimalProgress = p;
+                }
+            }
+
+            art.ArtProgress = optimalProgress;
         }
 
         public static void MaxArt()
