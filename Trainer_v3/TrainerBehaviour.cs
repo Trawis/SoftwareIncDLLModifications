@@ -47,7 +47,7 @@ namespace Trainer_v3
             };
 
             SceneManager.sceneLoaded += OnLevelFinishedLoading;
-            //StartCoroutine(SaveSettings());
+            StartCoroutine(SaveSettings());
         }
 
         private void OnLevelFinishedLoading(Scene scene, LoadSceneMode mode)
