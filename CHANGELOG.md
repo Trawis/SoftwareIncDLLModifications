@@ -3,6 +3,14 @@ Release notes for changes to the trainer
 
 ---
 
+**3.6**
+
+22.04.2019. for Alpha 10.10.11
+- Enabled settings save
+- Changed max art/code behaviour
+
+---
+
 **3.5**
 
 01.01.2019. for Alpha 10.9.9
