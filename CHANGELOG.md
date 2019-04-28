@@ -3,6 +3,14 @@ Release notes for changes to the trainer
 
 ---
 
+**3.7**
+
+28.04.2019. for Alpha 10.10.11
+- Trainer settings are now saved separately for each savegame
+- Added option to disable employee skill decay
+
+---
+
 **3.6**
 
 22.04.2019. for Alpha 10.10.11

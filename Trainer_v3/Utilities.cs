@@ -18,7 +18,7 @@ namespace Trainer_v3
         public static void AddButton(string Text, Rect Button, UnityAction Action)
         {
             Button x = WindowManager.SpawnButton();
-            x.GetComponentInChildren<UnityEngine.UI.Text>().text = Text;
+            x.GetComponentInChildren<Text>().text = Text;
             x.onClick.AddListener(Action);
             WindowManager.AddElementToWindow(x.gameObject, SettingsWindow.Window, Button, new Rect(0, 0, 0, 0));
         }
@@ -41,7 +41,7 @@ namespace Trainer_v3
         public static void AddToggle(string Text, bool isOn, UnityAction<bool> Action, ref List<GameObject> Toggles)
         {
             Toggle Toggle = WindowManager.SpawnCheckbox();
-            Toggle.GetComponentInChildren<UnityEngine.UI.Text>().text = Text;
+            Toggle.GetComponentInChildren<Text>().text = Text;
             Toggle.isOn = isOn;
             Toggle.onValueChanged.AddListener(Action);
             Toggles.Add(Toggle.gameObject);
